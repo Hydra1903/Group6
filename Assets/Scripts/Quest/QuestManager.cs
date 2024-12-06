@@ -10,6 +10,8 @@ public class QuestManager : MonoBehaviour
     public List<Quest> quests = new List<Quest>(); // Danh sách nhiệm vụ
     public Quest currentQuest;                    // Nhiệm vụ hiện tại
     public GameObject claimeReward;
+    public GameObject acceptQuestButton;
+
     private void Awake()
     {
         if (instance == null)
@@ -30,6 +32,16 @@ public class QuestManager : MonoBehaviour
         {
             currentQuest = quests[0];
             DisplayQuest();
+            acceptQuestButton.SetActive(true);
+        }
+    }
+    public void AcceptQuest()
+    {
+        if (currentQuest != null && !currentQuest.isAccepted)
+        {
+            currentQuest.isAccepted = true;
+            Debug.Log($"Nhận nhiệm vụ: {currentQuest.questName}");
+            acceptQuestButton.SetActive(false); // Ẩn nút nhận nhiệm vụ
         }
     }
     private void Update()
@@ -57,11 +69,14 @@ public class QuestManager : MonoBehaviour
                 currentQuest = quests[currentIndex + 1];
                 DisplayQuest();
                 claimeReward.SetActive(false);
+                acceptQuestButton.SetActive(true);
             }
             else
             {
                 Debug.Log("All quests completed!");
                 currentQuest = null;
+                claimeReward.SetActive(false);
+                acceptQuestButton.SetActive(false);
             }
         }
     }
@@ -94,12 +109,14 @@ public class QuestManager : MonoBehaviour
         {
             Debug.Log($"New Quest: {currentQuest.questName}");
             // Cập nhật giao diện nhiệm vụ tại đây
+
         }
     }
- 
+
     public void UpdateQuestProgress(ActionType action, string targetId = null)
     {
-        if (currentQuest != null && !currentQuest.isCompleted)
+        // Chỉ cập nhật nếu nhiệm vụ hiện tại đã được nhận và chưa hoàn thành
+        if (currentQuest != null && currentQuest.isAccepted && !currentQuest.isCompleted)
         {
             if (currentQuest.actionType == action)
             {
@@ -113,8 +130,11 @@ public class QuestManager : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            Debug.Log("Không có nhiệm vụ hiện tại hoặc nhiệm vụ chưa được nhận!");
+        }
     }
-
 
 }
 

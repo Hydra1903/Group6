@@ -15,17 +15,19 @@ public class Quest
 {
     public string questName;          // Tên nhiệm vụ
     public string description;        // Mô tả nhiệm vụ
-    //public string[] objectives;       // Các yêu cầu cụ thể
+    public string requirementDescription; // Mô tả yêu cầu cụ thể
+
     public int targetCount;           // Số lượng yêu cầu cần đạt (vd: đào 5 ô đất)
     public int currentCount;          // Tiến trình hiện tại của người chơi
     public bool isCompleted;          // Trạng thái nhiệm vụ
+    public bool isAccepted;           // Trạng thái đã nhận nhiệm vụ
 
     public ActionType actionType;       // Loại hành động cần thực hiện
 
     public List<Item> rewards;        // Phần thưởng (vật phẩm, kinh nghiệm, tiền)
-    
+
     public string targetId;           // ID của mục tiêu cụ thể (vd: carrot, tomato, ...)
-    
+
     public int moneyReward;           // Tiền thưởng
     public int experienceReward;      // Kinh nghiệm thưởng
 
@@ -52,6 +54,4 @@ public class Quest
             }
         }
     }
-
-
 }
