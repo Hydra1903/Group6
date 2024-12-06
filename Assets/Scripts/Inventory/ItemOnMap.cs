@@ -11,10 +11,10 @@ public class ItemOnMap : MonoBehaviour
     public int energy;            // Năng lượng phục hồi nếu là Consumable
     public string description;    // Mô tả của Item
     //public GameObject iconPickUp;
-
+    private DisplayReward player;
     private void Start()
     {
-       
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,9 +22,9 @@ public class ItemOnMap : MonoBehaviour
         // Kiểm tra nếu Player nhặt Item
         if (collision.CompareTag("Player"))
         {
-           
+
             // Tạo một Item mới dựa trên thông tin của Item trên bản đồ
-            Item newItem = new Item(itemName, icon, quantity, itemType, toolType ,price, energy, description);
+            Item newItem = new Item(itemName, icon, quantity, itemType, toolType, price, energy, description);
 
             // Gọi InventoryManager để thêm Item vào Inventory
             InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
@@ -34,6 +34,13 @@ public class ItemOnMap : MonoBehaviour
                 Debug.Log($"Đã thêm {newItem.itemName} vào Inventory.");
             }
 
+            // Gọi ShowFloatingReward của Player để hiển thị phần thưởng
+            player = collision.GetComponent<DisplayReward>();
+            if (player != null)
+            {
+                string message = $"+{quantity} {itemName}";
+                player.ShowFloatingReward(message, icon);
+            }
             // Hủy bỏ ItemOnMap sau khi nhặt
             Destroy(gameObject);
         }
