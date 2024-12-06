@@ -70,11 +70,11 @@ public class SoitileManager : MonoBehaviour
     private Vector3Int offset = Vector3Int.zero;
 
     private Vector3 playerPosition = Vector3.zero;
-    
+
     [Header("Weather/ WateredSoil")]
     public WeatherManager weatherManager;
     //private float timeSinceRainStopped;
-    private float dryOutTime = 30f; // Thời gian để đất khô (đơn vị: giây)
+    //private float dryOutTime = 30f; // Thời gian để đất khô (đơn vị: giây)
     private TileBase[,] originalTileStates;
     // Biến thời gian để theo dõi thời gian sau khi mưa dừng
     private float timeSinceRainStopped = 0f;
@@ -82,14 +82,18 @@ public class SoitileManager : MonoBehaviour
     private float timeSinceWatered = 0f;
     private bool isWatered = false;
 
-    //public Tilemap wateredIconTilemap; // Thêm tilemap để hiển thị icon tưới nước
-    //public Tile wateredIconTile;      // Tile biểu thị icon tưới nước
+    private Vector3Int currentGridPos;
+
+
     public GameObject wateredIconPrefab; // Prefab của icon tưới nước
     private Dictionary<Vector3Int, GameObject> activeIcons = new Dictionary<Vector3Int, GameObject>(); // Lưu các icon đang hiển thị
 
-    [SerializeField] private GameObject cropInfoPanel; // Kéo thả Panel từ Unity
+    [SerializeField] private GameObject cropInfoPanel;
     [SerializeField] private TMPro.TextMeshProUGUI cropInfoText; // Text hiển thị thông tin
     private Vector3Int currentCellPosition; // Lưu vị trí cây đang hiển thị
+
+    [SerializeField] private GameObject bloomGrowthEffectPrefab; // Kéo thả Prefab hiệu ứng vào đây                                                             
+    private Dictionary<Vector3Int, GameObject> cropEffects = new Dictionary<Vector3Int, GameObject>(); // Dictionary để lưu hiệu ứng hương thơm tương ứng với vị trí cây
 
     void Start()
     {
@@ -109,7 +113,7 @@ public class SoitileManager : MonoBehaviour
             { "Potato Seed", new SeedData(potatoSeedTile,potatoSproutTile, potatoYoungPlantTile, potatoFlowerPlantTile ,potatoFruitTile,1) },
         };
     }
-  
+
 
     void Update()
     {
@@ -121,20 +125,29 @@ public class SoitileManager : MonoBehaviour
         if (toolCheck.isUsingTool)
         {
             PlayerPosition();
-            //Vector3 playerPosition = player.position;  // Lấy vị trí Player
+            ////Vector3 playerPosition = player.position;  // Lấy vị trí Player
+
+            Vector3 playerPoint = player.position + playerPosition;  // Lấy vị trí Player
 
             // Tính toán vị trí ô TileMap gần nhất với vị trí Player
-            
-            Vector3Int gridPos = soilTilemap.WorldToCell(playerPosition);
 
-            // Xử lý input để thay đổi offset (di chuyển highlight theo các hướng)
-            HandleInput();
+            ////Vector3Int gridPos = soilTilemap.WorldToCell(playerPosition);
+            Vector3Int gridPos = soilTilemap.WorldToCell(playerPoint);
 
-            // Cộng thêm offset để highlight cách Player một ô
-            gridPos += offset;
+            //// Xử lý input để thay đổi offset (di chuyển highlight theo các hướng)
+            //HandleInput();
 
-            // Gọi hàm highlight tile
-            HighlightTile(gridPos);
+            //// Cộng thêm offset để highlight cách Player một ô
+            //gridPos += offset;
+
+            // Kiểm tra xem có cần cập nhật highlight hay không
+            if (gridPos != currentGridPos)
+            {
+                currentGridPos = gridPos;
+                HighlightTile(currentGridPos);
+            }
+            //// Gọi hàm highlight tile
+            //HighlightTile(gridPos);
 
             if (Input.GetKeyDown(KeyCode.F) && Player.instance != null)
             {
@@ -178,6 +191,7 @@ public class SoitileManager : MonoBehaviour
                     if (currentTile == seededTile)
                     {
                         //Player.instance.IsWatering();
+                        //PlayerController.instance.IsWatering();
                         WaterCrop(gridPos);
                     }
                     else
@@ -285,48 +299,48 @@ public class SoitileManager : MonoBehaviour
         }
     }
 
-
     // Hàm xử lý input của người chơi để thay đổi hướng offset
     private void HandleInput()
+    {
+        //// Dùng các phím mũi tên hoặc WASD để thay đổi offset
+        //if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        //{
+        //    offset = new Vector3Int(0, 1, 0);  // Di chuyển lên   
+        //}
+        //else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        //{
+        //    offset = new Vector3Int(0, -1, 0); // Di chuyển xuống
+        //}
+        //else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        //{
+        //    offset = new Vector3Int(-1, 0, 0); // Di chuyển sang trái
+        //}
+        //else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        //{
+        //    offset = new Vector3Int(1, 0, 0);  // Di chuyển sang phải
+        //}
+    }
+    private void PlayerPosition()
     {
         // Dùng các phím mũi tên hoặc WASD để thay đổi offset
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            offset = new Vector3Int(0, 1, 0);  // Di chuyển lên   
+            playerPosition = new Vector3(0, -0.3f, 0); //+ player.position;  // Di chuyển lên   
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            offset = new Vector3Int(0, -1, 0); // Di chuyển xuống
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        {
-            offset = new Vector3Int(-1, 0, 0); // Di chuyển sang trái
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
-            offset = new Vector3Int(1, 0, 0);  // Di chuyển sang phải
-        }
-    } 
-    private void PlayerPosition()
-    {
-        // Dùng các phím mũi tên hoặc WASD để thay đổi offset
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
-        {
-            playerPosition = new Vector3(0, -0.3f, 0) + player.position;  // Di chuyển lên   
-        }
-        else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-        {
-            playerPosition = new Vector3(0, 0.3f, 0) + player.position;  // Di chuyển xuống   
+            playerPosition = new Vector3(0, -0.27f, 0); //+ player.position;  // Di chuyển xuống   
         }
         else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            playerPosition = new Vector3(0.3f, 0, 0) + player.position;  // Di chuyển phải  
+            playerPosition = new Vector3(-0.5f, -0.25f, 0); //+ player.position;  // Di chuyển phải  
         }
         else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            playerPosition = new Vector3(-0.3f, 0, 0) + player.position;  // Di chuyển trái  
+            playerPosition = new Vector3(0.5f, -0.25f, 0);// + player.position;  // Di chuyển trái  
         }
     }
+
     // Hàm highlight tile tại vị trí đã chọn
     private void HighlightTile(Vector3Int gridPos)
     {
@@ -346,7 +360,7 @@ public class SoitileManager : MonoBehaviour
             highlightTile.SetActive(true);
         }
     }
-    
+
     private Vector3Int GetGridPosition()
     {
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -509,22 +523,23 @@ public class SoitileManager : MonoBehaviour
         //wateredIconTilemap.SetTile(gridPos, null); // Xóa icon
         RemoveWateredIcon(gridPos); // Xóa icon ở giai đoạn cuối
 
+        // Hủy hiệu ứng hương thơm nếu tồn tại
+        if (cropEffects.ContainsKey(gridPos))
+        {
+            Destroy(cropEffects[gridPos]); // Hủy GameObject hiệu ứng
+            cropEffects.Remove(gridPos);  // Xóa khỏi Dictionary
+        }
+
         // Xóa cây trồng khỏi danh sách crops
         crops.Remove(gridPos);
 
         Debug.Log("Thu hoạch thành công! Đất đã được trả về trạng thái đào.");
     }
-
-    //// Điều chỉnh vị trí hiển thị icon (ví dụ: cao hơn 1 ô)
-    //private Vector3Int GetIconPosition(Vector3Int cropPosition)
-    //{
-    //    return cropPosition + new Vector3Int(0, 1, 0);
-    //}
     private Vector3 GetAdjustedIconPosition(Vector3Int cropPosition)
     {
         // Điều chỉnh vị trí icon thấp hơn 0.5 - 0.7 đơn vị
         Vector3 worldPosition = plantTilemap.CellToWorld(cropPosition);
-        return worldPosition + new Vector3(0.2f, 0.7f, 0); // -0.6 để hạ icon
+        return worldPosition + new Vector3(0.2f, 0.7f, 0); //  hạ icon
     }
 
     public void UpdateCrops(float deltaTime)
@@ -537,65 +552,89 @@ public class SoitileManager : MonoBehaviour
 
             //Vector3Int iconPosition = GetIconPosition(position); // Vị trí icon tưới nước
             Vector3 iconWorldPosition = GetAdjustedIconPosition(position); // Vị trí icon sau khi điều chỉnh
+            // Vị trí hiệu ứng hương thơm
+            Vector3 worldPosition = plantTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
 
             // Nếu cây được tưới, cho phép tăng thời gian phát triển
             if (crop.isWatered)
             {
                 crop.hoursGrowth += deltaTime;
-               
+
                 // Kiểm tra điều kiện chuyển giai đoạn phát triển
                 if (crop.growthStage == 0 && crop.hoursGrowth >= 20f)
                 {
-                    
+
                     crop.growthStage = 1;
                     crop.hoursGrowth = 0;
+                    // Hiệu ứng hương thơm
+                    GameObject effect = Instantiate(bloomGrowthEffectPrefab, worldPosition, Quaternion.identity);
+
+                    // Hủy hiệu ứng sau khi chạy xong (nếu cần)
+                    Destroy(effect, 5f); // Thời gian phù hợp với Duration của Particle
                     // Gọi hiệu ứng fade-in
                     StartFadeEffect(position, seed.sproutTile);
                     plantTilemap.SetTile(position, seed.sproutTile);
                     crop.isWatered = false; // Cần tưới lại cho giai đoạn mới
 
                     ShowWateredIcon(position, iconWorldPosition); // Hiển thị icon mới
-                   
+
                 }
                 else if (crop.growthStage == 1 && crop.hoursGrowth >= 30f)
                 {
-                   
+
                     crop.growthStage = 2;
                     crop.hoursGrowth = 0;
+                    // Hiệu ứng hương thơm
+                    GameObject effect = Instantiate(bloomGrowthEffectPrefab, worldPosition, Quaternion.identity);
+
+                    // Hủy hiệu ứng sau khi chạy xong (nếu cần)
+                    Destroy(effect, 5f); // Thời gian phù hợp với Duration của Particle
                     // Gọi hiệu ứng fade-in
                     StartFadeEffect(position, seed.youngPlantTile);
                     plantTilemap.SetTile(position, seed.youngPlantTile);
                     crop.isWatered = false; // Cần tưới lại cho giai đoạn mới
-    
+
                     RemoveWateredIcon(position); // Xóa icon cũ
                     ShowWateredIcon(position, iconWorldPosition); // Hiển thị icon mới
-                } 
+                }
                 else if (crop.growthStage == 2 && crop.hoursGrowth >= 30f)
                 {
-                   
+
                     crop.growthStage = 3;
                     crop.hoursGrowth = 0;
+                    // Hiệu ứng hương thơm
+                    GameObject effect = Instantiate(bloomGrowthEffectPrefab, worldPosition, Quaternion.identity);
+
+                    // Hủy hiệu ứng sau khi chạy xong (nếu cần)
+                    Destroy(effect, 5f); // Thời gian phù hợp với Duration của Particle
                     // Gọi hiệu ứng fade-in
                     StartFadeEffect(position, seed.flowerPlantTile);
                     plantTilemap.SetTile(position, seed.flowerPlantTile);
                     crop.isWatered = false; // Cần tưới lại cho giai đoạn mới
-    
+
                     RemoveWateredIcon(position); // Xóa icon cũ
                     ShowWateredIcon(position, iconWorldPosition); // Hiển thị icon mới
                 }
                 else if (crop.growthStage == 3 && crop.hoursGrowth >= 40f)
                 {
-                   
+
                     crop.growthStage = 4;
                     crop.hoursGrowth = 0;
+                    // Hiệu ứng hương thơm
+                    GameObject effect = Instantiate(bloomGrowthEffectPrefab, worldPosition, Quaternion.identity);
+                    // Lưu hiệu ứng vào Dictionary
+                    cropEffects[position] = effect;
                     // Gọi hiệu ứng fade-in
                     StartFadeEffect(position, seed.fruitTile);
                     plantTilemap.SetTile(position, seed.fruitTile);
                     crop.isHarvestable = true;
                     crop.isWatered = false; // Đặt lại trạng thái tưới
 
+                    // Hủy hiệu ứng sau khi chạy xong (nếu cần)
+                    //Destroy(effect, 5f); // Thời gian phù hợp với Duration của Particle
+
                     RemoveWateredIcon(position); // Xóa icon ở giai đoạn cuối
-                   
+
                 }
             }
             else
@@ -612,7 +651,7 @@ public class SoitileManager : MonoBehaviour
             {
                 RemoveWateredIcon(position); // Xóa icon ở giai đoạn cuối
             }
-            // Khi thu hoạch (hoặc cây bị xóa), loại bỏ icon
+            // Khi ở giai đoạn thu hoạch loại bỏ icon
             if (crop.isHarvestable && crop.growthStage == 4)
             {
                 RemoveWateredIcon(position); // Xóa icon ở giai đoạn cuối
@@ -636,6 +675,8 @@ public class SoitileManager : MonoBehaviour
             activeIcons.Remove(cropPosition);  // Xóa khỏi danh sách
         }
     }
+
+
     private IEnumerator FadeFromDarkToBright(SpriteRenderer spriteRenderer, float duration, Vector3Int position, TileBase tile)
     {
         float elapsed = 0f;
@@ -685,7 +726,7 @@ public class SoitileManager : MonoBehaviour
 
         // Đặt vị trí sprite vào giữa tile
         Vector3 worldPosition = plantTilemap.CellToWorld(position);
-        Vector3 tileCenterOffset = new Vector3(0.5f, 0.5f, 0);
+        Vector3 tileCenterOffset = new Vector3(0.5f, 0.523f, 0);
         fadeObject.transform.position = worldPosition + tileCenterOffset;
 
         // Bắt đầu hiệu ứng fade-in (màu tối sáng dần)
@@ -776,15 +817,15 @@ public class SoitileManager : MonoBehaviour
     }
 }
 public class SeedData
-    {
-        public TileBase seedTile;
-        public TileBase sproutTile;
-        public TileBase youngPlantTile;
-        public TileBase flowerPlantTile;
-        public TileBase fruitTile;
-        public int timeGrowth;
+{
+    public TileBase seedTile;
+    public TileBase sproutTile;
+    public TileBase youngPlantTile;
+    public TileBase flowerPlantTile;
+    public TileBase fruitTile;
+    public int timeGrowth;
 
-        public SeedData(TileBase seedTile, TileBase sproutTile, TileBase youngPlantTile, TileBase flowerPlantTile, TileBase fruitTile, int timeGrowth)
+    public SeedData(TileBase seedTile, TileBase sproutTile, TileBase youngPlantTile, TileBase flowerPlantTile, TileBase fruitTile, int timeGrowth)
     {
         this.seedTile = seedTile;
         this.sproutTile = sproutTile;
@@ -795,7 +836,6 @@ public class SeedData
         this.flowerPlantTile = flowerPlantTile;
     }
 }
-
 
 
 
