@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5188029241856264180}
   - component: {fileID: 6127239980880242500}
   - component: {fileID: 3034352119056702652}
+  - component: {fileID: 427091762790452271}
   m_Layer: 0
   m_Name: Carrot
   m_TagString: Untagged
@@ -144,10 +145,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Carrot
-  icon: {fileID: 1076704099, guid: 189637308815fef479fbbe9b1b50dc9c, type: 3}
+  icon: {fileID: -1360607378, guid: 3e5a54bb86c5cd146aa84388d2cfb3cd, type: 3}
   quantity: 1
   itemType: 0
   toolType: 0
   price: 3
   energy: 4
   description: 
+--- !u!114 &427091762790452271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7438729598981024049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42cb293608bec5d449c0bde58250cefe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropHeight: 0.1
+  fallDuration: 0.3
+  bounceHeight: 0.2
+  bounceDuration: 0.3

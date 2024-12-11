@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2212861623992274072}
   - component: {fileID: 7912237710296097924}
   - component: {fileID: 7489219228347518684}
+  - component: {fileID: -6162416415436085055}
   m_Layer: 0
   m_Name: Tomato
   m_TagString: Untagged
@@ -144,10 +145,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tomato
-  icon: {fileID: -1818729516, guid: 189637308815fef479fbbe9b1b50dc9c, type: 3}
+  icon: {fileID: 2128954005, guid: c76418c118d6b554191804e9ebaea9ff, type: 3}
   quantity: 1
   itemType: 0
   toolType: 0
   price: 5
   energy: 5
   description: 
+--- !u!114 &-6162416415436085055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646206844690287091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42cb293608bec5d449c0bde58250cefe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropHeight: 0.1
+  fallDuration: 0.3
+  bounceHeight: 0.2
+  bounceDuration: 0.3
