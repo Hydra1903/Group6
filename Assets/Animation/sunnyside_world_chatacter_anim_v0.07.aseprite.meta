@@ -123,8 +123,8 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: sunnyside_world_chatacter_anim_v0.07_Frame_92
     originalName: 
-    pivot: {x: 0.15217394, y: -3}
-    alignment: 9
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -563,8 +563,8 @@ ScriptedImporter:
     uvTransform: {x: 125, y: 105}
   - name: sunnyside_world_chatacter_anim_v0.07_Frame_0
     originalName: 
-    pivot: {x: 0.43750006, y: -3.1666667}
-    alignment: 9
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
