@@ -24,8 +24,12 @@ public class PlayerController : MonoBehaviour
     public float lastMoveX;
     public float lastMoveY;
 
+    AudioManager audioManager;
+
     private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
         if (instance == null)
             instance = this;
         else

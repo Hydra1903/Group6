@@ -10,6 +10,7 @@ TagManager:
   - Rock
   - Tool
   - NPC
+  - Audio
   layers:
   - Default
   - TransparentFX
