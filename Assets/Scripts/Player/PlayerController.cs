@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
             currentState = PlayerState.Idle;
         }
         // Di chuyển
+
         rb.velocity = move * moveSpeed;
 
         SetAnimationState();
