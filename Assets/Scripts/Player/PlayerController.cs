@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
         if (instance == null)
             instance = this;
