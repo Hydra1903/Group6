@@ -11,6 +11,8 @@ TagManager:
   - Tool
   - NPC
   - Audio
+  - SoilLayer
+  - GrassLayer
   layers:
   - Default
   - TransparentFX
