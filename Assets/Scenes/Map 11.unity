@@ -2266,7 +2266,6 @@ GameObject:
   m_Component:
   - component: {fileID: 402415057}
   - component: {fileID: 402415056}
-  - component: {fileID: 402415055}
   - component: {fileID: 402415058}
   - component: {fileID: 402415060}
   - component: {fileID: 402415061}
@@ -2275,6 +2274,7 @@ GameObject:
   - component: {fileID: 402415064}
   - component: {fileID: 402415066}
   - component: {fileID: 402415068}
+  - component: {fileID: 402415069}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -2282,21 +2282,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &402415055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402415054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8595d3c65e6d3ad4596094c4e1f873b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3.5
-  lastMoveX: 0
-  lastMoveY: 0
 --- !u!212 &402415056
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2577,6 +2562,21 @@ MonoBehaviour:
   floatingRewardPrefab: {fileID: 0}
   floatUpDistance: 0.7
   displayDuration: 0.7
+--- !u!114 &402415069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402415054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8595d3c65e6d3ad4596094c4e1f873b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3.5
+  lastMoveX: 0
+  lastMoveY: 0
 --- !u!1 &407946994
 GameObject:
   m_ObjectHideFlags: 0
