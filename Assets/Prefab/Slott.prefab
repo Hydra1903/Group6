@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -5424275286190431348}
   - component: {fileID: 3512794895382257893}
   m_Layer: 5
-  m_Name: SlotToolbar
+  m_Name: Slott
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

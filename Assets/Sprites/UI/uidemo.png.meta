@@ -1038,6 +1038,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: uidemo_43
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 633
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf87ef71a70e5704fb0eafdddc7e2670
+      internalID: 1799180224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1087,6 +1108,7 @@ TextureImporter:
       uidemo_40: -453959380
       uidemo_41: 1974180719
       uidemo_42: 1034488979
+      uidemo_43: 1799180224
       uidemo_5: -1462227804
       uidemo_6: 1860825854
       uidemo_7: 343783710
