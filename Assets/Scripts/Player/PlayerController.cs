@@ -24,8 +24,6 @@ public class PlayerController : MonoBehaviour
     public float lastMoveX;
     public float lastMoveY;
 
-    AudioManager audioManager;
-
     private void Awake()
     {
 
