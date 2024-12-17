@@ -1,150 +1,107 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour
 {
-    public enum PlayerState
-    {
-        Idle,
-        Moving,
-        Watering,
-        Digging,
-        Hoe,
-        Axe
-    }
+    // Animation state constants
+    private const string PLAYER_IDLE = "idle";
+    private const string PLAYER_WALK = "walk";
+    private const string PLAYER_MINING = "mining";
+    private const string PLAYER_AXE = "axe";
 
-    public static PlayerController instance;
-    [SerializeField] private float moveSpeed;
+    private Animator animator;
+    public float moveSpeed = 5f;
     private Rigidbody2D rb;
-    private Animator anim;
-    private SpriteRenderer spriteRenderer;
-    private Vector2 move;
-    private PlayerState currentState = PlayerState.Idle; // Trạng thái hiện tại
-    public float lastMoveX;
-    public float lastMoveY;
+    private Vector2 moveDirection;
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
+    // Theo dõi current animation state
+    private string currentAnimationState;
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        animator = rb.GetComponent<Animator>();
+        // Đảm bảo bắt đầu từ trạng thái idle
+        ChangeAnimationState(PLAYER_IDLE);
     }
 
-    private void Update()
+    void Update()
     {
-        // Nhận input
-        move.x = Input.GetAxis("Horizontal");
-        move.y = Input.GetAxis("Vertical");
-
-        // Cập nhật trạng thái nhân vật dựa trên input
-        if (move.sqrMagnitude > 0) // Đang di chuyển
-        {
-            currentState = PlayerState.Moving;
-            lastMoveX = move.x;
-            lastMoveY = move.y;
-        }
-        else // Không di chuyển
-        {
-            currentState = PlayerState.Idle;
-        }
-        // Di chuyển
-        rb.velocity = move * moveSpeed;
-
-        SetAnimationState();
-        //anim
-        if (Input.GetKeyDown(KeyCode.F) && Player.instance != null)
-        {
-            // Kiểm tra xem người chơi có thể đào đất
-            if (Player.instance.CanDig())
-            {
-                currentState = PlayerState.Digging;
-            }
-        }
+        HandleInput();
+        SetAnimation();
     }
-    // Phương thức chuyển đổi trạng thái animation
-    private void SetAnimationState()
+
+    void FixedUpdate()
     {
-        switch (currentState)
+        MoveCharacter();
+    }
+
+    void HandleInput()
+    {
+        // Cho phép di chuyển 4 hướng
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        moveDirection = new Vector2(moveX, moveY).normalized;
+
+        // Lật nhân vật theo hướng di chuyển ngang
+        if (moveX > 0)
+            transform.localScale = new Vector3(4.4f, 4.4f, 1);
+        else if (moveX < 0)
+            transform.localScale = new Vector3(-4.4f, 4.4f, 1);
+    }
+
+    void MoveCharacter()
+    {
+        rb.velocity = moveDirection * moveSpeed;
+    }
+
+    void SetAnimation()
+    {
+        // Ưu tiên hành động đặc biệt
+        if (Input.GetKey(KeyCode.Z)) // Hành động Mining
         {
-            case PlayerState.Idle:
-                anim.SetFloat("Speed", 0);
-                anim.SetFloat("LastMoveX", lastMoveX);
-                anim.SetFloat("LastMoveY", lastMoveY);
-                anim.SetBool("watering", false); // Tắt trạng thái watering
-                anim.SetBool("digging", false);  // Tắt trạng thái digging
-                anim.SetBool("hoe", false);      // Tắt trạng thái hoe
-                anim.SetBool("axe", false);      // Tắt trạng thái axe
-                break;
-
-            case PlayerState.Moving:
-                anim.SetFloat("Horizontal", move.x);
-                anim.SetFloat("Vertical", move.y);
-                anim.SetFloat("Speed", move.sqrMagnitude);
-                anim.SetBool("watering", false); // Tắt trạng thái watering
-                anim.SetBool("digging", false);  // Tắt trạng thái digging
-                anim.SetBool("hoe", false);      // Tắt trạng thái hoe
-                anim.SetBool("axe", false);      // Tắt trạng thái axe
-                break;
-
-            case PlayerState.Watering:
-                anim.SetFloat("LastMoveX", lastMoveX);
-                anim.SetFloat("LastMoveY", lastMoveY);
-                anim.SetBool("watering", true);  // Bật trạng thái watering
-                break;
-
-            case PlayerState.Digging:
-                anim.SetFloat("LastMoveX", lastMoveX);
-                anim.SetFloat("LastMoveY", lastMoveY);
-                anim.SetBool("digging", true);   // Bật trạng thái digging
-                break;
-
-            case PlayerState.Hoe:
-                anim.SetFloat("LastMoveX", lastMoveX);
-                anim.SetFloat("LastMoveY", lastMoveY);
-                anim.SetBool("hoe", true);       // Bật trạng thái hoe
-                break;
-
-            case PlayerState.Axe:
-                anim.SetFloat("LastMoveX", lastMoveX);
-                anim.SetFloat("LastMoveY", lastMoveY);
-                anim.SetBool("axe", true);       // Bật trạng thái axe
-                break;
+            ChangeAnimationState(PLAYER_MINING);
+        }
+        else if (Input.GetKey(KeyCode.X)) // Hành động dùng Axe
+        {
+            ChangeAnimationState(PLAYER_AXE);
+        }
+        else if (moveDirection.sqrMagnitude > 0.01f) // Đang di chuyển
+        {
+            ChangeAnimationState(PLAYER_WALK);
+        }
+        else // Trạng thái mặc định
+        {
+            ChangeAnimationState(PLAYER_IDLE);
         }
     }
+
+    void ChangeAnimationState(string newState)
+    {
+        // Ngăn chặn animation interrupt chính nó
+        if (currentAnimationState == newState) return;
+
+        // Sử dụng CrossFade để chuyển animation mượt
+        animator.CrossFade(newState, 0.1f);
+
+        // Cập nhật current state
+        currentAnimationState = newState;
+    }
+
+    // Phương thức hữu ích để force change state từ bên ngoài (nếu cần)
+    public void ForceChangeAnimationState(string forcedState)
+    {
+        ChangeAnimationState(forcedState);
+    }
+
+    // Getter cho current state nếu cần
+    public string GetCurrentAnimationState()
+    {
+        return currentAnimationState;
+    }
+
+   
 }
-    //void UpdateToolColliderDirection()
-    //{
-       // if (movementDirection != Vector2.zero)
-       // {
-            // Đặt ToolCollider theo hướng của Player
-       //     if (movementDirection.x > 0) // Di chuyển sang phải
-       //     {
-       //         toolCollider.transform.localPosition = new Vector3(0.02f, 0f, 0f); // Vị trí bên phải Player
-       //         toolCollider.transform.localRotation = Quaternion.Euler(0, 0, 0); // Không xoay
-        //    }
-        //    else if (movementDirection.x < 0) // Di chuyển sang trái
-        //    {
-        //        toolCollider.transform.localPosition = new Vector3(-0.5f, 0f, 0f); // Vị trí bên trái Player
-         //       toolCollider.transform.localRotation = Quaternion.Euler(0, 0, 0); // Không xoay
-       //     }
-            //else if (movementDirection.y > 0) // Di chuyển lên
-            //{
-            //    toolCollider.transform.localPosition = new Vector3(0f, 1f, 0f); // Vị trí bên trên Player
-            //    toolCollider.transform.localRotation = Quaternion.Euler(0, 0, 90); // Xoay 90 độ
-            //}
-            //else if (movementDirection.y < 0) // Di chuyển xuống
-            //{
-            //    toolCollider.transform.localPosition = new Vector3(0f, -1f, 0f); // Vị trí bên dưới Player
-            //    toolCollider.transform.localRotation = Quaternion.Euler(0, 0, -90); // Xoay -90 độ
-            //}
-       // }
-    //}
