@@ -14,11 +14,6 @@ public class PlayerSfx : MonoBehaviour
     public void PlayerFootSteps(string surfacetag)
     {
         AudioClip clip = null;
-
-
-
-
-
     }
 }
     
