@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NilonGarbage
   m_EditorClassIdentifier: 
   fishName: NilonGarbage
-  icon: {fileID: -637675242, guid: 6a4743f696d97ae40b271ebcb4d7cd02, type: 3}
+  icon: {fileID: -1512273488, guid: bfd3392ab671d694ea1df9e9177a996f, type: 3}
   quantity: 1
   itemType: 4
   toolType: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
   energy: 0
   description: 
   catchChance: 40
+  rarity: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1c8e6d4988e0afa4b8989debb8212789
+guid: 2e472ad2e505b484984d3cf9095d447b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: weaponv1 1_0
+      name: weaponv1_0
       rect:
         serializedVersion: 2
         x: 10
@@ -150,14 +150,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df96623be6203c649928341619fcca96
-      internalID: 1345693755
+      spriteID: 632425d068a04004896dd079ce03a540
+      internalID: 1065979564
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_1
+      name: weaponv1_1
       rect:
         serializedVersion: 2
         x: 74
@@ -171,14 +171,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 99d8980f64656324b852539d168b425f
-      internalID: -713848483
+      spriteID: 654cd470f6a2c844b862a68e1ad845b9
+      internalID: 352585567
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_2
+      name: weaponv1_2
       rect:
         serializedVersion: 2
         x: 138
@@ -192,14 +192,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84121ad8e65b0a346b061f8a36a8255d
-      internalID: -1659883717
+      spriteID: 573ce49e692b685449df48204a14352e
+      internalID: 990191047
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_3
+      name: weaponv1_3
       rect:
         serializedVersion: 2
         x: 204
@@ -213,14 +213,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cc7766d30f903434d8ae3248b78f7d22
-      internalID: -172468858
+      spriteID: 96044055fa8e0b842ad11b8296f25ef6
+      internalID: -87902663
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_4
+      name: weaponv1_4
       rect:
         serializedVersion: 2
         x: 266
@@ -234,14 +234,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7621921dae01fc049a9d5c607bfc3e5c
-      internalID: 1663819795
+      spriteID: 8682f6d0bea77ce4db8cdea147b5d506
+      internalID: 771336006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_5
+      name: weaponv1_5
       rect:
         serializedVersion: 2
         x: 336
@@ -255,14 +255,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b65d5d992681b9844b6b7ab3f94a325e
-      internalID: -1016521114
+      spriteID: 44bcc1b30a1c5314bbd3d37ce983abd8
+      internalID: -793318291
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_6
+      name: weaponv1_6
       rect:
         serializedVersion: 2
         x: 12
@@ -276,14 +276,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f9ef253c805d037449971daa2c457e3b
-      internalID: 529363469
+      spriteID: acd3e611dc12a964d89b98ed73838914
+      internalID: 893229505
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_7
+      name: weaponv1_7
       rect:
         serializedVersion: 2
         x: 74
@@ -297,14 +297,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d11d107880cd11429d69072de031f7d
-      internalID: 1736273073
+      spriteID: 16aceac17d57412478ace252ebb6e099
+      internalID: 1456875855
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_8
+      name: weaponv1_8
       rect:
         serializedVersion: 2
         x: 138
@@ -318,14 +318,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 29ba7251c0ed44c4481b6e3277976fe0
-      internalID: -862474539
+      spriteID: 491cf43b71b249048a0ea2d53faa5543
+      internalID: -438726240
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_9
+      name: weaponv1_9
       rect:
         serializedVersion: 2
         x: 210
@@ -339,14 +339,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64e10a48f046b8b40a6bda8b1c0a75f9
-      internalID: 428424328
+      spriteID: 9b65867be3e25714d901d9f3fb05d535
+      internalID: 1887329445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_10
+      name: weaponv1_10
       rect:
         serializedVersion: 2
         x: 268
@@ -360,14 +360,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c119e5e0a2cf024ca7e4cf2c5d42957
-      internalID: -1427261548
+      spriteID: ef635b2ebb608154b938ce6223b5a5a6
+      internalID: 1148066312
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_11
+      name: weaponv1_11
       rect:
         serializedVersion: 2
         x: 336
@@ -381,14 +381,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6b6b5620f07ea74aaaeda857fa0b41f
-      internalID: 8661449
+      spriteID: 47024620bafdf95418718bd2bdc64d3c
+      internalID: -492667711
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_12
+      name: weaponv1_12
       rect:
         serializedVersion: 2
         x: 12
@@ -402,14 +402,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d8dc82c4e87db4498fcafb70a91b4d1
-      internalID: 1005063988
+      spriteID: f175ff62043c2e744b61353e60922610
+      internalID: -1391676511
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_13
+      name: weaponv1_13
       rect:
         serializedVersion: 2
         x: 74
@@ -423,14 +423,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76ba6b3834dee6f4ca9f1092a18c241a
-      internalID: -1442070850
+      spriteID: 5032748f91a188848be4cbf62bd828dc
+      internalID: -302316814
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_14
+      name: weaponv1_14
       rect:
         serializedVersion: 2
         x: 138
@@ -444,14 +444,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58997a9b7f6ddd54ca35f69c40941b4e
-      internalID: 866993006
+      spriteID: 43eea897ac8d8fc478537c2edda02852
+      internalID: 1952166272
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_15
+      name: weaponv1_15
       rect:
         serializedVersion: 2
         x: 204
@@ -465,14 +465,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c256b554a21176498b268f816dd8579
-      internalID: -1423153843
+      spriteID: 19c7e0ea9ce41e5489df1c5e5621b4dc
+      internalID: -1842964599
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_16
+      name: weaponv1_16
       rect:
         serializedVersion: 2
         x: 334
@@ -486,14 +486,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8f4fc878135d5e24fa5ce5b68e67304e
-      internalID: -1184212838
+      spriteID: d0406f58a370ae34da08060164e12811
+      internalID: -1604260780
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_17
+      name: weaponv1_17
       rect:
         serializedVersion: 2
         x: 10
@@ -507,19 +507,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c2006f7362e4f494cb708c2e151409c6
-      internalID: 1553070919
+      spriteID: 05699d5dfac79b846ac98d4e88c6e6b8
+      internalID: -2121644647
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_18
+      name: weaponv1_18
       rect:
         serializedVersion: 2
         x: 79
         y: 11
-        width: 43
+        width: 42
         height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -528,14 +528,56 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3ad97554e26a69f4e8da97b9f23121f3
-      internalID: -1688506448
+      spriteID: 056dfeac1d5e55d4eb7e7a1a4a2b74c0
+      internalID: -1704202381
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weaponv1 1_19
+      name: weaponv1_19
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 8
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00f04c273e002e54c9876b08094bbf7a
+      internalID: -550430769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weaponv1_20
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 8
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ed2cc411d1fca34f8c3f01cb7d3146c
+      internalID: -1806850227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weaponv1_21
       rect:
         serializedVersion: 2
         x: 334
@@ -549,8 +591,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e87cf54107a9d624fbdd543108376c66
-      internalID: -1924587395
+      spriteID: aa005299e93c94446ad66bc2ff0a1f7f
+      internalID: -1614630051
       vertices: []
       indices: 
       edges: []
@@ -566,26 +608,28 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      weaponv1 1_0: 1345693755
-      weaponv1 1_1: -713848483
-      weaponv1 1_10: -1427261548
-      weaponv1 1_11: 8661449
-      weaponv1 1_12: 1005063988
-      weaponv1 1_13: -1442070850
-      weaponv1 1_14: 866993006
-      weaponv1 1_15: -1423153843
-      weaponv1 1_16: -1184212838
-      weaponv1 1_17: 1553070919
-      weaponv1 1_18: -1688506448
-      weaponv1 1_19: -1924587395
-      weaponv1 1_2: -1659883717
-      weaponv1 1_3: -172468858
-      weaponv1 1_4: 1663819795
-      weaponv1 1_5: -1016521114
-      weaponv1 1_6: 529363469
-      weaponv1 1_7: 1736273073
-      weaponv1 1_8: -862474539
-      weaponv1 1_9: 428424328
+      weaponv1_0: 1065979564
+      weaponv1_1: 352585567
+      weaponv1_10: 1148066312
+      weaponv1_11: -492667711
+      weaponv1_12: -1391676511
+      weaponv1_13: -302316814
+      weaponv1_14: 1952166272
+      weaponv1_15: -1842964599
+      weaponv1_16: -1604260780
+      weaponv1_17: -2121644647
+      weaponv1_18: -1704202381
+      weaponv1_19: -550430769
+      weaponv1_2: 990191047
+      weaponv1_20: -1806850227
+      weaponv1_21: -1614630051
+      weaponv1_3: -87902663
+      weaponv1_4: 771336006
+      weaponv1_5: -793318291
+      weaponv1_6: 893229505
+      weaponv1_7: 1456875855
+      weaponv1_8: -438726240
+      weaponv1_9: 1887329445
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

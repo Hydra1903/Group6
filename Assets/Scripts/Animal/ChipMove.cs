@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimalController : MonoBehaviour
+public class ChipMove : MonoBehaviour
 {
     private Animator anim;
 
@@ -38,16 +38,12 @@ public class AnimalController : MonoBehaviour
         {
             // Chờ trước khi chọn điểm mới
             waitTimer += Time.deltaTime;
-            anim.SetBool("isIdle", true);
+           
             if (waitTimer >= waitTime)
             {
                 SetNewTargetPosition();
                 waitTimer = 0f;
             }
-        }
-        else
-        {
-            anim.SetBool("isIdle", false);
         }
     }
 
@@ -67,11 +63,11 @@ public class AnimalController : MonoBehaviour
         // Lật nhân vật theo trục X
         if (direction.x > 0) // Di chuyển sang phải
         {
-            transform.localScale = new Vector2(1.2f, 1.2f);
+            transform.localScale = new Vector2(1f, 1f);
         }
         else if (direction.x < 0) // Di chuyển sang trái
         {
-            transform.localScale = new Vector2(-1.2f, 1.2f);
+            transform.localScale = new Vector2(-1f, 1f);
         }
     }
 
@@ -82,6 +78,3 @@ public class AnimalController : MonoBehaviour
         Gizmos.DrawWireCube(areaCenter, areaSize); // Khu vực di chuyển theo tâm và kích thước
     }
 }
-
-
-

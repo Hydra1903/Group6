@@ -75,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: -67025267
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1317058045, guid: 525fbe5a0119b62488626262ffcde3d5, type: 3}
+  m_Sprite: {fileID: -1842964599, guid: 2e472ad2e505b484984d3cf9095d447b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.49, y: 0.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -122,8 +122,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.21875, y: 0.28125}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.49, y: 0.4}
+    newSize: {x: 0.49, y: 0.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: WateringCan
-  icon: {fileID: 1317058045, guid: 525fbe5a0119b62488626262ffcde3d5, type: 3}
+  icon: {fileID: -1842964599, guid: 2e472ad2e505b484984d3cf9095d447b, type: 3}
   quantity: 1
   itemType: 2
   toolType: 4

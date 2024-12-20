@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Axolot
   m_EditorClassIdentifier: 
   fishName: Axolot
-  icon: {fileID: -318574805, guid: 6a4743f696d97ae40b271ebcb4d7cd02, type: 3}
+  icon: {fileID: 311327736, guid: bfd3392ab671d694ea1df9e9177a996f, type: 3}
   quantity: 1
   itemType: 4
   toolType: 0

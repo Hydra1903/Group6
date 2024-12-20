@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  areaCenter: {x: 0, y: 0, z: 0}
-  areaSize: {x: 5, y: 5, z: 0}
+  areaCenter: {x: 9, y: 4.4, z: 0}
+  areaSize: {x: 6, y: 2.5, z: 0}
   waitTime: 4
 --- !u!95 &8669686905074014134
 Animator:
