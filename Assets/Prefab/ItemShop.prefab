@@ -166,9 +166,9 @@ GameObject:
   - component: {fileID: 1782302741607719521}
   - component: {fileID: 1297567807009451587}
   - component: {fileID: 5193883539604666950}
-  - component: {fileID: -2400594582087809392}
+  - component: {fileID: 4657470300787746722}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: ItemShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-2400594582087809392
+--- !u!114 &4657470300787746722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,7 +294,7 @@ MonoBehaviour:
   itemIcon: {fileID: 2636945607604824157}
   itemPriceText: {fileID: 7416120569965167236}
   buyButton: {fileID: 5193883539604666950}
-  sellButton: {fileID: 0}
+  sellButton: {fileID: 5193883539604666950}
 --- !u!1 &8779403979985434623
 GameObject:
   m_ObjectHideFlags: 0

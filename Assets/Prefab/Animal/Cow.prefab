@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8384836081503781549}
   m_Layer: 0
   m_Name: Cow
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -144,7 +144,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.032491542}
@@ -194,6 +194,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  areaCenter: {x: 0, y: 4.4, z: 0}
-  areaSize: {x: 6, y: 2.5, z: 0}
-  waitTime: 2
+  areaCenter: {x: 0, y: 4.4}
+  areaSize: {x: 6, y: 2.5}
+  waitTime: 7

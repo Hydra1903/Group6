@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public int gold; // Số vàng của người chơi
+    public string gold; // Số vàng của người chơi
     public List<Item> items; // Danh sách các item trong inventory
 
     public void AddItem(Item item)

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryController : MonoBehaviour
+public class Toolbar : MonoBehaviour
 {
     public int gold; // Số vàng của người chơi
-    public GameObject inventoryPanel; // Panel chứa các slot
+    public GameObject toolbarPanel; // Panel chứa các slot
     public GameObject slotPrefab;     // Prefab của slot
     public int slotCount;             // Số lượng slot trong inventory
     public List<Item> items;          // Danh sách vật phẩm
@@ -22,7 +22,7 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < slotCount; i++)
         {
             // Tạo slot từ prefab
-            Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
+            Slot slot = Instantiate(slotPrefab, toolbarPanel.transform).GetComponent<Slot>();
 
             // Nếu có vật phẩm, gắn vật phẩm vào slot
             if (i < items.Count)
@@ -49,9 +49,6 @@ public class InventoryController : MonoBehaviour
 
                 // Gắn vật phẩm vào slot
                 slot.currentItem = itemObject;
-
-                //gắn code kéo thả cho vật phẩm 
-                ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
             }
             else
             {
@@ -87,7 +84,7 @@ public class InventoryController : MonoBehaviour
     private void UpdateInventoryUI()
     {
         // Xóa các slot cũ
-        foreach (Transform child in inventoryPanel.transform)
+        foreach (Transform child in toolbarPanel.transform)
         {
             Destroy(child.gameObject);
         }

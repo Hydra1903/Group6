@@ -7,11 +7,11 @@ public class CowMove : MonoBehaviour
     private Animator anim;
 
     public float moveSpeed = 2f;       // Tốc độ di chuyển
-    public Vector3 areaCenter = Vector3.zero; // Tâm khu vực di chuyển (tùy chỉnh trong Inspector)
-    public Vector3 areaSize = new Vector3(5f, 5f, 0f); // Kích thước khu vực di chuyển
+    public Vector2 areaCenter = Vector2.zero; // Tâm khu vực di chuyển (tùy chỉnh trong Inspector)
+    public Vector2 areaSize = new Vector2(5f, 5f); // Kích thước khu vực di chuyển
     public float waitTime = 2f;       // Thời gian chờ trước khi chọn điểm mới
 
-    private Vector3 targetPosition;   // Vị trí điểm đến tiếp theo
+    private Vector2 targetPosition;   // Vị trí điểm đến tiếp theo
     private float waitTimer;          // Bộ đếm thời gian chờ
 
     void Start()
@@ -34,7 +34,7 @@ public class CowMove : MonoBehaviour
         FlipCharacter();
 
         // Kiểm tra nếu đã đến nơi
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
         {
             // Chờ trước khi chọn điểm mới
             waitTimer += Time.deltaTime;
@@ -56,29 +56,36 @@ public class CowMove : MonoBehaviour
         // Tạo vị trí ngẫu nhiên trong khu vực dựa trên tâm và kích thước
         float randomX = Random.Range(areaCenter.x - areaSize.x / 2, areaCenter.x + areaSize.x / 2);
         float randomY = Random.Range(areaCenter.y - areaSize.y / 2, areaCenter.y + areaSize.y / 2);
-        targetPosition = new Vector3(randomX, randomY, transform.position.z);
+        targetPosition = new Vector2(randomX, randomY);
     }
 
     void FlipCharacter()
     {
-        // Tính hướng di chuyển
-        Vector3 direction = targetPosition - transform.position;
+        Vector2 direction = targetPosition - (Vector2)transform.position;
 
-        // Lật nhân vật theo trục X
-        if (direction.x > 0) // Di chuyển sang phải
+        if (direction.x > 0 && transform.localScale.x < 0) // Di chuyển sang phải
         {
             transform.localScale = new Vector2(2.2f, 2.2f);
         }
-        else if (direction.x < 0) // Di chuyển sang trái
+        else if (direction.x < 0 && transform.localScale.x > 0) // Di chuyển sang trái
         {
             transform.localScale = new Vector2(-2.2f, 2.2f);
         }
     }
+
 
     // Debug để hiển thị khu vực di chuyển trong Scene
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(areaCenter, areaSize); // Khu vực di chuyển theo tâm và kích thước
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Animal"))
+        {
+            SetNewTargetPosition();
+        }
     }
 }

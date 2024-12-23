@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: -67025267
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 496292433, guid: 525fbe5a0119b62488626262ffcde3d5, type: 3}
+  m_Sprite: {fileID: -2121644647, guid: 2e472ad2e505b484984d3cf9095d447b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,7 +122,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.4375, y: 0.4375}
+    oldSize: {x: 0.48, y: 0.48}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Shovel
-  icon: {fileID: 496292433, guid: 525fbe5a0119b62488626262ffcde3d5, type: 3}
+  icon: {fileID: -2121644647, guid: 2e472ad2e505b484984d3cf9095d447b, type: 3}
   quantity: 1
   itemType: 2
   toolType: 2
