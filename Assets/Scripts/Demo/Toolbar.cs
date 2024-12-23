@@ -48,6 +48,7 @@ public class Toolbar : MonoBehaviour
                 itemCanvasGroup.blocksRaycasts = true;
 
                 // Gắn vật phẩm vào slot
+                slot.SetItem(item);
                 slot.currentItem = itemObject;
             }
             else

@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class PlayerController : MonoBehaviour
 {
+    public Item currentTool;  // Công cụ hiện tại
     // Animation state constants
     private const string PLAYER_IDLE = "idle";
     private const string PLAYER_WALK = "walk";
     private const string PLAYER_MINING = "mining";
     private const string PLAYER_AXE = "axe";
+    private const string PLAYER_WATERING = "watering";
+    private const string PLAYER_DIG = "dig";
 
     private Animator animator;
     public float moveSpeed = 5f;
@@ -22,6 +23,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        // Lấy công cụ hiện tại từ Player.instance
+        currentTool = Player.instance.equippedTool;
+
         rb = GetComponent<Rigidbody2D>();
         animator = rb.GetComponent<Animator>();
         // Đảm bảo bắt đầu từ trạng thái idle
@@ -30,8 +34,29 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // Cập nhật currentTool nếu công cụ thay đổi trong suốt quá trình
+        if (currentTool != Player.instance.equippedTool)
+        {
+            currentTool = Player.instance.equippedTool;
+        }
+
         HandleInput();
-        SetAnimation();
+
+        // Kiểm tra di chuyển và thay đổi trạng thái animation tương ứng
+        if (moveDirection.sqrMagnitude > 0.01f) // Đang di chuyển
+        {
+            ChangeAnimationState(PLAYER_WALK);
+        }
+        else // Trạng thái mặc định
+        {
+            ChangeAnimationState(PLAYER_IDLE);
+        }
+
+        // Nhấn F để thực hiện hành động tương ứng với công cụ hiện tại
+        if (Input.GetKey(KeyCode.F))
+        {
+            PerformToolAction();
+        }
     }
 
     void FixedUpdate()
@@ -58,24 +83,32 @@ public class PlayerController : MonoBehaviour
         rb.velocity = moveDirection * moveSpeed;
     }
 
-    void SetAnimation()
+    void PerformToolAction()
     {
-        // Ưu tiên hành động đặc biệt
-        if (Input.GetKey(KeyCode.Z)) // Hành động Mining
+        // Kiểm tra nếu công cụ hợp lệ
+        if (currentTool == null)
         {
-            ChangeAnimationState(PLAYER_MINING);
+            Debug.LogWarning("Không có công cụ nào được trang bị.");
+            return;
         }
-        else if (Input.GetKey(KeyCode.X)) // Hành động dùng Axe
+
+        switch (currentTool.toolType)
         {
-            ChangeAnimationState(PLAYER_AXE);
-        }
-        else if (moveDirection.sqrMagnitude > 0.01f) // Đang di chuyển
-        {
-            ChangeAnimationState(PLAYER_WALK);
-        }
-        else // Trạng thái mặc định
-        {
-            ChangeAnimationState(PLAYER_IDLE);
+            case ToolType.PickAxe:
+                ChangeAnimationState(PLAYER_MINING); // Thực hiện hành động mining với PickAxe
+                break;
+
+            case ToolType.Shovel:
+                ChangeAnimationState(PLAYER_DIG); // Thực hiện hành động đào với Shovel
+                break;
+
+            case ToolType.WateringCan:
+                ChangeAnimationState(PLAYER_WATERING); // Thực hiện hành động tưới nước với Watering Can
+                break;
+
+            default:
+                Debug.LogWarning("Công cụ không hợp lệ hoặc chưa được trang bị.");
+                break;
         }
     }
 
@@ -102,6 +135,4 @@ public class PlayerController : MonoBehaviour
     {
         return currentAnimationState;
     }
-
-   
 }
