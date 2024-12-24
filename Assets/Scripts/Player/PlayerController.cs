@@ -43,17 +43,23 @@ public class PlayerController : MonoBehaviour
         HandleInput();
 
         // Kiểm tra di chuyển và thay đổi trạng thái animation tương ứng
-        if (moveDirection.sqrMagnitude > 0.01f) // Đang di chuyển
+        if (moveDirection.sqrMagnitude > 0.01f)
         {
             ChangeAnimationState(PLAYER_WALK);
         }
-        else // Trạng thái mặc định
+        else
         {
-            ChangeAnimationState(PLAYER_IDLE);
+            // Kiểm tra nếu không có hành động đặc biệt thì mới chuyển về Idle
+            if (currentAnimationState != PLAYER_MINING &&
+                currentAnimationState != PLAYER_DIG &&
+                currentAnimationState != PLAYER_WATERING)
+            {
+                ChangeAnimationState(PLAYER_IDLE);
+            }
         }
 
         // Nhấn F để thực hiện hành động tương ứng với công cụ hiện tại
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             PerformToolAction();
         }
@@ -95,10 +101,12 @@ public class PlayerController : MonoBehaviour
         switch (currentTool.toolType)
         {
             case ToolType.PickAxe:
+                Debug.Log("Chuyển sang trạng thái mining.");
                 ChangeAnimationState(PLAYER_MINING); // Thực hiện hành động mining với PickAxe
                 break;
 
             case ToolType.Shovel:
+                Debug.Log("Chuyển sang trạng thái dig.");
                 ChangeAnimationState(PLAYER_DIG); // Thực hiện hành động đào với Shovel
                 break;
 

@@ -58,7 +58,7 @@ public class SoitileManager : MonoBehaviour
     private Dictionary<string, SeedData> seedData; // Dictionary to store seed properties
 
     //public InventoryManager playerInventory;
-    public GameObject highlightTile;
+    public HighlightController highlightController;
     public Transform player;            // Tham chiếu đối tượng Player
     public Player toolCheck;
     //public Animator anim;
@@ -124,43 +124,19 @@ public class SoitileManager : MonoBehaviour
 
         if (toolCheck.isUsingTool)
         {
-            PlayerPosition();
-            ////Vector3 playerPosition = player.position;  // Lấy vị trí Player
-
-            Vector3 playerPoint = player.position + playerPosition;  // Lấy vị trí Player
-
-            // Tính toán vị trí ô TileMap gần nhất với vị trí Player
-
-            ////Vector3Int gridPos = soilTilemap.WorldToCell(playerPosition);
-            Vector3Int gridPos = soilTilemap.WorldToCell(playerPoint);
-
-            //// Xử lý input để thay đổi offset (di chuyển highlight theo các hướng)
-            //HandleInput();
-
-            //// Cộng thêm offset để highlight cách Player một ô
-            //gridPos += offset;
-
-            // Kiểm tra xem có cần cập nhật highlight hay không
-            if (gridPos != currentGridPos)
-            {
-                currentGridPos = gridPos;
-                HighlightTile(currentGridPos);
-            }
-            //// Gọi hàm highlight tile
-            //HighlightTile(gridPos);
+            // Sử dụng currentCell từ HighlightController
+            Vector3Int currentGridPos = highlightController.currentCell;
 
             if (Input.GetKeyDown(KeyCode.F) && Player.instance != null)
             {
                 // Kiểm tra xem người chơi có thể đào đất
                 if (Player.instance.CanDig())
                 {
-                    TileBase currentTile = soilTilemap.GetTile(gridPos);
-                    if (System.Array.Exists(dirtTile, tile => tile == currentTile))//currentTile == dirtTile)
+                    TileBase currentTile = soilTilemap.GetTile(currentGridPos);
+                    if (System.Array.Exists(dirtTile, tile => tile == currentTile))
                     {
-                        //PlayerController.instance.IsDigging();
-                        //QuestProgress.instance.UpdateProgress("DigSoil");
                         QuestManager.instance.UpdateQuestProgress(ActionType.DigSoil);
-                        Dig(gridPos);
+                        Dig(currentGridPos);
                     }
                 }
 
@@ -169,14 +145,14 @@ public class SoitileManager : MonoBehaviour
                 {
                     if (selectedSeed == null)
                     {
-                        Debug.Log("Please select a seed before planting.");
+                        Debug.Log("Vui lòng chọn hạt giống trước khi trồng.");
                         return;
                     }
 
-                    TileBase currentTile = soilTilemap.GetTile(gridPos);
+                    TileBase currentTile = soilTilemap.GetTile(currentGridPos);
                     if (currentTile == dugTile)
                     {
-                        PlantSeed(gridPos);
+                        PlantSeed(currentGridPos);
                     }
                     else
                     {
@@ -187,12 +163,10 @@ public class SoitileManager : MonoBehaviour
                 // Kiểm tra xem người chơi có thể tưới nước
                 else if (Player.instance.CanWatering())
                 {
-                    TileBase currentTile = soilTilemap.GetTile(gridPos);
+                    TileBase currentTile = soilTilemap.GetTile(currentGridPos);
                     if (currentTile == seededTile)
                     {
-                        //Player.instance.IsWatering();
-                        //PlayerController.instance.IsWatering();
-                        WaterCrop(gridPos);
+                        WaterCrop(currentGridPos);
                     }
                     else
                     {
@@ -203,10 +177,10 @@ public class SoitileManager : MonoBehaviour
                 // Kiểm tra xem người chơi có thể thu hoạch
                 else if (Player.instance.CanHarvest())
                 {
-                    TileBase currentTile = plantTilemap.GetTile(gridPos);
-                    if (currentTile != null && crops.ContainsKey(gridPos) && crops[gridPos].isHarvestable)
+                    TileBase currentTile = plantTilemap.GetTile(currentGridPos);
+                    if (currentTile != null && crops.ContainsKey(currentGridPos) && crops[currentGridPos].isHarvestable)
                     {
-                        Harvest(gridPos);
+                        Harvest(currentGridPos);
                     }
                     else
                     {
@@ -214,11 +188,6 @@ public class SoitileManager : MonoBehaviour
                     }
                 }
             }
-        }
-        else
-        {
-            // Nếu không cầm công cụ, ẩn highlightTile
-            highlightTile.SetActive(false);
         }
 
         // Weather Effected
@@ -299,27 +268,7 @@ public class SoitileManager : MonoBehaviour
         }
     }
 
-    // Hàm xử lý input của người chơi để thay đổi hướng offset
-    private void HandleInput()
-    {
-        //// Dùng các phím mũi tên hoặc WASD để thay đổi offset
-        //if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        //{
-        //    offset = new Vector3Int(0, 1, 0);  // Di chuyển lên   
-        //}
-        //else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        //{
-        //    offset = new Vector3Int(0, -1, 0); // Di chuyển xuống
-        //}
-        //else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        //{
-        //    offset = new Vector3Int(-1, 0, 0); // Di chuyển sang trái
-        //}
-        //else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        //{
-        //    offset = new Vector3Int(1, 0, 0);  // Di chuyển sang phải
-        //}
-    }
+    
     private void PlayerPosition()
     {
         // Dùng các phím mũi tên hoặc WASD để thay đổi offset
@@ -338,26 +287,6 @@ public class SoitileManager : MonoBehaviour
         else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             playerPosition = new Vector3(0.5f, -0.25f, 0);// + player.position;  // Di chuyển trái  
-        }
-    }
-
-    // Hàm highlight tile tại vị trí đã chọn
-    private void HighlightTile(Vector3Int gridPos)
-    {
-        if (highlightTile != null)
-        {
-            // Chuyển Grid Position sang World Position
-            Vector3 worldPos = soilTilemap.CellToWorld(gridPos);
-
-            // Điều chỉnh vị trí để highlightTile khớp với ô
-            worldPos.x += tileSize / 2;  // Điều chỉnh sao cho highlight khớp với tâm ô
-            worldPos.y += tileSize / 2;  // Điều chỉnh sao cho highlight khớp với tâm ô
-
-            // Đặt vị trí của highlightTile
-            highlightTile.transform.position = worldPos;
-
-            // Hiển thị highlightTile
-            highlightTile.SetActive(true);
         }
     }
 
