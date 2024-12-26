@@ -968,6 +968,7 @@ MonoBehaviour:
   cropInfoPanel: {fileID: 2363121404498306019}
   cropInfoText: {fileID: 7485476820412108292}
   bloomGrowthEffectPrefab: {fileID: 9145390839236566208, guid: 5d6c96c54cb4f2a42a2f51ae70b89ced, type: 3}
+  playerToolbar: {fileID: 0}
 --- !u!4 &90071311
 Transform:
   m_ObjectHideFlags: 0
@@ -4155,8 +4156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 074a4b2c7bed3294faee1bf4eff7606b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: SeedBag
-  icon: {fileID: 1866469743, guid: 525fbe5a0119b62488626262ffcde3d5, type: 3}
+  itemName: Seed
+  icon: {fileID: 728732983, guid: 3004ce1b83a2a6d47ac3dd30f4f3a0ce, type: 3}
   quantity: 1
   itemType: 2
   toolType: 5
@@ -15768,7 +15769,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.2792, y: -383.88843}
+  m_AnchoredPosition: {x: -0.000025183, y: -383.88843}
   m_SizeDelta: {x: 669.9783, y: 657.1694}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1051685250
@@ -15833,8 +15834,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gold: 1000
   inventoryPanel: {fileID: 1051685248}
-  slotPrefab: {fileID: 5565593214985762737, guid: 67980142ebb87cc49b2c0d3b8b8f4bee, type: 3}
-  slotCount: 24
+  slotPrefab: {fileID: 5521081264670108197, guid: 0ac7eefcc821416418c9e894630e9052, type: 3}
+  slotCount: 25
   items: []
 --- !u!4 &1095109503
 Transform:
@@ -15956,7 +15957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gold: 0
   toolbarPanel: {fileID: 534608862}
-  slotPrefab: {fileID: 5565593214985762737, guid: 67980142ebb87cc49b2c0d3b8b8f4bee, type: 3}
+  slotPrefab: {fileID: 5521081264670108197, guid: 0ac7eefcc821416418c9e894630e9052, type: 3}
   slotCount: 8
   items:
   - itemName: Axe
@@ -15977,7 +15978,7 @@ MonoBehaviour:
     energy: 0
     description: 
     toolPrefab: {fileID: 0}
-  - itemName: "C\u1EA7n c\xE2u"
+  - itemName: FishingRod
     icon: {fileID: -1704202381, guid: 2e472ad2e505b484984d3cf9095d447b, type: 3}
     quantity: 1
     itemType: 2
@@ -15991,6 +15992,15 @@ MonoBehaviour:
     quantity: 1
     itemType: 2
     toolType: 4
+    price: 0
+    energy: 0
+    description: 
+    toolPrefab: {fileID: 0}
+  - itemName: SeedBag
+    icon: {fileID: 728732983, guid: 3004ce1b83a2a6d47ac3dd30f4f3a0ce, type: 3}
+    quantity: 1
+    itemType: 3
+    toolType: 0
     price: 0
     energy: 0
     description: 

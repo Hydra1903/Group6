@@ -7,19 +7,24 @@ public class Slot : MonoBehaviour
     public GameObject highlightImage;  // Highlight hiển thị khi slot được chọn
     public static Slot selectedSlot;  // Lưu trữ slot được chọn gần nhất
 
-    private Item item;  // Tham chiếu đến vật phẩm (nếu có)
+    public Item item;  // Tham chiếu đến vật phẩm (nếu có)
     private Player player;  // Tham chiếu đến Player
+
+    public Text quantityText; // Text để hiển thị số lượng item
 
     private void Start()
     {
         highlightImage.SetActive(false); // Ẩn highlight mặc định
         player = Player.instance;  // Lấy instance của Player
+
+        UpdateQuantityText(); // Cập nhật số lượng ban đầu
     }
 
     // Gắn vật phẩm vào slot
     public void SetItem(Item newItem)
     {
         item = newItem;
+        UpdateQuantityText();
     }
 
     public void OnClick()
@@ -54,6 +59,24 @@ public class Slot : MonoBehaviour
         if (highlightImage != null)
         {
             highlightImage.SetActive(false);
+        }
+    }
+
+    // Hàm cập nhật số lượng item trong text
+    private void UpdateQuantityText()
+    {
+        if (quantityText != null)
+        {
+            if (currentItem != null && item.quantity > 0)
+            {
+                quantityText.text = item.quantity.ToString(); // Hiển thị số lượng
+                quantityText.gameObject.SetActive(true);     // Hiển thị text
+            }
+            else if (currentItem = null)       
+            {
+                highlightImage.SetActive(false);
+                quantityText.gameObject.SetActive(false);    // Ẩn nếu không có item
+            }
         }
     }
 }

@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class Toolbar : MonoBehaviour
 {
-    public int gold; // Số vàng của người chơi
+   
     public GameObject toolbarPanel; // Panel chứa các slot
     public GameObject slotPrefab;     // Prefab của slot
     public int slotCount;             // Số lượng slot trong inventory
-    public List<Item> items;          // Danh sách vật phẩm
+    public List<Item> toolbarItems = new List<Item>();   // Danh sách vật phẩm
+    private InventoryController inventoryController;
 
     private void Start()
     {
+        inventoryController = FindObjectOfType<InventoryController>();
         PopulateInventory();
     }
 
@@ -25,9 +27,9 @@ public class Toolbar : MonoBehaviour
             Slot slot = Instantiate(slotPrefab, toolbarPanel.transform).GetComponent<Slot>();
 
             // Nếu có vật phẩm, gắn vật phẩm vào slot
-            if (i < items.Count)
+            if (i < toolbarItems.Count)
             {
-                Item item = items[i];
+                Item item = toolbarItems[i];
 
                 // Tạo UI cho vật phẩm
                 GameObject itemObject = new GameObject(item.itemName);
@@ -35,7 +37,7 @@ public class Toolbar : MonoBehaviour
 
                 // Thêm RectTransform và Image
                 RectTransform rectTransform = itemObject.AddComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(50, 50);
+                rectTransform.sizeDelta = new Vector2(80, 80);
                 rectTransform.anchoredPosition = Vector2.zero;
 
                 Image itemImage = itemObject.AddComponent<Image>();
@@ -50,39 +52,60 @@ public class Toolbar : MonoBehaviour
                 // Gắn vật phẩm vào slot
                 slot.SetItem(item);
                 slot.currentItem = itemObject;
-            }
-            else
-            {
-                // Nếu slot trống, tạo ô trống
-                GameObject emptyObject = new GameObject("Empty");
-                emptyObject.transform.SetParent(slot.transform);
 
-                RectTransform rectTransform = emptyObject.AddComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(50, 50);
-                rectTransform.anchoredPosition = Vector2.zero;
+                //gắn code kéo thả cho vật phẩm 
+                ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
             }
         }
     }
 
-    public void AddItem(Item item)
+    // Thêm vật phẩm vào toolbar, nếu toolbar đầy thì chuyển sang inventory
+    public void AddItemToToolbar(Item newItem, int amount)
     {
-        items.Add(item);
-        UpdateInventoryUI();
+        // Kiểm tra xem vật phẩm đã tồn tại trong toolbar chưa
+        Item existingItem = toolbarItems.Find(item => item.itemName == newItem.itemName);
+        if (existingItem != null)
+        {
+            existingItem.quantity += amount;
+        }
+        else
+        {
+            if (toolbarItems.Count < slotCount)
+            {
+                toolbarItems.Add(newItem);
+            }
+            else
+            {
+                // Nếu toolbar đầy, chuyển vật phẩm vào inventory
+                inventoryController.AddItemToInventory(newItem);
+            }
+        }
+
+        UpdateToolbarUI();
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItemFromToolbar(Item item, int amount)
     {
-        items.Remove(item);
-        UpdateInventoryUI();
+        Item existingItem = toolbarItems.Find(i => i.itemName == item.itemName);
+        if (existingItem != null)
+        {
+            existingItem.quantity -= amount;
+            if (existingItem.quantity <= 0)
+            {
+                toolbarItems.Remove(existingItem);
+            }
+        }
+
+        UpdateToolbarUI();
     }
 
     public bool HasItem(Item item)
     {
-        return items.Contains(item);
+        return toolbarItems.Contains(item);
     }
 
     // Cập nhật lại UI inventory khi thêm/xóa vật phẩm
-    private void UpdateInventoryUI()
+    private void UpdateToolbarUI()
     {
         // Xóa các slot cũ
         foreach (Transform child in toolbarPanel.transform)

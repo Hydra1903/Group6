@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private const string PLAYER_AXE = "axe";
     private const string PLAYER_WATERING = "watering";
     private const string PLAYER_DIG = "dig";
+    private const string PLAYER_DOING = "doing";
 
     private Animator animator;
     public float moveSpeed = 5f;
@@ -52,7 +53,8 @@ public class PlayerController : MonoBehaviour
             // Kiểm tra nếu không có hành động đặc biệt thì mới chuyển về Idle
             if (currentAnimationState != PLAYER_MINING &&
                 currentAnimationState != PLAYER_DIG &&
-                currentAnimationState != PLAYER_WATERING)
+                currentAnimationState != PLAYER_WATERING &&
+                currentAnimationState != PLAYER_DOING)
             {
                 ChangeAnimationState(PLAYER_IDLE);
             }
@@ -106,14 +108,16 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case ToolType.Shovel:
+                ChangeAnimationState(PLAYER_DIG);  // Thực hiện hành động đào với Shovel
                 Debug.Log("Chuyển sang trạng thái dig.");
-                ChangeAnimationState(PLAYER_DIG); // Thực hiện hành động đào với Shovel
                 break;
 
             case ToolType.WateringCan:
                 ChangeAnimationState(PLAYER_WATERING); // Thực hiện hành động tưới nước với Watering Can
                 break;
-
+            case ToolType.SeedBag:
+                ChangeAnimationState(PLAYER_DOING); //thực hiện hành động làm việc 
+                break;
             default:
                 Debug.LogWarning("Công cụ không hợp lệ hoặc chưa được trang bị.");
                 break;

@@ -47,7 +47,7 @@ public class ShopManagerDemo : MonoBehaviour
         {
             InventoryController.gold -= item.price;
             goldText.text = InventoryController.gold.ToString();
-            InventoryController.AddItem(item);
+            toolbar.AddItemToToolbar(item, item.quantity);
             Debug.Log($"Mua thành công: {item.itemName}");
         }
         else
@@ -57,28 +57,7 @@ public class ShopManagerDemo : MonoBehaviour
     }
 
     // Xử lý bán item
-    public void SellItem(Item item)
-    {
-        if (toolbar.HasItem(item))
-        {
-            toolbar.RemoveItem(item);
-            InventoryController.gold += item.price;
-            goldText.text = InventoryController.gold.ToString();
-            Debug.Log($"Bán thành công: {item.itemName}");
-        }
-        else
-        {
-            Debug.Log("Bạn không có item này để bán!");
-        }
-    }
 
-    // Gọi khi nhấn nút Sell
-    public void OnSellButtonClick()
-    {
-        if (selectedItem != null)
-        {
-            SellItem(selectedItem);
-        }
-    }
+
 }
 

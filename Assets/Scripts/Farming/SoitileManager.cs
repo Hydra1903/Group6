@@ -95,6 +95,11 @@ public class SoitileManager : MonoBehaviour
     [SerializeField] private GameObject bloomGrowthEffectPrefab; // Kéo thả Prefab hiệu ứng vào đây                                                             
     private Dictionary<Vector3Int, GameObject> cropEffects = new Dictionary<Vector3Int, GameObject>(); // Dictionary để lưu hiệu ứng hương thơm tương ứng với vị trí cây
 
+
+    [Header("UI")]
+    public Toolbar playerToolbar;
+
+
     void Start()
     {
         soilTilemap = GameObject.Find("SoilLayer").GetComponent<Tilemap>();
@@ -268,34 +273,6 @@ public class SoitileManager : MonoBehaviour
         }
     }
 
-    
-    private void PlayerPosition()
-    {
-        // Dùng các phím mũi tên hoặc WASD để thay đổi offset
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            playerPosition = new Vector3(0, -0.3f, 0); //+ player.position;  // Di chuyển lên   
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            playerPosition = new Vector3(0, -0.27f, 0); //+ player.position;  // Di chuyển xuống   
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-        {
-            playerPosition = new Vector3(-0.5f, -0.25f, 0); //+ player.position;  // Di chuyển phải  
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-        {
-            playerPosition = new Vector3(0.5f, -0.25f, 0);// + player.position;  // Di chuyển trái  
-        }
-    }
-
-    private Vector3Int GetGridPosition()
-    {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPosition = soilTilemap.WorldToCell(mouseWorldPos);
-        return gridPosition;
-    }
 
     void Dig(Vector3Int gridPos)
     {
@@ -320,46 +297,52 @@ public class SoitileManager : MonoBehaviour
     // Thêm cây vào Tilemap khi gieo hạt
     public void PlantSeed(Vector3Int position)
     {
-        if (selectedSeed == null || !seedData.ContainsKey(selectedSeed)) return;
-
-        // Kiểm tra trong kho xem có đủ số lượng hạt giống không
-        if (!InventoryManager.instance.HasItem(selectedSeed))
+        if (selectedSeed == null || !seedData.ContainsKey(selectedSeed))
         {
-            Debug.Log("Không có đủ hạt giống trong kho để gieo!");
+            Debug.Log("Chưa chọn hạt giống!");
             return;
         }
+
+        // Tìm Item tương ứng với hạt giống được chọn trong toolbar
+        Item seedItem = playerToolbar.toolbarItems.Find(item => item.itemName == selectedSeed);
+
+        if (seedItem == null)
+        {
+            Debug.Log("Không tìm thấy hạt giống trong toolbar!");
+            return;
+        }
+
         // Kiểm tra nếu vị trí đã có cây để không bị thay thế
         if (crops.ContainsKey(position))
         {
             Debug.Log("Đã có cây trồng ở vị trí này. Không thể gieo hạt mới.");
             return;
         }
+
         SeedData seed = seedData[selectedSeed];
 
-        // Giảm số lượng hạt giống trong kho
-        InventoryManager.instance.RemoveItem(selectedSeed, 1);
+        // Xóa hạt giống khỏi toolbar
+        playerToolbar.RemoveItemFromToolbar(seedItem, -1 );
 
         CropTile newCrop = new CropTile()
         {
             growthStage = 0,
-            //hoursGrowth = 0f,
-
             isPlanted = true,
             isWatered = false,
             isHarvestable = false,
             seedName = selectedSeed // Lưu tên hạt giống để sử dụng khi cập nhật
         };
+
         crops[position] = newCrop;
         plantTilemap.SetTile(position, seed.seedTile); // Bắt đầu với Tile hạt giống
-
+        soilTilemap.SetTile(position, seededTile); // Đánh dấu ô đất đã gieo hạt
 
         // Cập nhật tiến trình nhiệm vụ
         QuestManager.instance.UpdateQuestProgress(ActionType.SowSeeds, selectedSeed);
     }
 
-
-    // Phương thức tưới nước cho cây
-    public void WaterCrop(Vector3Int position)
+        // Phương thức tưới nước cho cây
+        public void WaterCrop(Vector3Int position)
     {
         if (crops.ContainsKey(position))
         {

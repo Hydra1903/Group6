@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryController : MonoBehaviour
 {
@@ -9,10 +10,12 @@ public class InventoryController : MonoBehaviour
     public GameObject inventoryPanel; // Panel chứa các slot
     public GameObject slotPrefab;     // Prefab của slot
     public int slotCount;             // Số lượng slot trong inventory
-    public List<Item> items;          // Danh sách vật phẩm
+    public List<Item> inventoryItems = new List<Item>();// Danh sách vật phẩm
+    private Toolbar toolbarController;
 
     private void Start()
     {
+        toolbarController = FindObjectOfType<Toolbar>();
         PopulateInventory();
     }
 
@@ -25,9 +28,9 @@ public class InventoryController : MonoBehaviour
             Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
 
             // Nếu có vật phẩm, gắn vật phẩm vào slot
-            if (i < items.Count)
+            if (i < inventoryItems.Count)
             {
-                Item item = items[i];
+                Item item = inventoryItems[i];
 
                 // Tạo UI cho vật phẩm
                 GameObject itemObject = new GameObject(item.itemName);
@@ -35,7 +38,7 @@ public class InventoryController : MonoBehaviour
 
                 // Thêm RectTransform và Image
                 RectTransform rectTransform = itemObject.AddComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(50, 50);
+                rectTransform.sizeDelta = new Vector2(80, 80);
                 rectTransform.anchoredPosition = Vector2.zero;
 
                 Image itemImage = itemObject.AddComponent<Image>();
@@ -53,34 +56,46 @@ public class InventoryController : MonoBehaviour
                 //gắn code kéo thả cho vật phẩm 
                 ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
             }
-            else
-            {
-                // Nếu slot trống, tạo ô trống
-                GameObject emptyObject = new GameObject("Empty");
-                emptyObject.transform.SetParent(slot.transform);
-
-                RectTransform rectTransform = emptyObject.AddComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(50, 50);
-                rectTransform.anchoredPosition = Vector2.zero;
-            }
         }
     }
 
-    public void AddItem(Item item)
+    public void AddItemToInventory(Item newItem)
     {
-        items.Add(item);
+        Item existingItem = inventoryItems.Find(item => item.itemName == newItem.itemName);
+        if (existingItem != null)
+        {
+            existingItem.quantity += newItem.quantity;
+        }
+        else
+        {
+            inventoryItems.Add(newItem);
+        }
+
         UpdateInventoryUI();
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItem(Item newItem, int amount)
     {
-        items.Remove(item);
-        UpdateInventoryUI();
+        Item existingItem = inventoryItems.Find(item => item.itemName == newItem.itemName);
+        if (existingItem != null)
+        {
+            if (inventoryItems != null)
+            {
+                existingItem.quantity -= amount;
+                if (existingItem.quantity <= 0)
+                {
+                    inventoryItems.Remove(newItem);
+                }
+                UpdateInventoryUI();
+            }
+
+            UpdateInventoryUI();
+        }
     }
 
     public bool HasItem(Item item)
     {
-        return items.Contains(item);
+        return inventoryItems.Contains(item);
     }
 
     // Cập nhật lại UI inventory khi thêm/xóa vật phẩm
