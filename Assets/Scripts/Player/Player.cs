@@ -4,88 +4,73 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player instance;
-    [SerializeField] private List<GameObject> toolObjects; // Các Tool đã tạo sẵn và là con của Player
-    private GameObject currentToolObject; // Tool hiện tại đang được hiển thị
+
     public Item equippedTool; // Tool hiện tại được trang bị
+    public GameObject equippedToolIcon; // GameObject icon của công cụ đang được trang bị (dùng để bật/tắt)
+    private Toolbar toolbar; //lấy từ toolbar
 
     public ToolType currentTool = ToolType.None;  // Công cụ hiện tại
+    public ItemType currentItem = ItemType.None; // Item hiện tại
     public bool isToolActive = false;  // Trạng thái công cụ có đang active hay không
     public bool isUsingTool = false;
 
-    //public List<Item> items = new List<Item>();
-    //private SoitileManager cropManager;
-   // public Animator anim;
-
     private void Awake()
     {
-        //anim = GetComponent<Animator>();
-        
         if (instance == null)
             instance = this;
         else
             Destroy(gameObject);
-
-        // Đảm bảo tất cả các Tool đều tắt khi khởi động
-        foreach (GameObject tool in toolObjects)
-        {
-            tool.SetActive(false);
-            Debug.Log("Tool in toolObjects: " + tool.name); // In ra tên Tool có trong danh sách
-        }
     }
+
     private void Update()
     {
-       
+        // Logic xử lý các hành động hoặc trạng thái trong game
     }
 
+    // Hàm để toggle (bật/tắt) công cụ
     public void ToggleTool(Item tool)
     {
-        // Nếu công cụ hiện tại đang là công cụ đã trang bị và đang hiển thị, thì tắt công cụ
-        if (equippedTool == tool && currentToolObject != null)
+        // Nếu công cụ hiện tại đang là công cụ đã trang bị và icon đã hiển thị, thì tắt công cụ
+        if (equippedTool == tool && equippedToolIcon != null)
         {
-            currentToolObject.SetActive(false);  // Ẩn công cụ
+            equippedToolIcon.SetActive(false); // Ẩn GameObject icon công cụ
+
             equippedTool = null;  // Đặt công cụ trang bị là null
             isUsingTool = false;
-            currentToolObject = null;  // Đặt đối tượng tool hiện tại là null
             isToolActive = false;  // Tắt công cụ
             currentTool = ToolType.None;  // Đặt công cụ hiện tại về "None"
-            Debug.Log("Công cụ đã bị tắt");
+            currentItem = ItemType.None;
+            Debug.Log("Vật phẩm đã bị tắt");
             return;
-        }
-
-        // Tắt công cụ hiện tại nếu có
-        if (currentToolObject != null)
-        {
-            currentToolObject.SetActive(false);  // Ẩn công cụ hiện tại
         }
 
         // Gán công cụ mới
         equippedTool = tool;
 
-        // Tìm GameObject tương ứng với công cụ trong danh sách
-        currentToolObject = toolObjects.Find(t => t.name == tool.itemName);  // Kiểm tra tên công cụ trong danh sách toolObjects
-
-        if (currentToolObject != null)
+        // Nếu có icon UI (GameObject), cập nhật sprite cho icon và bật GameObject
+        if (equippedToolIcon != null)
         {
-            currentToolObject.SetActive(true);  // Hiển thị công cụ mới
-            isUsingTool = true;
-        }
-        else
-        {
-            Debug.LogWarning("Không tìm thấy GameObject Tool với tên: " + tool.itemName);
+            equippedToolIcon.GetComponent<SpriteRenderer>().sprite = tool.icon;
+            equippedToolIcon.SetActive(true); // Bật GameObject icon
         }
 
         // Cập nhật công cụ và trạng thái active
-        if (tool != null && tool.itemType == ItemType.Tool)
+        if (tool != null)
         {
-            currentTool = tool.toolType;  // Cập nhật công cụ hiện tại từ toolType
-            isToolActive = true;  // Đảm bảo công cụ đang active
-            Debug.Log("Công cụ hiện tại: " + currentTool + ", Trạng thái active: " + isToolActive);
-        }
-        else
-        {
-            currentTool = ToolType.None;  // Nếu không có công cụ, đặt công cụ về None
-            isToolActive = false;
-            Debug.LogWarning("itemType của công cụ không phải là Tool hoặc không hợp lệ");
+            if (tool.itemType == ItemType.Tool)
+            {
+                currentTool = tool.toolType;  // Cập nhật công cụ hiện tại từ toolType
+                currentItem = ItemType.Tool; // Reset currentItem nếu là Tool
+                isToolActive = true;  // Đảm bảo công cụ đang active
+                Debug.Log("Công cụ hiện tại: " + currentTool + ", Trạng thái active: " + isToolActive);
+            }
+            else if (tool.itemType == ItemType.Seed)
+            {
+                currentItem = ItemType.Seed;  // Gán currentItem là Seed
+                currentTool = ToolType.None;  // Không cập nhật công cụ
+                isToolActive = true;  // Không cần active Tool khi là Seed
+                Debug.Log("Công cụ hiện tại là Seed: " + tool.itemName);
+            }
         }
     }
 
@@ -93,16 +78,19 @@ public class Player : MonoBehaviour
     public void DeactivateTool()
     {
         isToolActive = false;  // Tắt công cụ
-        if (currentToolObject != null)
+
+        if (equippedToolIcon != null)
         {
-            currentToolObject.SetActive(false);
-            currentToolObject = null;
+            equippedToolIcon.SetActive(false);  // Ẩn GameObject icon công cụ
         }
+
         currentTool = ToolType.None;
+        currentItem = ItemType.None;
         equippedTool = null;
         Debug.Log("Công cụ đã bị tắt");
     }
 
+    // Các hàm kiểm tra hành động có thể thực hiện
     public bool CanDig()
     {
         return currentTool == ToolType.Shovel && isToolActive;  // Kiểm tra nếu công cụ là Shovel và active
@@ -110,30 +98,26 @@ public class Player : MonoBehaviour
 
     public bool CanPlantSeeds()
     {
-        return currentTool == ToolType.SeedBag && isToolActive;  // Kiểm tra nếu công cụ là SeedBag và active
+        return currentItem == ItemType.Seed && isToolActive;
     }
+
     public bool CanWatering()
     {
         return currentTool == ToolType.WateringCan && isToolActive;
     }
+
     public bool CanHarvest()
     {
         return currentTool == ToolType.HandHarvest && isToolActive;
     }
+
     public bool CanFishing()
     {
         return currentTool == ToolType.FishingRod && isToolActive;
     }
+
     public bool CanMining()
     {
         return currentTool == ToolType.PickAxe && isToolActive;
     }
-    
 }
-
-
-
-
-
-
-

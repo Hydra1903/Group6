@@ -54,8 +54,7 @@ public class SoitileManager : MonoBehaviour
     private Dictionary<Vector3Int, CropTile> crops = new Dictionary<Vector3Int, CropTile>(); // Lưu trữ cây trồng trên Tilemap
 
     // Seed Selection Variables
-    private string selectedSeed = null; // Currently selected seed type
-    private Dictionary<string, SeedData> seedData; // Dictionary to store seed properties
+    private Dictionary<string, SeedData> seedData; // thuộc tính hạt giống
 
     //public InventoryManager playerInventory;
     public HighlightController highlightController;
@@ -127,7 +126,7 @@ public class SoitileManager : MonoBehaviour
 
         UpdateCrops(Time.deltaTime);
 
-        if (toolCheck.isUsingTool)
+        if (toolCheck.isToolActive)
         {
             // Sử dụng currentCell từ HighlightController
             Vector3Int currentGridPos = highlightController.currentCell;
@@ -148,20 +147,21 @@ public class SoitileManager : MonoBehaviour
                 // Kiểm tra xem người chơi có thể gieo hạt
                 else if (Player.instance.CanPlantSeeds())
                 {
-                    if (selectedSeed == null)
+                    if (Slot.selectedSlot != null && Slot.selectedSlot.item != null)
                     {
-                        Debug.Log("Vui lòng chọn hạt giống trước khi trồng.");
-                        return;
-                    }
+                        Item currentItem = Slot.selectedSlot.item;
+                        TileBase currentTile = soilTilemap.GetTile(currentGridPos);
 
-                    TileBase currentTile = soilTilemap.GetTile(currentGridPos);
-                    if (currentTile == dugTile)
-                    {
-                        PlantSeed(currentGridPos);
-                    }
-                    else
-                    {
-                        Debug.Log("Ô đất chưa được đào");
+                        if (currentItem.itemType == ItemType.Seed &&
+                            seedData.ContainsKey(currentItem.itemName) &&
+                            currentTile == dugTile)
+                        {
+                            PlantSeed(currentGridPos, currentItem);
+                        }
+                        else
+                        {
+                            Debug.Log("Không thể trồng hạt giống tại đây");
+                        }  
                     }
                 }
 
@@ -280,35 +280,12 @@ public class SoitileManager : MonoBehaviour
         Debug.Log("Đã đào đất tại: " + gridPos);
     }
 
-    public void SelectSeed(string seedName)
+    // Thêm cây vào Tilemap khi gieo hạt
+    public void PlantSeed(Vector3Int position, Item currentItem)
     {
-
-        if (seedData.ContainsKey(seedName))
-        {
-            selectedSeed = seedName;
-            Debug.Log("Đã chọn hạt giống: " + seedName);
-        }
-        else
+        if (currentItem == null || !seedData.ContainsKey(currentItem.itemName))
         {
             Debug.Log("Hạt giống không hợp lệ!");
-        }
-    }
-
-    // Thêm cây vào Tilemap khi gieo hạt
-    public void PlantSeed(Vector3Int position)
-    {
-        if (selectedSeed == null || !seedData.ContainsKey(selectedSeed))
-        {
-            Debug.Log("Chưa chọn hạt giống!");
-            return;
-        }
-
-        // Tìm Item tương ứng với hạt giống được chọn trong toolbar
-        Item seedItem = playerToolbar.toolbarItems.Find(item => item.itemName == selectedSeed);
-
-        if (seedItem == null)
-        {
-            Debug.Log("Không tìm thấy hạt giống trong toolbar!");
             return;
         }
 
@@ -319,10 +296,10 @@ public class SoitileManager : MonoBehaviour
             return;
         }
 
-        SeedData seed = seedData[selectedSeed];
+        SeedData seed = seedData[currentItem.itemName];
 
         // Xóa hạt giống khỏi toolbar
-        playerToolbar.RemoveItemFromToolbar(seedItem, -1 );
+        playerToolbar.RemoveItemFromToolbar(currentItem, 1);
 
         CropTile newCrop = new CropTile()
         {
@@ -330,7 +307,7 @@ public class SoitileManager : MonoBehaviour
             isPlanted = true,
             isWatered = false,
             isHarvestable = false,
-            seedName = selectedSeed // Lưu tên hạt giống để sử dụng khi cập nhật
+            seedName = currentItem.itemName // Lưu tên hạt giống để sử dụng khi cập nhật
         };
 
         crops[position] = newCrop;
@@ -338,11 +315,11 @@ public class SoitileManager : MonoBehaviour
         soilTilemap.SetTile(position, seededTile); // Đánh dấu ô đất đã gieo hạt
 
         // Cập nhật tiến trình nhiệm vụ
-        QuestManager.instance.UpdateQuestProgress(ActionType.SowSeeds, selectedSeed);
+        QuestManager.instance.UpdateQuestProgress(ActionType.SowSeeds, currentItem.itemName);
     }
 
-        // Phương thức tưới nước cho cây
-        public void WaterCrop(Vector3Int position)
+    // Phương thức tưới nước cho cây
+    public void WaterCrop(Vector3Int position)
     {
         if (crops.ContainsKey(position))
         {

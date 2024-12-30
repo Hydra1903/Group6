@@ -39,8 +39,8 @@ public class Slot : MonoBehaviour
         Select();
         selectedSlot = this;
 
-        // Nếu slot có vật phẩm và vật phẩm là công cụ
-        if (item != null && item.itemType == ItemType.Tool)
+        // Nếu slot có vật phẩm
+        if (item != null)
         {
             player.ToggleTool(item);  // Kích hoạt công cụ tương ứng
         }

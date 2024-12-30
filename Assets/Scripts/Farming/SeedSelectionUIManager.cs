@@ -20,24 +20,24 @@ public class SeedSelectionUIManager : MonoBehaviour
         foreach (Button button in seedButtons)
         {
             string seedName = button.name; // Lấy tên hạt giống từ tên của button
-            button.onClick.AddListener(() => SelectSeed(seedName));
+           // button.onClick.AddListener(() => SelectSeed(seedName));
         }
 
     }
   
-    void SelectSeed(string seedName)
-    {
-        SoitileManager soilManager = FindObjectOfType<SoitileManager>();
-        if (soilManager != null)
-        {
-            soilManager.SelectSeed(seedName);
-            Debug.Log("Đã chọn hạt giống: " + seedName);
-        }
-        else
-        {
-            Debug.LogError("Không tìm thấy SoitileManager trong scene!");
-        }
-    }
+    //void SelectSeed(string seedName)
+    ////{
+     //   SoitileManager soilManager = FindObjectOfType<SoitileManager>();
+       // if (soilManager != null)
+      //  {
+       //     soilManager.SelectSeed(seedName);
+       //     Debug.Log("Đã chọn hạt giống: " + seedName);
+      //  }
+      ///  else
+      //  {
+        //    Debug.LogError("Không tìm thấy SoitileManager trong scene!");
+      //  }
+  //  }
    
 }
 

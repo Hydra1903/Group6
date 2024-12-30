@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Toolbar : MonoBehaviour
 {
-   
     public GameObject toolbarPanel; // Panel chứa các slot
     public GameObject slotPrefab;     // Prefab của slot
     public int slotCount;             // Số lượng slot trong inventory

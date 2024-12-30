@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 public enum ItemType
 {
+    None,
     Consumable, // Có thể dùng để hồi phục năng lượng, sức khỏe, v.v.
     Quest, // Chỉ dùng cho nhiệm vụ, không thể sử dụng
     Tool,
