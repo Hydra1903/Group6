@@ -29,6 +29,7 @@ public class FishingController : MonoBehaviour
 
     private InventoryManager inventory;
     public List<GameObject> fishPrefabs; // List chứa các Prefab của các loại cá
+
     void Start()
     {
         //fishingRod.SetActive(false);
@@ -311,8 +312,9 @@ public class FishingController : MonoBehaviour
             // Thêm Item vào Inventory
             InventoryManager.instance.AddItem(caughtFishItem);
 
-                // Hiển thị UI cho cá đã câu được
-                if (fishImage != null && fishInfoText != null && fishingResultPanel != null)
+
+            // Hiển thị UI cho cá đã câu được
+            if (fishImage != null && fishInfoText != null && fishingResultPanel != null)
                 {
                     fishImage.sprite = caughtFishData.icon;
                     //fishInfoText.text = "Name: " + caughtFishData.fishName + "\n" + caughtFishData.description;
