@@ -11,7 +11,10 @@ public class InventoryController : MonoBehaviour
     public GameObject slotPrefab;     // Prefab của slot
     public int slotCount;             // Số lượng slot trong inventory
     public List<Item> inventoryItems = new List<Item>();// Danh sách vật phẩm
+
     private Toolbar toolbarController;
+
+    public static InventoryController instance;
 
     private void Start()
     {
@@ -19,6 +22,18 @@ public class InventoryController : MonoBehaviour
         PopulateInventory();
     }
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Giữ lại Canvas khi chuyển Scene
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject); // Đảm bảo chỉ có một instance của InventoryUIManager
+        }
+    }
     // Tạo danh sách inventory
     private void PopulateInventory()
     {
@@ -79,19 +94,15 @@ public class InventoryController : MonoBehaviour
         Item existingItem = inventoryItems.Find(item => item.itemName == newItem.itemName);
         if (existingItem != null)
         {
-            if (inventoryItems != null)
+            existingItem.quantity -= amount;
+            if (existingItem.quantity <= 0)
             {
-                existingItem.quantity -= amount;
-                if (existingItem.quantity <= 0)
-                {
-                    inventoryItems.Remove(newItem);
-                }
-                UpdateInventoryUI();
+                inventoryItems.Remove(existingItem);  
             }
-
             UpdateInventoryUI();
         }
     }
+
 
     public bool HasItem(Item item)
     {

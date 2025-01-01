@@ -17,9 +17,14 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
-        else
-            Destroy(gameObject);
+            DontDestroyOnLoad(gameObject); // Giữ lại Canvas khi chuyển Scene
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject); // Đảm bảo chỉ có một instance của InventoryUIManager
+        }
     }
 
     private void Update()

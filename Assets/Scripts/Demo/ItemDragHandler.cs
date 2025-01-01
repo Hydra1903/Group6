@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    Transform originalParent;
-    CanvasGroup canvasGroup;
+    private Transform originalParent;
+    private CanvasGroup canvasGroup;
 
     void Start()
     {
@@ -15,7 +13,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Lưu parent ban đầu
+        // Lưu parent ban đầu (slot hiện tại)
         originalParent = transform.parent;
 
         // Di chuyển item lên root để không bị ảnh hưởng bởi layout của slot
@@ -26,13 +24,6 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         // Làm mờ item khi kéo
         canvasGroup.alpha = 0.6f;
-
-        // Tắt highlight của slot ban đầu
-        Slot originalSlot = originalParent.GetComponent<Slot>();
-        if (originalSlot != null)
-        {
-            originalSlot.Deselect();
-        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -49,7 +40,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         // Khôi phục độ trong suốt
         canvasGroup.alpha = 1f;
 
-        // Kiểm tra vị trí thả (pointerEnter)
+        // Kiểm tra vị trí thả
         Slot dropSlot = eventData.pointerEnter?.GetComponent<Slot>();
         if (dropSlot == null)
         {
@@ -61,39 +52,31 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             }
         }
 
+        // Lấy slot gốc (nơi bắt đầu kéo)
         Slot originalSlot = originalParent.GetComponent<Slot>();
 
-        if (dropSlot != null)
+        if (dropSlot != null && dropSlot != originalSlot)
         {
-            // Nếu thả vào một Slot
-            if (dropSlot.currentItem != null)
-            {
-                // Đổi chỗ item nếu slot đích đã có item
-                dropSlot.currentItem.transform.SetParent(originalSlot.transform);
-                originalSlot.currentItem = dropSlot.currentItem;
-                dropSlot.currentItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            }
-            else
-            {
-                // Nếu slot đích trống, clear slot ban đầu
-                originalSlot.currentItem = null;
-            }
+            // Nếu thả vào một slot khác và slot đó khác slot ban đầu
+
+            // Gán item cho slot mới
+            dropSlot.SetItem(originalSlot.item);
+
+            // Xóa item trong slot ban đầu
+            originalSlot.ClearSlot();
 
             // Đặt item vào slot mới
             transform.SetParent(dropSlot.transform);
             dropSlot.currentItem = gameObject;
 
-            // Bật highlight cho slot mới
-            dropSlot.Select();
+            // Đặt vị trí của item ở trung tâm slot
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
         else
         {
             // Nếu không thả vào slot hợp lệ, trả về slot ban đầu
             transform.SetParent(originalParent);
-            originalSlot.Select(); // Bật lại highlight của slot ban đầu
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
-
-        // Đặt vị trí của item ở trung tâm slot
-        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 }

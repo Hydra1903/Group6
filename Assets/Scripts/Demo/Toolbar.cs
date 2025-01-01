@@ -1,24 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Toolbar : MonoBehaviour
 {
     public GameObject toolbarPanel; // Panel chứa các slot
-    public GameObject slotPrefab;     // Prefab của slot
-    public int slotCount;             // Số lượng slot trong inventory
-    public List<Item> toolbarItems = new List<Item>();   // Danh sách vật phẩm
+    public GameObject slotPrefab;  // Prefab của slot
+    public int slotCount;          // Số lượng slot trong inventory
+    public List<Item> toolbarItems = new List<Item>(); // Danh sách vật phẩm trong toolbar
+
     private InventoryController inventoryController;
+
+    public static Toolbar instance;
 
     private void Start()
     {
         inventoryController = FindObjectOfType<InventoryController>();
-        PopulateInventory();
+        PopulateToolbar();
     }
 
-    // Tạo danh sách inventory
-    private void PopulateInventory()
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Giữ lại Canvas khi chuyển Scene
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject); // Đảm bảo chỉ có một instance của InventoryUIManager
+        }
+    }
+    // Tạo danh sách toolbar
+    private void PopulateToolbar()
     {
         for (int i = 0; i < slotCount; i++)
         {
@@ -48,12 +64,12 @@ public class Toolbar : MonoBehaviour
                 itemCanvasGroup.interactable = true;
                 itemCanvasGroup.blocksRaycasts = true;
 
+                // Gắn script kéo thả
+                ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
+
                 // Gắn vật phẩm vào slot
                 slot.SetItem(item);
                 slot.currentItem = itemObject;
-
-                //gắn code kéo thả cho vật phẩm 
-                ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
             }
         }
     }
@@ -61,7 +77,6 @@ public class Toolbar : MonoBehaviour
     // Thêm vật phẩm vào toolbar, nếu toolbar đầy thì chuyển sang inventory
     public void AddItemToToolbar(Item newItem, int amount)
     {
-        // Kiểm tra xem vật phẩm đã tồn tại trong toolbar chưa
         Item existingItem = toolbarItems.Find(item => item.itemName == newItem.itemName);
         if (existingItem != null)
         {
@@ -75,7 +90,6 @@ public class Toolbar : MonoBehaviour
             }
             else
             {
-                // Nếu toolbar đầy, chuyển vật phẩm vào inventory
                 inventoryController.AddItemToInventory(newItem);
             }
         }
@@ -92,10 +106,9 @@ public class Toolbar : MonoBehaviour
             if (existingItem.quantity <= 0)
             {
                 toolbarItems.Remove(existingItem);
+                UpdateToolbarUI() ;
             }
         }
-
-        UpdateToolbarUI();
     }
 
     public bool HasItem(Item item)
@@ -103,16 +116,14 @@ public class Toolbar : MonoBehaviour
         return toolbarItems.Contains(item);
     }
 
-    // Cập nhật lại UI inventory khi thêm/xóa vật phẩm
+    // Cập nhật lại UI khi thêm/xóa vật phẩm
     private void UpdateToolbarUI()
     {
-        // Xóa các slot cũ
         foreach (Transform child in toolbarPanel.transform)
         {
             Destroy(child.gameObject);
         }
 
-        // Tạo lại inventory
-        PopulateInventory();
+        PopulateToolbar();
     }
 }

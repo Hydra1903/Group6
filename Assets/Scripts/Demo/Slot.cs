@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
-    public GameObject currentItem;  // Vật phẩm hiện tại trong slot
+    public GameObject currentItem;
     public GameObject highlightImage;  // Highlight hiển thị khi slot được chọn
     public static Slot selectedSlot;  // Lưu trữ slot được chọn gần nhất
 
@@ -16,11 +16,9 @@ public class Slot : MonoBehaviour
     {
         highlightImage.SetActive(false); // Ẩn highlight mặc định
         player = Player.instance;  // Lấy instance của Player
-
         UpdateQuantityText(); // Cập nhật số lượng ban đầu
     }
 
-    // Gắn vật phẩm vào slot
     public void SetItem(Item newItem)
     {
         item = newItem;
@@ -29,20 +27,28 @@ public class Slot : MonoBehaviour
 
     public void OnClick()
     {
+        // Nếu slot đã được chọn, bỏ chọn nó
+        if (selectedSlot == this)
+        {
+            Deselect();
+            selectedSlot = null;
+            return;
+        }
+
         // Tắt highlight slot trước đó (nếu có)
-        if (selectedSlot != null && selectedSlot != this)
+        if (selectedSlot != null)
         {
             selectedSlot.Deselect();
         }
 
-        // Chọn slot hiện tại và hiển thị highlight
+        // Chọn slot hiện tại
         Select();
         selectedSlot = this;
 
-        // Nếu slot có vật phẩm
+        // Kích hoạt công cụ nếu có item
         if (item != null)
         {
-            player.ToggleTool(item);  // Kích hoạt công cụ tương ứng
+            player.ToggleTool(item);
         }
     }
 
@@ -62,21 +68,27 @@ public class Slot : MonoBehaviour
         }
     }
 
-    // Hàm cập nhật số lượng item trong text
     private void UpdateQuantityText()
     {
         if (quantityText != null)
         {
-            if (currentItem != null && item.quantity > 0)
+            if (item != null && item.quantity > 1)
             {
-                quantityText.text = item.quantity.ToString(); // Hiển thị số lượng
-                quantityText.gameObject.SetActive(true);     // Hiển thị text
+                quantityText.text = item.quantity.ToString();
+                quantityText.gameObject.SetActive(true);
             }
-            else if (currentItem = null)       
+            else
             {
-                highlightImage.SetActive(false);
-                quantityText.gameObject.SetActive(false);    // Ẩn nếu không có item
+                quantityText.gameObject.SetActive(false);
             }
         }
+    }
+
+    public void ClearSlot()
+    {
+        currentItem = null;
+        item = null;
+        UpdateQuantityText();
+        Deselect();
     }
 }
