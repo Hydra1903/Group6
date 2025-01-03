@@ -96,7 +96,7 @@ public class Toolbar : MonoBehaviour
 
         UpdateToolbarUI();
     }
-
+    //Hàm xóa item bằng công cụ được chọn
     public void RemoveItemFromToolbar(Item item, int amount)
     {
         Item existingItem = toolbarItems.Find(i => i.itemName == item.itemName);
@@ -110,10 +110,36 @@ public class Toolbar : MonoBehaviour
             }
         }
     }
-
-    public bool HasItem(Item item)
+    //Hàm xóa item bằng tên
+    public bool RemoveItemName(string itemName, int amount)
     {
-        return toolbarItems.Contains(item);
+        // Tìm trong toolbar trước
+        Item toolbarItem = toolbarItems.Find(item => item.itemName == itemName);
+        if (toolbarItem != null)
+        {
+            toolbarItem.quantity -= amount;
+            if (toolbarItem.quantity <= 0)
+            {
+                toolbarItems.Remove(toolbarItem);
+            }
+            UpdateToolbarUI();
+            return true; // Đã tìm thấy và trừ trong toolbar
+        }
+
+        // Nếu không có trong toolbar, tìm trong inventory
+        if (inventoryController != null && inventoryController.HasItem(itemName))
+        {
+            inventoryController.RemoveItemName(itemName, amount);
+            return true; // Đã tìm thấy và trừ trong inventory
+        }
+
+        return false; // Không tìm thấy trong cả toolbar và inventory
+    }
+
+
+    public bool HasItem(string itemName)
+    {
+        return toolbarItems.Exists(item => item.itemName == itemName);
     }
 
     // Cập nhật lại UI khi thêm/xóa vật phẩm

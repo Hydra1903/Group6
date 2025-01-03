@@ -88,7 +88,7 @@ public class InventoryController : MonoBehaviour
 
         UpdateInventoryUI();
     }
-
+    //Hàm xóa item bằng công cụ
     public void RemoveItem(Item newItem, int amount)
     {
         Item existingItem = inventoryItems.Find(item => item.itemName == newItem.itemName);
@@ -102,11 +102,23 @@ public class InventoryController : MonoBehaviour
             UpdateInventoryUI();
         }
     }
-
-
-    public bool HasItem(Item item)
+    //Hàm xóa item bằng tên
+    public void RemoveItemName(string itemName, int amount)
     {
-        return inventoryItems.Contains(item);
+        Item existingItem = inventoryItems.Find(item => item.itemName == itemName);
+        if (existingItem != null)
+        {
+            existingItem.quantity -= amount;
+            if (existingItem.quantity <= 0)
+            {
+                inventoryItems.Remove(existingItem);
+            }
+            UpdateInventoryUI();
+        }
+    }
+    public bool HasItem(string itemName)
+    {
+        return inventoryItems.Exists(item => item.itemName == itemName);
     }
 
     // Cập nhật lại UI inventory khi thêm/xóa vật phẩm

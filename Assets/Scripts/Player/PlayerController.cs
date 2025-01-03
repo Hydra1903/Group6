@@ -14,7 +14,10 @@ public class PlayerController : MonoBehaviour
     private const string PLAYER_WATERING = "watering";
     private const string PLAYER_DIG = "dig";
     private const string PLAYER_DOING = "doing";
-
+    private const string PLAYER_CASTING = "casting";
+    private const string PLAYER_CAUGHT = "caugting";
+    private const string PLAYER_WAITING = "waiting";
+    private const string PLAYER_REELING = "reeling";
     private Animator animator;
     public float moveSpeed = 5f;
     private Rigidbody2D rb;
@@ -115,7 +118,9 @@ public class PlayerController : MonoBehaviour
                 case ToolType.WateringCan:
                     StartAction(PLAYER_WATERING);
                     break;
-
+                case ToolType.FishingRod:
+                    StartAction(PLAYER_WAITING);
+                    break;
                 default:
                     Debug.LogWarning("Công cụ không hợp lệ.");
                     break;

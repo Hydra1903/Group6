@@ -27,7 +27,6 @@ public class FishingController : MonoBehaviour
     private bool isFishCaught = false;
     //private Animator animator;
 
-    private InventoryManager inventory;
     public List<GameObject> fishPrefabs; // List chứa các Prefab của các loại cá
 
     void Start()
@@ -51,12 +50,12 @@ public class FishingController : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.F) && !isFishing && IsNearWater() &&Player.instance.CanFishing())
+        if (Input.GetKeyDown(KeyCode.F) && !isFishing && IsNearWater() && Player.instance.CanFishing())
         {
-            if (InventoryManager.instance.HasItem("Spilua Bait"))
+            if (Toolbar.instance.HasItem("Spilua Bait"))
             {
                 StartCoroutine(Fish());
-                InventoryManager.instance.RemoveItem("Spilua Bait", 1);
+                Toolbar.instance.RemoveItemName("Spilua Bait", 1);
             }
             else Debug.Log("Không đủ mồi câu");
         }
@@ -310,7 +309,7 @@ public class FishingController : MonoBehaviour
             );
 
             // Thêm Item vào Inventory
-            InventoryManager.instance.AddItem(caughtFishItem);
+            InventoryController.instance.AddItemToInventory(caughtFishItem);
 
 
             // Hiển thị UI cho cá đã câu được
