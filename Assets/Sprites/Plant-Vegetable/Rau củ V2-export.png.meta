@@ -139,12 +139,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_0"
       rect:
         serializedVersion: 2
-        x: 9
-        y: 348
-        width: 33
-        height: 18
+        x: 0
+        y: 336
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,12 +160,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_1"
       rect:
         serializedVersion: 2
-        x: 57
-        y: 339
-        width: 27
-        height: 33
+        x: 48
+        y: 336
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,12 +181,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_2"
       rect:
         serializedVersion: 2
-        x: 105
+        x: 96
         y: 336
-        width: 30
-        height: 39
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,12 +202,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_3"
       rect:
         serializedVersion: 2
-        x: 153
-        y: 339
-        width: 30
-        height: 42
+        x: 144
+        y: 336
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,12 +223,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_4"
       rect:
         serializedVersion: 2
-        x: 198
-        y: 342
-        width: 39
-        height: 39
+        x: 192
+        y: 336
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -245,11 +245,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 240
-        y: 339
+        y: 336
         width: 48
-        height: 42
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -265,12 +265,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_6"
       rect:
         serializedVersion: 2
-        x: 6
-        y: 291
-        width: 24
-        height: 24
+        x: 0
+        y: 288
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -286,12 +286,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_7"
       rect:
         serializedVersion: 2
-        x: 57
+        x: 48
         y: 288
-        width: 27
-        height: 21
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -307,12 +307,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_8"
       rect:
         serializedVersion: 2
-        x: 105
+        x: 96
         y: 288
-        width: 30
-        height: 27
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -329,11 +329,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 144
-        y: 243
+        y: 288
         width: 48
-        height: 45
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -349,12 +349,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_10"
       rect:
         serializedVersion: 2
-        x: 198
+        x: 192
         y: 288
-        width: 36
-        height: 42
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -370,12 +370,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_11"
       rect:
         serializedVersion: 2
-        x: 246
+        x: 240
         y: 288
-        width: 36
-        height: 42
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -391,12 +391,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_12"
       rect:
         serializedVersion: 2
-        x: 291
-        y: 291
-        width: 42
-        height: 42
+        x: 288
+        y: 288
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -413,11 +413,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 336
-        y: 291
+        y: 288
         width: 48
-        height: 42
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -433,12 +433,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_14"
       rect:
         serializedVersion: 2
-        x: 6
-        y: 252
-        width: 30
-        height: 15
+        x: 0
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -454,12 +454,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_15"
       rect:
         serializedVersion: 2
-        x: 63
+        x: 48
         y: 240
-        width: 21
-        height: 27
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -475,12 +475,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_16"
       rect:
         serializedVersion: 2
-        x: 99
+        x: 96
         y: 240
-        width: 42
-        height: 45
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -496,12 +496,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_17"
       rect:
         serializedVersion: 2
-        x: 198
-        y: 243
-        width: 39
-        height: 39
+        x: 144
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -517,12 +517,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_18"
       rect:
         serializedVersion: 2
-        x: 240
-        y: 243
+        x: 192
+        y: 240
         width: 48
-        height: 42
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -538,12 +538,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_19"
       rect:
         serializedVersion: 2
-        x: 12
-        y: 195
-        width: 21
-        height: 21
+        x: 240
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -556,36 +556,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Rau c\u1EE7 V2-export_20"
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 207
-        width: 15
-        height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 270e52e6e51f117429804861ec2da3b5
-      internalID: 2062673616
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: "Rau c\u1EE7 V2-export_21"
       rect:
         serializedVersion: 2
-        x: 108
+        x: 48
         y: 192
-        width: 21
-        height: 18
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -601,12 +580,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_22"
       rect:
         serializedVersion: 2
-        x: 153
-        y: 144
-        width: 34
+        x: 96
+        y: 192
+        width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -622,12 +601,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_23"
       rect:
         serializedVersion: 2
-        x: 198
+        x: 144
         y: 192
-        width: 36
-        height: 30
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -643,12 +622,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_24"
       rect:
         serializedVersion: 2
-        x: 246
+        x: 192
         y: 192
-        width: 33
-        height: 39
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -664,12 +643,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_25"
       rect:
         serializedVersion: 2
-        x: 288
+        x: 240
         y: 192
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -685,12 +664,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_26"
       rect:
         serializedVersion: 2
-        x: 63
+        x: 288
         y: 192
-        width: 24
-        height: 15
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -706,12 +685,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_27"
       rect:
         serializedVersion: 2
-        x: 12
-        y: 156
-        width: 21
-        height: 12
+        x: 336
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -727,12 +706,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_28"
       rect:
         serializedVersion: 2
-        x: 63
-        y: 156
-        width: 18
-        height: 24
+        x: 0
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -748,12 +727,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_29"
       rect:
         serializedVersion: 2
-        x: 105
-        y: 150
-        width: 30
-        height: 30
+        x: 48
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -769,12 +748,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_30"
       rect:
         serializedVersion: 2
-        x: 195
-        y: 147
-        width: 42
-        height: 39
+        x: 96
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -790,12 +769,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_31"
       rect:
         serializedVersion: 2
-        x: 240
-        y: 147
+        x: 144
+        y: 144
         width: 48
-        height: 42
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -811,12 +790,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_32"
       rect:
         serializedVersion: 2
-        x: 15
-        y: 96
-        width: 24
-        height: 12
+        x: 192
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -832,12 +811,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_33"
       rect:
         serializedVersion: 2
-        x: 63
-        y: 96
-        width: 24
-        height: 12
+        x: 240
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -853,12 +832,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_34"
       rect:
         serializedVersion: 2
-        x: 111
+        x: 0
         y: 96
-        width: 18
-        height: 18
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -874,12 +853,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_35"
       rect:
         serializedVersion: 2
-        x: 156
+        x: 48
         y: 96
-        width: 27
-        height: 30
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -895,12 +874,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_36"
       rect:
         serializedVersion: 2
-        x: 201
+        x: 96
         y: 96
-        width: 33
-        height: 36
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -916,12 +895,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_37"
       rect:
         serializedVersion: 2
-        x: 249
+        x: 144
         y: 96
-        width: 33
+        width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -937,12 +916,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_38"
       rect:
         serializedVersion: 2
-        x: 291
+        x: 192
         y: 96
-        width: 45
+        width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -958,12 +937,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_39"
       rect:
         serializedVersion: 2
-        x: 336
-        y: 99
+        x: 240
+        y: 96
         width: 48
-        height: 42
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -979,12 +958,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_40"
       rect:
         serializedVersion: 2
-        x: 336
-        y: 192
+        x: 288
+        y: 96
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1000,12 +979,12 @@ TextureImporter:
       name: "Rau c\u1EE7 V2-export_41"
       rect:
         serializedVersion: 2
-        x: 150
-        y: 288
-        width: 33
-        height: 36
+        x: 336
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1018,13 +997,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Rau c\u1EE7 V2-export_42"
+      name: "Rau c\u1EE7 V2-export_20"
       rect:
         serializedVersion: 2
-        x: 152
+        x: 0
         y: 192
-        width: 30
-        height: 28
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1032,8 +1011,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e2ae22c076cc7546994650828d295ce
-      internalID: 1100814232
+      spriteID: 1675cb1770109774ebac433eeb55c7b1
+      internalID: 2062673616
       vertices: []
       indices: 
       edges: []
@@ -1086,7 +1065,6 @@ TextureImporter:
       "Rau c\u1EE7 V2-export_4": -591429958
       "Rau c\u1EE7 V2-export_40": -1868149863
       "Rau c\u1EE7 V2-export_41": 809536207
-      "Rau c\u1EE7 V2-export_42": 1100814232
       "Rau c\u1EE7 V2-export_5": 728732983
       "Rau c\u1EE7 V2-export_6": 1096448872
       "Rau c\u1EE7 V2-export_7": 217351426

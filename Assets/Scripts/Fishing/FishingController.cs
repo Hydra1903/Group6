@@ -29,6 +29,8 @@ public class FishingController : MonoBehaviour
 
     public List<GameObject> fishPrefabs; // List chứa các Prefab của các loại cá
 
+    private PlayerController playerController; // Tham chiếu đến script di chuyển nhân vật
+
     void Start()
     {
         //fishingRod.SetActive(false);
@@ -113,7 +115,7 @@ public class FishingController : MonoBehaviour
         //animator.SetTrigger("Hold");
 
         //exclamationMark.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
         ////exclamationMark.gameObject.SetActive(false);
 
         fishingSlider.gameObject.SetActive(true);
@@ -196,7 +198,7 @@ public class FishingController : MonoBehaviour
             fishIcon.anchoredPosition = new Vector2(fishIcon.anchoredPosition.x, newFishPositionY);
 
             // Điều chỉnh vị trí của hình vuông xanh khi người chơi nhấn phím Space
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.Space))
             {
                 greenBarPosition += greenBarSpeed * Time.deltaTime;
             }
@@ -309,7 +311,7 @@ public class FishingController : MonoBehaviour
             );
 
             // Thêm Item vào Inventory
-            InventoryController.instance.AddItemToInventory(caughtFishItem);
+            Toolbar.instance.AddItemToToolbar(caughtFishItem, 1);
 
 
             // Hiển thị UI cho cá đã câu được
