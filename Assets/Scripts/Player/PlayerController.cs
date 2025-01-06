@@ -16,10 +16,10 @@ public class PlayerController : MonoBehaviour
     private const string PLAYER_DOING = "doing";
 
     //Animation cho việc câu cá
-    public static string PLAYER_CASTING = "casting";
-    public static string PLAYER_CAUGHT = "caught";
-    public static string PLAYER_WAITING = "waiting";
-    public static string PLAYER_REELING = "reeling";
+    public const string PLAYER_CASTING = "casting";
+    public const string PLAYER_CAUGHT = "caught";
+    public const string PLAYER_WAITING = "waiting";
+    public const string PLAYER_REELING = "reeling";
 
     private Animator animator;
     public float moveSpeed = 5f;
@@ -128,7 +128,8 @@ public class PlayerController : MonoBehaviour
                 case ToolType.WateringCan:
                     StartAction(PLAYER_WATERING);
                     break;
-                case ToolType.FishingRod:
+                case ToolType.FishingRod:  
+                    StartAction(PLAYER_CASTING);
                     break;
                 default:
                     Debug.LogWarning("Công cụ không hợp lệ.");
@@ -145,7 +146,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void StartAction(string actionState)
+    public void StartAction(string actionState)
     {
         isPerformingAction = true;
         ChangeAnimationState(actionState);

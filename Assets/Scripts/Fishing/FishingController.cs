@@ -12,7 +12,6 @@ public class FishingController : MonoBehaviour
     [SerializeField] private float maxFishingDistance = 1f;  // Khoảng cách tối đa
     [SerializeField] private float fishingWaitTime = 5f;     // Thời gian chờ cá
     [SerializeField] private List<GameObject> fishPrefabs;   // Danh sách cá
-    [SerializeField] private PlayerController playerController;  // Component điều khiển người chơi
 
     [Header("Giao diện")]
     [SerializeField] private GameObject fishingResultPanel;  // Panel kết quả
@@ -31,6 +30,7 @@ public class FishingController : MonoBehaviour
 
 
     [Header("Animation")]
+    public PlayerController playercontroller;
     [SerializeField] private float castingDuration = 1f;    // Thời gian animation ném cần
     [SerializeField] private float reelingDuration = 1.5f;  // Thời gian animation kéo
                                                             
@@ -90,9 +90,9 @@ public class FishingController : MonoBehaviour
             StopAllCoroutines();
             ResetFishingState();
             // Reset về animation idle khi hủy
-            if (playerController != null)
+            if (playercontroller != null)
             {
-                playerController.ChangeAnimationState(PlayerController.PLAYER_IDLE);
+                playercontroller.StartAction(PlayerController.PLAYER_IDLE);
             }
         }
     }
@@ -101,10 +101,10 @@ public class FishingController : MonoBehaviour
     {
         isFishing = false;
         isWaitingForFish = false;
-        if (playerController != null)
+        if (playercontroller != null)
         {
-            playerController.EnableMovement();
-            playerController.ChangeAnimationState(PlayerController.PLAYER_IDLE);
+            playercontroller.EnableMovement();
+            playercontroller.OnActionComplete();
         }
         SetupFishingUI(false);
     }
@@ -113,14 +113,12 @@ public class FishingController : MonoBehaviour
         // Bắt đầu câu cá
         isFishing = true;
         isWaitingForFish = true;
-        playerController.DisableMovement();
+        playercontroller.DisableMovement();
 
-        playerController.ChangeAnimationState(PlayerController.PLAYER_CASTING);
+        playercontroller.StartAction(PlayerController.PLAYER_CASTING);
         yield return new WaitForSeconds(2);
-        playerController.ChangeAnimationState(PlayerController.PLAYER_WAITING);
-
-        // Chờ cá cắn câu
-        yield return new WaitForSeconds(fishingWaitTime);
+        playercontroller.StartAction(PlayerController.PLAYER_WAITING);
+        yield return new WaitForSeconds(5);
 
         isWaitingForFish = false;
         SetupFishingUI(true);
@@ -128,18 +126,18 @@ public class FishingController : MonoBehaviour
         // Bắt đầu minigame
         FishData selectedFish = SelectRandomFish();
         bool fishCaught = false;
+        playercontroller.StartAction(PlayerController.PLAYER_REELING);
 
         if (selectedFish != null)
         {
             yield return StartCoroutine(FishingMinigame(selectedFish, (result) => fishCaught = result));
             // Animation kéo cá khi bắt được
-            playerController.ChangeAnimationState(PlayerController.PLAYER_REELING);
-            yield return new WaitForSeconds(reelingDuration);
+           
 
             if (fishCaught)
             {
                 // Animation bắt được cá
-                playerController.ChangeAnimationState(PlayerController.PLAYER_CAUGHT);
+                playercontroller.StartAction(PlayerController.PLAYER_CAUGHT);
                 yield return new WaitForSeconds(2f);
             }
         }
@@ -306,7 +304,7 @@ public class FishingController : MonoBehaviour
         fishingResultPanel.SetActive(true);
 
         // Cho phép di chuyển ngay khi hiện kết quả
-        if (playerController != null) playerController.EnableMovement();
+        if (playercontroller != null) playercontroller.EnableMovement();
 
         // Chờ một lúc rồi ẩn panel
         yield return new WaitForSeconds(3f);
@@ -329,7 +327,7 @@ public class FishingController : MonoBehaviour
         if (fishIcon == null) Debug.LogError("Thiếu biểu tượng cá");
         if (greenBar == null) Debug.LogError("Thiếu thanh xanh");
         if (progressBar == null) Debug.LogError("Thiếu thanh tiến độ");
-        if (playerController == null) Debug.LogWarning("Thiếu PlayerMovement - sẽ không thể khóa di chuyển");
+        if (playercontroller == null) Debug.LogWarning("Thiếu PlayerMovement - sẽ không thể khóa di chuyển");
     }
 
     private void SetupFishingUI(bool isActive)
