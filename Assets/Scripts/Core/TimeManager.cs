@@ -26,6 +26,8 @@ public class TimeManager : MonoBehaviour
 
     public static TimeManager instance;
 
+    public AnimationDayandNight animationDayandNight;
+
     private void Update()
     {
         UpdateTime();
@@ -81,21 +83,25 @@ public class TimeManager : MonoBehaviour
 
     void UpdateLighting()
     {
-        if (hours >= 18 || hours < 6)
+        if (hours >= 18 || hours < 5)
         {
             SetLighting(0.01f, Color.cyan, true);
+            animationDayandNight.ChangeAnimationState(AnimationDayandNight.NIGHT);
         }
-        else if (hours >= 6 && hours < 12)
+        else if (hours >= 5 && hours < 8)
         {
             SetLighting(1.2f, new Color(1f, 1f, 0.9f), false);
+            animationDayandNight.ChangeAnimationState(AnimationDayandNight.DAWN);
         }
-        else if (hours >= 12 && hours < 16)
+        else if (hours >= 8 && hours < 16)
         {
             SetLighting(1.8f, new Color(1f, 0.95f, 0.6f), false);
+            animationDayandNight.ChangeAnimationState(AnimationDayandNight.DAY);
         }
         else if (hours >= 16 && hours < 18)
         {
             SetLighting(1.5f, new Color32(217, 95, 140, 255), false);
+            animationDayandNight.ChangeAnimationState(AnimationDayandNight.AFTERNOON);
         }
     }
 

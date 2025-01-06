@@ -6,350 +6,339 @@ using System.Collections.Generic;
 
 public class FishingController : MonoBehaviour
 {
-    //public GameObject fishingRod;
-    [Header("FishingArea")]
-    public Transform fishingSpot;
-    public float detectionRadius = 2f; // Bán kính phát hiện khu vực nước
-    public Transform playerPotition;
+    [Header("Thiết lập câu cá")]
+    [SerializeField] private Transform fishingSpot;      // Điểm câu cá
+    [SerializeField] private Transform playerPosition;   // Vị trí người chơi
+    [SerializeField] private float maxFishingDistance = 1f;  // Khoảng cách tối đa
+    [SerializeField] private float fishingWaitTime = 5f;     // Thời gian chờ cá
+    [SerializeField] private List<GameObject> fishPrefabs;   // Danh sách cá
+    [SerializeField] private PlayerController playerController;  // Component điều khiển người chơi
 
-    public float fishingTime = 5f;
-    public GameObject fishingResultPanel;
-    public Image fishImage;
-    public TextMeshProUGUI fishInfoText;
-    public Slider fishingSlider;
-    //public Image exclamationMark;
-    public RectTransform fishIcon;
-    public RectTransform greenBar;
-    public Slider progressBar;
-    public float fishSpeed;
+    [Header("Giao diện")]
+    [SerializeField] private GameObject fishingResultPanel;  // Panel kết quả
+    [SerializeField] private Image fishImage;               // Hình ảnh cá
+    [SerializeField] private TextMeshProUGUI fishInfoText;  // Thông tin cá
+    [SerializeField] private Slider fishingSlider;          // Thanh trượt
+    [SerializeField] private RectTransform fishIcon;        // Icon cá
+    [SerializeField] private RectTransform greenBar;        // Thanh xanh
+    [SerializeField] private Slider progressBar;            // Thanh tiến độ
 
-    private bool isFishing = false;
-    private bool isFishCaught = false;
-    //private Animator animator;
+    [Header("Cài đặt minigame")]
+    [SerializeField] private float requiredCatchProgress = 3f;
+    [SerializeField] private float greenBarSpeed = 0.52f;
+    [SerializeField] private float lowProgressThreshold = 3f;
+    [SerializeField] private float fishHitboxSize = 0.1f;
 
-    public List<GameObject> fishPrefabs; // List chứa các Prefab của các loại cá
 
-    private PlayerController playerController; // Tham chiếu đến script di chuyển nhân vật
+    [Header("Animation")]
+    [SerializeField] private float castingDuration = 1f;    // Thời gian animation ném cần
+    [SerializeField] private float reelingDuration = 1.5f;  // Thời gian animation kéo
+                                                            
+    private bool isFishing;
+    private bool isWaitingForFish;
+    private const string BAIT_ITEM_NAME = "Spilua Bait";
 
-    void Start()
+    private static readonly Dictionary<Rarity, float> FishSpeedByRarity = new()
     {
-        //fishingRod.SetActive(false);
-        fishingResultPanel.SetActive(false);
-        fishingSlider.gameObject.SetActive(false);
-        //exclamationMark.gameObject.SetActive(false);
-        progressBar.gameObject.SetActive(false);
-        //animator = GetComponent<Animator>();
+        { Rarity.Common, 0.0025f },
+        { Rarity.Uncommon, 0.0028f },
+        { Rarity.Rare, 0.0032f },
+        { Rarity.Legendary, 0.0038f }
+    };
 
-        if (fishingResultPanel == null) Debug.LogError("Fishing Result Panel is not assigned.");
-        if (fishImage == null) Debug.LogError("Fish Image is not assigned.");
-        if (fishInfoText == null) Debug.LogError("Fish Info Text is not assigned.");
-        if (fishingSlider == null) Debug.LogError("Fishing Slider is not assigned.");
-        if (fishIcon == null) Debug.LogError("Fish Icon is not assigned.");
-        if (greenBar == null) Debug.LogError("Green Bar is not assigned.");
-        if (progressBar == null) Debug.LogError("Progress Bar is not assigned.");
+    private void Start()
+    {
+        InitializeUI();
+        ValidateComponents();
+
+
     }
 
-    void Update()
+    private void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.F) && !isFishing && IsNearWater() && Player.instance.CanFishing())
+        // Chỉ cho phép bắt đầu câu khi không đang trong quá trình câu và đủ điều kiện
+        if (Input.GetKeyDown(KeyCode.F) && !isFishing && CanStartFishing())
         {
-            if (Toolbar.instance.HasItem("Spilua Bait"))
-            {
-                StartCoroutine(Fish());
-                Toolbar.instance.RemoveItemName("Spilua Bait", 1);
-            }
-            else Debug.Log("Không đủ mồi câu");
-        }
-    }
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(fishingSpot.position, detectionRadius);
-    }
-    private bool IsNearWater()
-    {
-        return Vector2.Distance(playerPotition.position, fishingSpot.position) < 1f;
-    }
-    //
-    private FishData SelectFish()
-    {
-        float totalCatchChance = 0f;
-        foreach (GameObject fishPrefab in fishPrefabs)
-        {
-            FishInstance fishInstance = fishPrefab.GetComponent<FishInstance>();
-            if (fishInstance != null && fishInstance.fishData != null)
-            {
-                totalCatchChance += fishInstance.fishData.catchChance;
-            }
+            StartFishing();
         }
 
-        float roll = Random.Range(0f, totalCatchChance);
-        float cumulative = 0f;
-
-        foreach (GameObject fishPrefab in fishPrefabs)
+        // Cho phép hủy câu khi đang chờ cá
+        if (Input.GetKeyDown(KeyCode.Escape) && isWaitingForFish)
         {
-            FishInstance fishInstance = fishPrefab.GetComponent<FishInstance>();
-            if (fishInstance != null && fishInstance.fishData != null)
-            {
-                cumulative += fishInstance.fishData.catchChance;
-                if (roll <= cumulative)
-                {
-                    return fishInstance.fishData;
-                }
-            }
+            CancelFishing();
         }
-        return null; // Không chọn được cá
     }
 
-    private IEnumerator Fish()
+    private bool CanStartFishing() =>
+        IsNearWater() &&
+        Player.instance.CanFishing() &&
+        Toolbar.instance.HasItem(BAIT_ITEM_NAME);
+
+    private bool IsNearWater() =>
+        Vector2.Distance(playerPosition.position, fishingSpot.position) < maxFishingDistance;
+
+    private void StartFishing()
     {
+        StartCoroutine(FishingSequence());
+        Toolbar.instance.RemoveItemName(BAIT_ITEM_NAME, 1);
+    }
+
+    private void CancelFishing()
+    {
+        if (isWaitingForFish)
+        {
+            StopAllCoroutines();
+            ResetFishingState();
+            // Reset về animation idle khi hủy
+            if (playerController != null)
+            {
+                playerController.ChangeAnimationState(PlayerController.PLAYER_IDLE);
+            }
+        }
+    }
+
+    private void ResetFishingState()
+    {
+        isFishing = false;
+        isWaitingForFish = false;
+        if (playerController != null)
+        {
+            playerController.EnableMovement();
+            playerController.ChangeAnimationState(PlayerController.PLAYER_IDLE);
+        }
+        SetupFishingUI(false);
+    }
+    private IEnumerator FishingSequence()
+    {
+        // Bắt đầu câu cá
         isFishing = true;
-        isFishCaught = false;
-        //fishingRod.SetActive(true);
-        fishingResultPanel.SetActive(false);
-        //animator.SetBool("isFishing", true);
-        //animator.SetTrigger("Cast");
+        isWaitingForFish = true;
+        playerController.DisableMovement();
 
-        // yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        //animator.SetTrigger("Hold");
+        playerController.ChangeAnimationState(PlayerController.PLAYER_CASTING);
+        yield return new WaitForSeconds(2);
+        playerController.ChangeAnimationState(PlayerController.PLAYER_WAITING);
 
-        //exclamationMark.gameObject.SetActive(true);
-        yield return new WaitForSeconds(5f);
-        ////exclamationMark.gameObject.SetActive(false);
+        // Chờ cá cắn câu
+        yield return new WaitForSeconds(fishingWaitTime);
 
-        fishingSlider.gameObject.SetActive(true);
-        progressBar.gameObject.SetActive(true);
+        isWaitingForFish = false;
+        SetupFishingUI(true);
 
-        //yield return StartCoroutine(FishingMinigame());
-        // Chọn cá trước khi bắt đầu minigame
-        FishData selectedFish = SelectFish();
+        // Bắt đầu minigame
+        FishData selectedFish = SelectRandomFish();
+        bool fishCaught = false;
 
-        // Kiểm tra nếu chọn được cá
         if (selectedFish != null)
         {
-            // Truyền thông tin cá vào minigame
-            yield return StartCoroutine(FishingMinigame(selectedFish));
+            yield return StartCoroutine(FishingMinigame(selectedFish, (result) => fishCaught = result));
+            // Animation kéo cá khi bắt được
+            playerController.ChangeAnimationState(PlayerController.PLAYER_REELING);
+            yield return new WaitForSeconds(reelingDuration);
+
+            if (fishCaught)
+            {
+                // Animation bắt được cá
+                playerController.ChangeAnimationState(PlayerController.PLAYER_CAUGHT);
+                yield return new WaitForSeconds(2f);
+            }
         }
 
-        //animator.SetTrigger("Reel");
-        //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        // Xử lý kết quả
+        SetupFishingUI(false);
 
-        //fishingRod.SetActive(false);
-        isFishing = false;
-        //animator.SetBool("isFishing", false);
-        fishingSlider.gameObject.SetActive(false);
-        progressBar.gameObject.SetActive(false);
-
-        if (isFishCaught)
+        if (fishCaught)
         {
-            CatchFish();
+            yield return StartCoroutine(ShowFishingResult(selectedFish));
         }
-    }
-    //
-    private float GetFishSpeed(Rarity rarity)
-    {
-        switch (rarity)
-        {
-            case Rarity.Common: return 0.0025f;    // Tốc độ chậm
-            case Rarity.Uncommon: return 0.0028f; // Tốc độ trung bình
-            case Rarity.Rare: return 0.0032f;     // Tốc độ nhanh
-            case Rarity.Legendary: return 0.0038f; // Tốc độ rất nhanh
-            default: return 0.0025f; //0.003f;              // Mặc định
-        }
+
+        // Kết thúc và cho phép di chuyển
+        ResetFishingState();
     }
 
-    //
-    public IEnumerator FishingMinigame(FishData currentFishData)
+
+    private IEnumerator FishingMinigame(FishData currentFishData, System.Action<bool> onComplete)
     {
-        // Điều chỉnh tốc độ cá dựa trên độ hiếm
-        fishSpeed = GetFishSpeed(currentFishData.rarity);
+        float fishSpeed = FishSpeedByRarity.GetValueOrDefault(currentFishData.rarity, FishSpeedByRarity[Rarity.Common]);
         float fishPosition = 0.5f;
         bool directionUp = true;
-      
-
         float greenBarPosition = 0.5f;
-        float greenBarSpeed = 0.52f;
-
         float catchProgress = 0f;
-        float requiredCatchProgress = 3f;
-
         float lowProgressTimer = 0f;
-        float lowProgressThreshold = 3f; // Thời gian tối đa cho phép khi thanh quá trình ở mức thấp nhất
 
         while (catchProgress < requiredCatchProgress)
         {
+            fishPosition = UpdateFishPosition(fishPosition, fishSpeed, ref directionUp);
+            UpdateFishIconPosition(fishPosition);
 
-            // Di chuyển hình cá lên và xuống ngẫu nhiên
-            if (directionUp)
-            {
-                fishPosition += fishSpeed;
-                if (fishPosition >= 1) directionUp = false;
-            }
-            else
-            {
-                fishPosition -= fishSpeed;
-                if (fishPosition <= 0) directionUp = true;
-            }
+            greenBarPosition = UpdateGreenBarPosition(greenBarPosition);
+            UpdateGreenBarUIPosition(greenBarPosition);
 
-            // Tính toán vị trí mới của fishIcon
-            float newFishPositionY = Mathf.Lerp(fishingSlider.GetComponent<RectTransform>().rect.min.y, fishingSlider.GetComponent<RectTransform>().rect.max.y, fishPosition);
-
-            fishIcon.anchoredPosition = new Vector2(fishIcon.anchoredPosition.x, newFishPositionY);
-
-            // Điều chỉnh vị trí của hình vuông xanh khi người chơi nhấn phím Space
-            if (Input.GetKey(KeyCode.Space))
-            {
-                greenBarPosition += greenBarSpeed * Time.deltaTime;
-            }
-            else
-            {
-                greenBarPosition -= greenBarSpeed * Time.deltaTime;
-            }
-
-            greenBarPosition = Mathf.Clamp(greenBarPosition, 0f, 1f);
-
-            // Tính toán vị trí mới của greenBar
-            float newGreenBarPositionY = Mathf.Lerp(fishingSlider.GetComponent<RectTransform>().rect.min.y, fishingSlider.GetComponent<RectTransform>().rect.max.y, greenBarPosition);
-
-            greenBar.anchoredPosition = new Vector2(greenBar.anchoredPosition.x, newGreenBarPositionY);
-
-            // Kiểm tra nếu hình vuông xanh trùng với hình cá
-            float fishMin = fishPosition - 0.1f;
-            float fishMax = fishPosition + 0.1f;
-
-            if (greenBarPosition >= fishMin && greenBarPosition <= fishMax)
+            if (IsInCatchRange(fishPosition, greenBarPosition))
             {
                 catchProgress += Time.deltaTime;
+                lowProgressTimer = 0f;
             }
             else
             {
-                catchProgress -= Time.deltaTime;
-                if (catchProgress < 0) catchProgress = 0;
-            }
-
-            // Kiểm tra nếu thanh quá trình ở mức thấp nhất
-            if (catchProgress <= 0.1f)
-            {
-                lowProgressTimer += Time.deltaTime;
-                if (lowProgressTimer >= lowProgressThreshold)
+                catchProgress = Mathf.Max(0, catchProgress - Time.deltaTime);
+                if (catchProgress <= 0.1f)
                 {
-                    // Thất bại khi thanh quá trình ở mức thấp nhất quá 2-3 giây
-                    break;
+                    lowProgressTimer += Time.deltaTime;
+                    if (lowProgressTimer >= lowProgressThreshold) break;
                 }
-            }
-            else
-            {
-                lowProgressTimer = 0f; // Đặt lại timer nếu thanh quá trình không ở mức thấp nhất
             }
 
             progressBar.value = catchProgress / requiredCatchProgress;
-
             yield return null;
         }
 
-        if (catchProgress >= requiredCatchProgress)
+        onComplete(catchProgress >= requiredCatchProgress);
+    }
+
+    private float UpdateFishPosition(float currentPosition, float speed, ref bool goingUp)
+    {
+        if (goingUp)
         {
-            isFishCaught = true;
+            currentPosition += speed;
+            if (currentPosition >= 1) goingUp = false;
         }
         else
         {
-            isFishCaught = false; // Đặt lại trạng thái câu cá thất bại
+            currentPosition -= speed;
+            if (currentPosition <= 0) goingUp = true;
         }
+        return currentPosition;
     }
 
-    private void CatchFish()
+    private void UpdateFishIconPosition(float position)
     {
-        // Tính tổng tỷ lệ bắt cho toàn bộ cá
-        float totalCatchChance = 0f;
-        foreach (GameObject fishPrefab in fishPrefabs)
+        float newY = Mathf.Lerp(
+            fishingSlider.GetComponent<RectTransform>().rect.min.y,
+            fishingSlider.GetComponent<RectTransform>().rect.max.y,
+            position
+        );
+        fishIcon.anchoredPosition = new Vector2(fishIcon.anchoredPosition.x, newY);
+    }
+
+    private float UpdateGreenBarPosition(float currentPosition)
+    {
+        float delta = Input.GetKey(KeyCode.Space) ? greenBarSpeed * Time.deltaTime : -greenBarSpeed * Time.deltaTime;
+        return Mathf.Clamp(currentPosition + delta, 0f, 1f);
+    }
+
+    private void UpdateGreenBarUIPosition(float position)
+    {
+        float newY = Mathf.Lerp(
+            fishingSlider.GetComponent<RectTransform>().rect.min.y,
+            fishingSlider.GetComponent<RectTransform>().rect.max.y,
+            position
+        );
+        greenBar.anchoredPosition = new Vector2(greenBar.anchoredPosition.x, newY);
+    }
+
+    private bool IsInCatchRange(float fishPos, float barPos) =>
+        barPos >= fishPos - fishHitboxSize && barPos <= fishPos + fishHitboxSize;
+
+    private FishData SelectRandomFish()
+    {
+        float totalChance = 0f;
+        foreach (var fish in fishPrefabs)
         {
-            FishInstance fishInstance = fishPrefab.GetComponent<FishInstance>();
-            if (fishInstance != null && fishInstance.fishData != null)
+            if (fish.TryGetComponent<FishInstance>(out var instance) && instance.fishData != null)
             {
-                totalCatchChance += fishInstance.fishData.catchChance;
+                totalChance += instance.fishData.catchChance;
             }
         }
 
-        // Tạo ngẫu nhiên một số trong khoảng từ 0 đến tổng catchChance
-        float roll = Random.Range(0f, totalCatchChance);
+        float roll = Random.Range(0f, totalChance);
         float cumulative = 0f;
 
-        FishData caughtFishData = null;
-        GameObject caughtFishPrefab = null;
-
-        // Duyệt qua các loài cá để chọn loại có xác suất phù hợp
-        foreach (GameObject fishPrefab in fishPrefabs)
+        foreach (var fish in fishPrefabs)
         {
-            FishInstance fishInstance = fishPrefab.GetComponent<FishInstance>();
-            if (fishInstance != null && fishInstance.fishData != null)
+            if (fish.TryGetComponent<FishInstance>(out var instance) && instance.fishData != null)
             {
-                cumulative += fishInstance.fishData.catchChance;
-
+                cumulative += instance.fishData.catchChance;
                 if (roll <= cumulative)
                 {
-                    caughtFishData = fishInstance.fishData;
-                    caughtFishPrefab = fishPrefab;
-                    break;
+                    return instance.fishData;
                 }
             }
         }
 
-        if (caughtFishData != null && caughtFishPrefab != null)
-        {
-            // Tạo Item từ FishData
-            Item caughtFishItem = new Item(
-                caughtFishData.fishName,
-                caughtFishData.icon,
-                caughtFishData.quantity,
-                caughtFishData.itemType,
-                caughtFishData.toolType,
-                caughtFishData.price,
-                caughtFishData.energy,
-                caughtFishData.description,
-                caughtFishPrefab
-            );
-
-            // Thêm Item vào Inventory
-            Toolbar.instance.AddItemToToolbar(caughtFishItem, 1);
-
-
-            // Hiển thị UI cho cá đã câu được
-            if (fishImage != null && fishInfoText != null && fishingResultPanel != null)
-                {
-                    fishImage.sprite = caughtFishData.icon;
-                    //fishInfoText.text = "Name: " + caughtFishData.fishName + "\n" + caughtFishData.description;
-                    fishInfoText.text = $"Name: {caughtFishData.fishName}\nRarity: {caughtFishData.rarity}\n{caughtFishData.description}";
-
-                    fishingResultPanel.SetActive(true);
-
-                    StartCoroutine(HideFishingResult());
-                }
-                else
-                {
-                    Debug.LogError("Fish UI components are not properly assigned.");
-                }
-            }
-            else
-            {
-                // Trường hợp không câu được cá
-                if (fishInfoText != null && fishingResultPanel != null)
-                {
-                    fishImage.sprite = null; // Không hiển thị hình ảnh cá
-                    fishInfoText.text = "Chúc bạn may mắn lần sau !";
-                    fishingResultPanel.SetActive(true);
-
-                    StartCoroutine(HideFishingResult());
-                }
-                Debug.Log("Không câu được cá lần này.");
-            }
-        }
-         private IEnumerator HideFishingResult()
-        {
-            yield return new WaitForSeconds(3f);
-            fishingResultPanel.SetActive(false);
-        }
+        return null;
     }
+
+    private void ProcessCaughtFish(FishData fishData)
+    {
+        var caughtFish = new Item(
+            fishData.fishName,
+            fishData.icon,
+            fishData.quantity,
+            fishData.itemType,
+            fishData.toolType,
+            fishData.price,
+            fishData.energy,
+            fishData.description,
+            fishPrefabs.Find(f => f.GetComponent<FishInstance>()?.fishData == fishData)
+        );
+
+        Toolbar.instance.AddItemToToolbar(caughtFish, 1);
+    }
+
+    private IEnumerator ShowFishingResult(FishData fishData)
+    {
+        // Xử lý cá trước khi hiện kết quả
+        ProcessCaughtFish(fishData);
+
+        // Hiển thị panel kết quả
+        if (fishData != null)
+        {
+            fishImage.sprite = fishData.icon;
+            fishInfoText.text = $"Tên: {fishData.fishName}\nĐộ hiếm: {fishData.rarity}\n{fishData.description}";
+        }
+        else
+        {
+            fishImage.sprite = null;
+            fishInfoText.text = "Chúc bạn may mắn lần sau!";
+        }
+
+        fishingResultPanel.SetActive(true);
+
+        // Cho phép di chuyển ngay khi hiện kết quả
+        if (playerController != null) playerController.EnableMovement();
+
+        // Chờ một lúc rồi ẩn panel
+        yield return new WaitForSeconds(3f);
+        fishingResultPanel.SetActive(false);
+    }
+
+    private void InitializeUI()
+    {
+        fishingResultPanel.SetActive(false);
+        fishingSlider.gameObject.SetActive(false);
+        progressBar.gameObject.SetActive(false);
+    }
+
+    private void ValidateComponents()
+    {
+        if (fishingResultPanel == null) Debug.LogError("Thiếu Panel kết quả câu cá");
+        if (fishImage == null) Debug.LogError("Thiếu hình ảnh cá");
+        if (fishInfoText == null) Debug.LogError("Thiếu text thông tin cá");
+        if (fishingSlider == null) Debug.LogError("Thiếu thanh trượt câu cá");
+        if (fishIcon == null) Debug.LogError("Thiếu biểu tượng cá");
+        if (greenBar == null) Debug.LogError("Thiếu thanh xanh");
+        if (progressBar == null) Debug.LogError("Thiếu thanh tiến độ");
+        if (playerController == null) Debug.LogWarning("Thiếu PlayerMovement - sẽ không thể khóa di chuyển");
+    }
+
+    private void SetupFishingUI(bool isActive)
+    {
+        fishingResultPanel.SetActive(false);
+        fishingSlider.gameObject.SetActive(isActive);
+        progressBar.gameObject.SetActive(isActive);
+    }
+}
 
 
 

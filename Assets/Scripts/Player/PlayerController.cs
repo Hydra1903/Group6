@@ -7,17 +7,20 @@ public class PlayerController : MonoBehaviour
     public Item currentTool;  // Công cụ hiện tại
 
     // Animation state constants
-    private const string PLAYER_IDLE = "idle";
+    public const string PLAYER_IDLE = "idle";
     private const string PLAYER_WALK = "walk";
     private const string PLAYER_MINING = "mining";
     private const string PLAYER_AXE = "axe";
     private const string PLAYER_WATERING = "watering";
     private const string PLAYER_DIG = "dig";
     private const string PLAYER_DOING = "doing";
-    private const string PLAYER_CASTING = "casting";
-    private const string PLAYER_CAUGHT = "caugting";
-    private const string PLAYER_WAITING = "waiting";
-    private const string PLAYER_REELING = "reeling";
+
+    //Animation cho việc câu cá
+    public static string PLAYER_CASTING = "casting";
+    public static string PLAYER_CAUGHT = "caught";
+    public static string PLAYER_WAITING = "waiting";
+    public static string PLAYER_REELING = "reeling";
+
     private Animator animator;
     public float moveSpeed = 5f;
     private Rigidbody2D rb;
@@ -27,13 +30,19 @@ public class PlayerController : MonoBehaviour
     private string currentAnimationState;
     private bool isPerformingAction = false;
 
+    // theo dõi trạng thái của nhân vật khi câu cá
+    private bool canMove = true;
+
+    public void EnableMovement() => canMove = true;
+    public void DisableMovement() => canMove = false;
+    public bool CanMove() => canMove;
     void Start()
     {
         // Lấy công cụ hiện tại từ Player.instance
         currentTool = Player.instance.equippedTool;
 
         rb = GetComponent<Rigidbody2D>();
-        animator = rb.GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         // Đảm bảo bắt đầu từ trạng thái idle
         ChangeAnimationState(PLAYER_IDLE);
@@ -78,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleInput()
     {
+        if (!canMove) return;
         // Di chuyển 4 hướng
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
@@ -119,7 +129,6 @@ public class PlayerController : MonoBehaviour
                     StartAction(PLAYER_WATERING);
                     break;
                 case ToolType.FishingRod:
-                    StartAction(PLAYER_WAITING);
                     break;
                 default:
                     Debug.LogWarning("Công cụ không hợp lệ.");
@@ -149,7 +158,7 @@ public class PlayerController : MonoBehaviour
         ChangeAnimationState(PLAYER_IDLE);
     }
 
-    void ChangeAnimationState(string newState)
+    public void ChangeAnimationState(string newState)
     {
         if (currentAnimationState == newState) return;
 
