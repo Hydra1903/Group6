@@ -5,11 +5,11 @@ using UnityEngine.Rendering.Universal;
 
 public class TimeManager : MonoBehaviour
 {
-    public int hours = 6;
-    public int minutes = 0;
-    public int days = 1;
-    public int season = 1; // 0 = Spring, 1 = Summer, 2 = Fall, 3 = Winter
-    public int year = 1;
+    [SerializeField] private int hours = 6;
+    [SerializeField] private int minutes = 0;
+    [SerializeField] private int days = 1;
+    [SerializeField] private int season = 1; // 0 = Spring, 1 = Summer, 2 = Fall, 3 = Winter
+    [SerializeField] private int year = 1;
 
     private float timeMultiplier = 60f;
     private float timer = 0f;
