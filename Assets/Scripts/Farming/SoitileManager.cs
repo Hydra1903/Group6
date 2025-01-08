@@ -10,44 +10,44 @@ public class SoitileManager : MonoBehaviour
     //public TileBase dirtTile;       // Tile đất bình thường
     public TileBase[] dirtTile = new TileBase[5]; // Khởi tạo mảng với các phần tử cụ thể
 
-    public TileBase dugTile;        // Tile đất đã đào
-    public TileBase seededTile;     // Tile đất đã gieo hạt (để đánh dấu trên SoilLayer)
+    [SerializeField] private TileBase dugTile;        // Tile đất đã đào
+    [SerializeField] private TileBase seededTile;     // Tile đất đã gieo hạt (để đánh dấu trên SoilLayer)
     //public TileBase plantSeedTile;  // Tile hạt giống trên PlantLayer
-    public TileBase wateredSoilTile; // Tham chiếu đến Tile đậm hơn cho ô đất đã tưới
+    [SerializeField] private TileBase wateredSoilTile; // Tham chiếu đến Tile đậm hơn cho ô đất đã tưới
 
     [Header("TileMap")]
     private Tilemap soilTilemap;    // Tilemap cho đất (SoilLayer)
-    public Tilemap plantTilemap;   // Tilemap cho cây trồng (PlantLayer)
+    [SerializeField] private Tilemap plantTilemap;   // Tilemap cho cây trồng (PlantLayer)
 
     [Header("FruitDrop")]
     //public GameObject fruitPrefab; // Gán prefab của quả vào trong Inspector
     //public Transform fruitDropPosition;
 
     [Header("Fruit Prefabs")]
-    public GameObject tomatoFruitPrefab; // Prefab cho quả Tomato
-    public GameObject carrotFruitPrefab; // Prefab cho quả Carrot
-    public GameObject potatoFruitPrefab; // Prefab cho quả Potato
+    [SerializeField] private GameObject tomatoFruitPrefab; // Prefab cho quả Tomato
+    [SerializeField] private GameObject carrotFruitPrefab; // Prefab cho quả Carrot
+    [SerializeField] private GameObject potatoFruitPrefab; // Prefab cho quả Potato
 
     [Header("TileBase - Carrot")]
-    public TileBase carrotSeedTile;
-    public TileBase carrotSproutTile;
-    public TileBase carrotYoungPlantTile;
-    public TileBase carrotFlowerPlantTile;
-    public TileBase carrotFruitTile;
+    [SerializeField] private TileBase carrotSeedTile;
+    [SerializeField] private TileBase carrotSproutTile;
+    [SerializeField] private TileBase carrotYoungPlantTile;
+    [SerializeField] private TileBase carrotFlowerPlantTile;
+    [SerializeField] private TileBase carrotFruitTile;
 
     [Header("TileBase - Tomato")]
-    public TileBase tomatoSeedTile;
-    public TileBase tomatoSproutTile;
-    public TileBase tomatoYoungPlantTile;
-    public TileBase tomatoFlowerPlantTile;
-    public TileBase tomatoFruitTile;
+    [SerializeField] private TileBase tomatoSeedTile;
+    [SerializeField] private TileBase tomatoSproutTile;
+    [SerializeField] private TileBase tomatoYoungPlantTile;
+    [SerializeField] private TileBase tomatoFlowerPlantTile;
+    [SerializeField] private TileBase tomatoFruitTile;
 
     [Header("TileBase - Potato")]
-    public TileBase potatoSeedTile;
-    public TileBase potatoSproutTile;
-    public TileBase potatoYoungPlantTile;
-    public TileBase potatoFlowerPlantTile;
-    public TileBase potatoFruitTile;
+    [SerializeField] private TileBase potatoSeedTile;
+    [SerializeField] private TileBase potatoSproutTile;
+    [SerializeField] private TileBase potatoYoungPlantTile;
+    [SerializeField] private TileBase potatoFlowerPlantTile;
+    [SerializeField] private TileBase potatoFruitTile;
 
     [Header("FruitData")]
     //public TileBase sproutTile, youngPlantTile, fruitTile; // Các Tile cho từng giai đoạn
@@ -63,28 +63,20 @@ public class SoitileManager : MonoBehaviour
     //public Animator anim;
 
     // Kích thước của một tile trong TileMap (giả sử kích thước tile là 1x1)
-    public float tileSize = 1f;
-    // Chỉnh sửa offset (có thể là 1 ô về một hướng nào đó)
-    // Cập nhật offset khi Player di chuyển
-    private Vector3Int offset = Vector3Int.zero;
+    [SerializeField] private float tileSize = 1f;
 
-    private Vector3 playerPosition = Vector3.zero;
 
     [Header("Weather/ WateredSoil")]
     public WeatherManager weatherManager;
     //private float timeSinceRainStopped;
     //private float dryOutTime = 30f; // Thời gian để đất khô (đơn vị: giây)
-    private TileBase[,] originalTileStates;
     // Biến thời gian để theo dõi thời gian sau khi mưa dừng
     private float timeSinceRainStopped = 0f;
     private bool isRaining = false;  // Theo dõi trạng thái mưa
     private float timeSinceWatered = 0f;
     private bool isWatered = false;
 
-    private Vector3Int currentGridPos;
-
-
-    public GameObject wateredIconPrefab; // Prefab của icon tưới nước
+    [SerializeField] private GameObject wateredIconPrefab; // Prefab của icon tưới nước
     private Dictionary<Vector3Int, GameObject> activeIcons = new Dictionary<Vector3Int, GameObject>(); // Lưu các icon đang hiển thị
 
     [SerializeField] private GameObject cropInfoPanel;
@@ -599,8 +591,6 @@ public class SoitileManager : MonoBehaviour
         // Xóa GameObject hiệu ứng sau khi hoàn thành
         Destroy(spriteRenderer.gameObject);
     }
-
-
 
     private void StartFadeEffect(Vector3Int position, TileBase tile)
     {

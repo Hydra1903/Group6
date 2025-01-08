@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,9 @@ public class ShopItemUI : MonoBehaviour
     public Button buyButton;
 
     private Item item;
-    private System.Action<Item> onBuy;
+    private Action<Item> onBuy;
 
-    public void SetUp(Item item, System.Action<Item> onBuyCallback)
+    public void SetUp(Item item, Action<Item> onBuyCallback)
     {
         this.item = item;
         itemNameText.text = item.itemName;
