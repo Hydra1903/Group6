@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class Toolbar : MonoBehaviour
 {
-    public GameObject toolbarPanel; // Panel chứa các slot
-    public GameObject slotPrefab;  // Prefab của slot
-    public int slotCount;          // Số lượng slot trong inventory
+    [SerializeField] private GameObject toolbarPanel; // Panel chứa các slot
+    [SerializeField] private GameObject slotPrefab;  // Prefab của slot
+    [SerializeField] private int slotCount;          // Số lượng slot trong inventory
     public List<Item> toolbarItems = new List<Item>(); // Danh sách vật phẩm trong toolbar
 
     private InventoryController inventoryController;

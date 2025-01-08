@@ -4,13 +4,13 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour
 {
     public GameObject currentItem;
-    public GameObject highlightImage;  // Highlight hiển thị khi slot được chọn
     public static Slot selectedSlot;  // Lưu trữ slot được chọn gần nhất
-
     public Item item;  // Tham chiếu đến vật phẩm (nếu có)
-    private Player player;  // Tham chiếu đến Player
 
-    public Text quantityText; // Text để hiển thị số lượng item
+
+    private Player player;  // Tham chiếu đến Player
+    [SerializeField] private GameObject highlightImage;  // Highlight hiển thị khi slot được chọn
+    [SerializeField] private Text quantityText; // Text để hiển thị số lượng item
 
     private void Start()
     {

@@ -6,10 +6,9 @@ using static UnityEditor.Progress;
 
 public class InventoryController : MonoBehaviour
 {
-    public int gold; // Số vàng của người chơi
-    public GameObject inventoryPanel; // Panel chứa các slot
-    public GameObject slotPrefab;     // Prefab của slot
-    public int slotCount;             // Số lượng slot trong inventory
+    [SerializeField] private GameObject inventoryPanel; // Panel chứa các slot
+    [SerializeField] private GameObject slotPrefab;     // Prefab của slot
+    [SerializeField] private int slotCount;             // Số lượng slot trong inventory
     public List<Item> inventoryItems = new List<Item>();// Danh sách vật phẩm
 
     private Toolbar toolbarController;
