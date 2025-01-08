@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 
     public Item equippedTool; // Tool hiện tại được trang bị
     public GameObject equippedToolIcon; // GameObject icon của công cụ đang được trang bị (dùng để bật/tắt)
-    private Toolbar toolbar; //lấy từ toolbar
 
     public ToolType currentTool = ToolType.None;  // Công cụ hiện tại
     public ItemType currentItem = ItemType.None; // Item hiện tại

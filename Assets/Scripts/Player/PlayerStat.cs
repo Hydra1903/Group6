@@ -14,7 +14,7 @@ public class PlayerStat : MonoBehaviour
     public int energy = 100;
     public int maxEnergy = 100;
 
-    private void Start()
+    private void Start() 
     {
         
     }
@@ -63,10 +63,5 @@ public class PlayerStat : MonoBehaviour
             Debug.Log("Not enough coins!");
             return false;
         }
-    }
-
-    public void AddExperience(int exp)
-    {
-
     }
 }

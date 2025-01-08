@@ -95,12 +95,6 @@ public class QuestManager : MonoBehaviour
             Debug.Log($"Received {currentQuest.moneyReward} tiền!");
         }
 
-        // Phát thưởng kinh nghiệm
-        if (currentQuest.experienceReward > 0)
-        {
-            PlayerStat.Instance.AddExperience(currentQuest.experienceReward);
-            Debug.Log($"Received {currentQuest.experienceReward} kinh nghiệm!");
-        }
     }
 
     private void DisplayQuest()

@@ -10,7 +10,6 @@ public class FishingController : MonoBehaviour
     [SerializeField] private Transform fishingSpot;      // Điểm câu cá
     [SerializeField] private Transform playerPosition;   // Vị trí người chơi
     [SerializeField] private float maxFishingDistance = 1f;  // Khoảng cách tối đa
-    [SerializeField] private float fishingWaitTime = 5f;     // Thời gian chờ cá
     [SerializeField] private List<GameObject> fishPrefabs;   // Danh sách cá
 
     [Header("Giao diện")]
@@ -31,8 +30,6 @@ public class FishingController : MonoBehaviour
 
     [Header("Animation")]
     public PlayerController playercontroller;
-    [SerializeField] private float castingDuration = 1f;    // Thời gian animation ném cần
-    [SerializeField] private float reelingDuration = 1.5f;  // Thời gian animation kéo
                                                             
     private bool isFishing;
     private bool isWaitingForFish;
