@@ -12,6 +12,9 @@ public class ItemOnMap : MonoBehaviour
     public string description;    // Mô tả của Item
     //public GameObject iconPickUp;
     private DisplayReward player;
+
+    [Header("Sound")]
+    [SerializeField] private AudioClip pickUpSound;
     private void Start()
     {
 
@@ -31,6 +34,7 @@ public class ItemOnMap : MonoBehaviour
             if (inventoryManager != null)
             {
                 inventoryManager.AddItem(newItem);
+                SoundManager.instance.PlaySound(pickUpSound);
                 Debug.Log($"Đã thêm {newItem.itemName} vào Inventory.");
             }
 

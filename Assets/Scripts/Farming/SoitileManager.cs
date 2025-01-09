@@ -90,6 +90,12 @@ public class SoitileManager : MonoBehaviour
     [Header("UI")]
     public Toolbar playerToolbar;
 
+    [Header("Sound")]
+    [SerializeField] private AudioClip hoeSound;
+    [SerializeField] private AudioClip wateringCanSound;
+
+
+
 
     void Start()
     {
@@ -133,6 +139,7 @@ public class SoitileManager : MonoBehaviour
                     {
                         QuestManager.instance.UpdateQuestProgress(ActionType.DigSoil);
                         Dig(currentGridPos);
+                        SoundManager.instance.PlaySound(hoeSound);
                     }
                 }
 
@@ -163,6 +170,7 @@ public class SoitileManager : MonoBehaviour
                     TileBase currentTile = soilTilemap.GetTile(currentGridPos);
                     if (currentTile == seededTile)
                     {
+                        SoundManager.instance.PlaySound(wateringCanSound);
                         WaterCrop(currentGridPos);
                     }
                     else
