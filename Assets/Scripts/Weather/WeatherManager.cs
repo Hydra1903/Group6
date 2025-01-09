@@ -12,6 +12,8 @@ public class WeatherManager : MonoBehaviour
 
     // Tham chiếu đến Particle System để bật/tắt hiệu ứng mưa
     public ParticleSystem rainEffect;
+    [Header("Sound")]
+    [SerializeField] private AudioClip rainSound;
 
     void Start()
     {
@@ -64,6 +66,7 @@ public class WeatherManager : MonoBehaviour
         if (rainEffect != null)
         {
             rainEffect.Play();
+            SoundManager.instance.PlayLoopingSound(rainSound);
         }
 
         Debug.Log("Mưa bắt đầu, kéo dài trong: " + rainDuration + " giây.");
@@ -77,6 +80,7 @@ public class WeatherManager : MonoBehaviour
         {
             rainEffect.Stop();
             rainEffect.Clear();
+            SoundManager.instance.StopLoopingSound();
         }
 
         Debug.Log("Mưa đã tạnh.");

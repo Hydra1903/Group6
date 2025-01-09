@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -48,4 +48,23 @@ public class SoundManager : MonoBehaviour
     {
         ChangeSourceVolume(0.3f, "musicVolume", _change, musicSource);
     }
+    public void PlayLoopingSound(AudioClip _sound)
+    {
+        if (soundSource.clip != _sound) // Chỉ phát nếu clip khác
+        {
+            soundSource.clip = _sound; // Gán clip mới
+            soundSource.loop = true;   // Bật chế độ lặp
+            soundSource.Play();        // Phát âm thanh
+        }
+    }
+    public void StopLoopingSound()
+    {
+        if (soundSource.isPlaying) // Kiểm tra xem âm thanh có đang phát không
+        {
+            soundSource.Stop();    // Dừng phát âm thanh
+            soundSource.clip = null; // Xóa clip để tránh phát lại ngoài ý muốn
+        }
+    }
+
+
 }
