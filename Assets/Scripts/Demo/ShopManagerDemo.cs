@@ -76,7 +76,7 @@ public class ShopManagerDemo : MonoBehaviour
     // Xử lý bán item
     void SellItem(Item item)
     {
-        int sellPrice = item.price; // Giá bán bằng một nửa giá mua (có thể tùy chỉnh)
+        int sellPrice = item.price; 
         playerStat.coins += sellPrice;
         goldText.text = $"{playerStat.coins}";
 

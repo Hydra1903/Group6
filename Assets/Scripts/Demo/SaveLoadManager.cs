@@ -17,6 +17,7 @@ public class SaveLoadManager : MonoBehaviour
         string json = JsonUtility.ToJson(playerData, true); // true để format JSON đẹp
         File.WriteAllText(saveFilePath, json);
         Debug.Log("Game Saved!");
+        Debug.Log("Save file path: " + saveFilePath);
     }
 
     // Tải dữ liệu người chơi
