@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Nếu sử dụng TextMeshPro
 using UnityEngine.Rendering.Universal;
 
 public class TimeManager : MonoBehaviour

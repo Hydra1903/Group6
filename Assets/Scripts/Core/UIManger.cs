@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
         // Tìm lại các phần tử UI sau khi Scene được tải
         if (timeText == null)
         {
-            timeText = GameObject.Find("DateText")?.GetComponent<Text>();
+            timeText = GameObject.Find("TimeText")?.GetComponent<Text>();
         } 
         if (currencyText == null)
         {

@@ -132,4 +132,9 @@ public class InventoryController : MonoBehaviour
         // Tạo lại inventory
         PopulateInventory();
     }
+
+    public Item GetItemByName(string itemName) //tìm item từ inventory
+    {
+        return inventoryItems.Find(item => item.itemName == itemName);
+    }
 }

@@ -62,10 +62,6 @@ public class SoitileManager : MonoBehaviour
     public Player toolCheck;
     //public Animator anim;
 
-    // Kích thước của một tile trong TileMap (giả sử kích thước tile là 1x1)
-    [SerializeField] private float tileSize = 1f;
-
-
     [Header("Weather/ WateredSoil")]
     public WeatherManager weatherManager;
     //private float timeSinceRainStopped;

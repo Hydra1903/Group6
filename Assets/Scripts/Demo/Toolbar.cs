@@ -152,4 +152,9 @@ public class Toolbar : MonoBehaviour
 
         PopulateToolbar();
     }
+
+    public Item GetItemByName(string itemName) //tìm item từ inventory
+    {
+        return toolbarItems.Find(item => item.itemName == itemName);
+    }
 }
