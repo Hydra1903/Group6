@@ -290,9 +290,9 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 396
-      y: 372
+      y: 420
       width: 48
-      height: 80
+      height: 32
     spriteID: 916e852ca3dea8649a7effee80a56d6d
     spriteBone: []
     spriteOutline: []
@@ -5494,6 +5494,26 @@ ScriptedImporter:
       width: 14
       height: 14
     spriteID: 69467a0267e6a8847aa448952093b3df
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: UI books & more-export_268
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 396
+      y: 372
+      width: 48
+      height: 48
+    spriteID: 57c8ce0f947804648a6d950dfe543e00
     spriteBone: []
     spriteOutline: []
     vertices: []
