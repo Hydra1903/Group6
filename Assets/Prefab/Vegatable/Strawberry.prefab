@@ -75,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: 1843262253
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 297598459, guid: 3e5a54bb86c5cd146aa84388d2cfb3cd, type: 3}
+  m_Sprite: {fileID: -1300069806, guid: 3004ce1b83a2a6d47ac3dd30f4f3a0ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.48, y: 0.48}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -122,8 +122,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.875, y: 0.875}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.48, y: 0.48}
+    newSize: {x: 0.48, y: 0.48}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -143,11 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 074a4b2c7bed3294faee1bf4eff7606b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Oppla
-  icon: {fileID: 21300000, guid: d5792643248551a4590b31258f275a82, type: 3}
+  itemName: StrawBerry
+  icon: {fileID: -1300069806, guid: 3004ce1b83a2a6d47ac3dd30f4f3a0ce, type: 3}
   quantity: 1
-  itemType: 0
+  itemType: 1
   toolType: 0
-  price: 3
+  price: 1200
   energy: 5
   description: 

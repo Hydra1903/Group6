@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Snail
   m_EditorClassIdentifier: 
   fishName: Snail
-  icon: {fileID: 684025658, guid: 6a4743f696d97ae40b271ebcb4d7cd02, type: 3}
+  icon: {fileID: -962255416, guid: bfd3392ab671d694ea1df9e9177a996f, type: 3}
   quantity: 1
-  itemType: 0
+  itemType: 5
   toolType: 0
-  price: 3
+  price: 50
   energy: 0
   description: 
   catchChance: 55

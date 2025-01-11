@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Guppy
   m_EditorClassIdentifier: 
   fishName: Guppy
-  icon: {fileID: -1272483401, guid: 6a4743f696d97ae40b271ebcb4d7cd02, type: 3}
+  icon: {fileID: -1284033841, guid: bfd3392ab671d694ea1df9e9177a996f, type: 3}
   quantity: 1
-  itemType: 4
+  itemType: 5
   toolType: 0
   price: 15
   energy: 0
   description: 'Beautiful Fish '
-  catchChance: 35
+  catchChance: 21
   rarity: 1
