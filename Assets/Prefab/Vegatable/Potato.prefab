@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.03, y: 2.07, z: 0}
-  m_LocalScale: {x: 1.7, y: 1.7, z: 0.8}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.2964}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -122,7 +122,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.42, y: 0.39}
+    oldSize: {x: 0.875, y: 0.8125}
     newSize: {x: 0.42, y: 0.39}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,10 +144,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Potato
-  icon: {fileID: -1908604162, guid: c76418c118d6b554191804e9ebaea9ff, type: 3}
+  icon: {fileID: 690233419, guid: 3004ce1b83a2a6d47ac3dd30f4f3a0ce, type: 3}
   quantity: 1
-  itemType: 0
+  itemType: 1
   toolType: 0
-  price: 7
+  price: 700
   energy: 5
   description: 

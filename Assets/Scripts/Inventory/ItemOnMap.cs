@@ -27,10 +27,10 @@ public class ItemOnMap : MonoBehaviour
             Item newItem = new Item(itemName, icon, quantity, itemType, toolType, price, energy, description);
 
             // Gọi InventoryManager để thêm Item vào Inventory
-            InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
-            if (inventoryManager != null)
+            InventoryController inventoryController = FindObjectOfType<InventoryController>();
+            if (inventoryController != null)
             {
-                inventoryManager.AddItem(newItem);
+                inventoryController.AddItemToInventory(newItem);
                 Debug.Log($"Đã thêm {newItem.itemName} vào Inventory.");
             }
 

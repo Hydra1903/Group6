@@ -131,6 +131,9 @@ public class PlayerController : MonoBehaviour
                 case ToolType.FishingRod:  
                     StartAction(PLAYER_CASTING);
                     break;
+                case ToolType.HandHarvest:
+                    StartAction(PLAYER_DOING);
+                    break;
                 default:
                     Debug.LogWarning("Công cụ không hợp lệ.");
                     break;

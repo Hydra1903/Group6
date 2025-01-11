@@ -122,7 +122,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.48, y: 0.42}
+    oldSize: {x: 1, y: 0.875}
     newSize: {x: 0.48, y: 0.42}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tomato Seed
-  icon: {fileID: -1089260520, guid: c76418c118d6b554191804e9ebaea9ff, type: 3}
+  icon: {fileID: -1058332232, guid: 3004ce1b83a2a6d47ac3dd30f4f3a0ce, type: 3}
   quantity: 5
   itemType: 3
   toolType: 5
