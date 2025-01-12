@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: watered_tile
+  m_Name: "\u0110\u1EA5t tr\u1ED3ng_0 - Copy"
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -1015938299, guid: 8047538b8881fff479affe884f020a65, type: 3}
+  m_Sprite: {fileID: -7862645413410442159, guid: b21dade83bf4b444592381bd3bcb3902, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

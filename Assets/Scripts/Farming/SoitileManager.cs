@@ -384,7 +384,7 @@ public class SoitileManager : MonoBehaviour
         if (fruitPrefab != null)
         {
             // Instantiate trái cây tại vị trí của ô đất
-            Vector3 dropPosition = soilTilemap.CellToWorld(gridPos) + new Vector3(0.3f, 0.3f, 0);
+            Vector3 dropPosition = soilTilemap.CellToWorld(gridPos) + new Vector3(0.7f, 0.3f, 0);
             Instantiate(fruitPrefab, dropPosition, Quaternion.identity);
             Debug.Log($"+1 {crop.seedName} Fruit");
 
