@@ -1,79 +1,117 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    private const string SAVE_FILE_NAME = "playerSaveData.json";
+    private const string BACKUP_FILE_NAME = "playerSaveData_backup.json";
     private string saveFilePath;
+    private string backupFilePath;
 
     private void Awake()
     {
-        saveFilePath = Path.Combine(Application.persistentDataPath, "playerSaveData.json");
+        string savePath = Application.persistentDataPath;
+        saveFilePath = Path.Combine(savePath, SAVE_FILE_NAME);
+        backupFilePath = Path.Combine(savePath, BACKUP_FILE_NAME);
     }
 
-    // Lưu dữ liệu người chơi
     public void SaveGame()
     {
-        PlayerData playerData = new PlayerData(PlayerStat.Instance, Toolbar.instance, InventoryController.instance);
-        string json = JsonUtility.ToJson(playerData, true); // true để format JSON đẹp
-        File.WriteAllText(saveFilePath, json);
-        Debug.Log("Game Saved!");
-        Debug.Log("Save file path: " + saveFilePath);
+        try
+        {
+            // Tạo backup file cũ nếu tồn tại
+            if (File.Exists(saveFilePath))
+            {
+                File.Copy(saveFilePath, backupFilePath, true);
+            }
+
+            PlayerData playerData = new PlayerData(
+                PlayerStat.Instance,
+                Toolbar.instance,
+                InventoryController.instance
+            );
+
+            string json = JsonUtility.ToJson(playerData, true);
+            File.WriteAllText(saveFilePath, json);
+
+            Debug.Log($"Game Saved Successfully! Path: {saveFilePath}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error saving game: {e.Message}");
+        }
     }
 
-    // Tải dữ liệu người chơi
     public void LoadGame()
     {
-        if (File.Exists(saveFilePath))
+        string fileToLoad = File.Exists(saveFilePath) ? saveFilePath : backupFilePath;
+
+        if (!File.Exists(fileToLoad))
         {
-            string json = File.ReadAllText(saveFilePath);
+            Debug.LogWarning("No save file found.");
+            return;
+        }
+
+        try
+        {
+            string json = File.ReadAllText(fileToLoad);
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
 
-            // Cập nhật thông tin người chơi
-            PlayerStat.Instance.coins = playerData.coins;
-            PlayerStat.Instance.energy = playerData.energy;
-            PlayerStat.Instance.maxEnergy = playerData.maxEnergy;
+            UpdatePlayerStats(playerData);
+            UpdateToolbar(playerData.toolbarItems);
+            UpdateInventory(playerData.inventoryItems);
 
-            // Cập nhật toolbar
-            Toolbar.instance.toolbarItems.Clear();
-            foreach (ItemData itemData in playerData.toolbarItems)
-            {
-                Item item = InventoryController.instance.GetItemByName(itemData.itemName); // Tìm item theo tên
-                if (item != null)
-                {
-                    item.quantity = itemData.quantity;
-                    item.icon = itemData.GetIcon();  // Lấy lại icon từ đường dẫn
-                    item.toolType = (ToolType)System.Enum.Parse(typeof(ToolType), itemData.toolType); // Convert chuỗi thành ToolType
-                    item.itemType = (ItemType)System.Enum.Parse(typeof(ItemType), itemData.itemType); // Convert chuỗi thành ItemType
-                    item.description = itemData.description;
-                    item.toolPrefab = itemData.GetPrefab(); // Lấy lại prefab từ đường dẫn
-
-                    Toolbar.instance.toolbarItems.Add(item);
-                }
-            }
-
-            // Cập nhật inventory
-            InventoryController.instance.inventoryItems.Clear();
-            foreach (ItemData itemData in playerData.inventoryItems)
-            {
-                Item item = InventoryController.instance.GetItemByName(itemData.itemName);
-                if (item != null)
-                {
-                    item.quantity = itemData.quantity;
-                    item.icon = itemData.GetIcon();
-                    item.toolType = (ToolType)System.Enum.Parse(typeof(ToolType), itemData.toolType);
-                    item.itemType = (ItemType)System.Enum.Parse(typeof(ItemType), itemData.itemType);
-                    item.description = itemData.description;
-                    item.toolPrefab = itemData.GetPrefab();
-
-                    InventoryController.instance.inventoryItems.Add(item);
-                }
-            }
-
-            Debug.Log("Game Loaded!");
+            Debug.Log($"Game Loaded Successfully from {fileToLoad}");
         }
-        else
+        catch (System.Exception e)
         {
-            Debug.LogError("Save file not found.");
+            Debug.LogError($"Error loading game: {e.Message}");
         }
+    }
+
+    private void UpdatePlayerStats(PlayerData playerData)
+    {
+        var player = PlayerStat.Instance;
+        player.coins = playerData.coins;
+        player.energy = playerData.energy;
+        player.maxEnergy = playerData.maxEnergy;
+    }
+
+    private void UpdateToolbar(List<ItemData> toolbarItems)
+    {
+        var toolbar = Toolbar.instance;
+        toolbar.toolbarItems.Clear();
+        UpdateItemsList(toolbarItems, toolbar.toolbarItems);
+    }
+
+    private void UpdateInventory(List<ItemData> inventoryItems)
+    {
+        var inventory = InventoryController.instance;
+        inventory.inventoryItems.Clear();
+        UpdateItemsList(inventoryItems, inventory.inventoryItems);
+    }
+
+    private void UpdateItemsList(List<ItemData> sourceItems, List<Item> targetList)
+    {
+        foreach (var itemData in sourceItems)
+        {
+            Item item = InventoryController.instance.GetItemByName(itemData.itemName);
+            if (item != null)
+            {
+                UpdateItemFromData(item, itemData);
+                targetList.Add(item);
+            }
+        }
+    }
+
+    private void UpdateItemFromData(Item item, ItemData itemData)
+    {
+        item.quantity = itemData.quantity;
+        item.icon = itemData.GetIcon();
+        item.toolType = (ToolType)System.Enum.Parse(typeof(ToolType), itemData.toolType);
+        item.itemType = (ItemType)System.Enum.Parse(typeof(ItemType), itemData.itemType);
+        item.description = itemData.description;
+        item.toolPrefab = itemData.GetPrefab();
     }
 }

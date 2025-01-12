@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.IO;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class PlayerData
@@ -7,8 +8,6 @@ public class PlayerData
     public int coins;
     public int energy;
     public int maxEnergy;
-
-    // Lưu thông tin về các vật phẩm trong toolbar và inventory
     public List<ItemData> toolbarItems;
     public List<ItemData> inventoryItems;
 
@@ -18,17 +17,21 @@ public class PlayerData
         energy = playerStat.energy;
         maxEnergy = playerStat.maxEnergy;
 
-        toolbarItems = new List<ItemData>();
-        foreach (Item item in toolbar.toolbarItems)
-        {
-            toolbarItems.Add(new ItemData(item));
-        }
+        toolbarItems = ConvertItemsToData(toolbar.toolbarItems);
+        inventoryItems = ConvertItemsToData(inventory.inventoryItems);
+    }
 
-        inventoryItems = new List<ItemData>();
-        foreach (Item item in inventory.inventoryItems)
+    private List<ItemData> ConvertItemsToData(List<Item> items)
+    {
+        List<ItemData> dataList = new List<ItemData>();
+        foreach (Item item in items)
         {
-            inventoryItems.Add(new ItemData(item));
+            if (item != null)
+            {
+                dataList.Add(new ItemData(item));
+            }
         }
+        return dataList;
     }
 }
 
@@ -36,37 +39,69 @@ public class PlayerData
 public class ItemData
 {
     public string itemName;
-    public string iconPath;  // Lưu trữ đường dẫn của Sprite icon
+    public string spritePath; // Đường dẫn đến sprite trong Resources
     public int quantity;
     public int price;
     public int energy;
     public string description;
-    public string toolType;  // Lưu trữ ToolType dưới dạng chuỗi
-    public string itemType;  // Lưu trữ ItemType dưới dạng chuỗi
-    public string prefabPath;  // Lưu trữ đường dẫn prefab (nếu có)
+    public string toolType;
+    public string itemType;
+    public string prefabPath;
 
     public ItemData(Item item)
     {
+        if (item == null) return;
+
         itemName = item.itemName;
-        iconPath = item.icon != null ? item.icon.name : "";  // Lưu tên icon hoặc một chuỗi rỗng nếu icon không có
         quantity = item.quantity;
         price = item.price;
         energy = item.energy;
         description = item.description;
-        toolType = item.toolType.ToString();  // Convert ToolType enum thành chuỗi
-        itemType = item.itemType.ToString();  // Convert ItemType enum thành chuỗi
-        prefabPath = item.toolPrefab != null ? item.toolPrefab.name : "";  // Lưu tên prefab hoặc chuỗi rỗng nếu không có
+        toolType = item.toolType.ToString();
+        itemType = item.itemType.ToString();
+
+        // Lưu đường dẫn tương đối trong thư mục Resources
+        if (item.icon != null)
+        {
+            string path = GetResourcePath(item.icon);
+            spritePath = path ?? "";
+        }
+
+        if (item.toolPrefab != null)
+        {
+            string path = GetResourcePath(item.toolPrefab);
+            prefabPath = path ?? "";
+        }
     }
 
-    // Hàm để chuyển đổi lại từ đường dẫn icon (sprite)
+    private string GetResourcePath(Object obj)
+    {
+        if (obj == null) return null;
+
+        // Thử lấy đường dẫn của asset
+        string assetPath = UnityEditor.AssetDatabase.GetAssetPath(obj);
+        if (string.IsNullOrEmpty(assetPath)) return null;
+
+        // Tìm vị trí của thư mục Resources trong đường dẫn
+        int resourcesIndex = assetPath.IndexOf("Resources/");
+        if (resourcesIndex == -1) return null;
+
+        // Lấy đường dẫn tương đối từ thư mục Resources
+        string relativePath = assetPath.Substring(resourcesIndex + 10); // 10 là độ dài của "Resources/"
+
+        // Loại bỏ phần mở rộng của file (.png, .prefab, etc.)
+        return Path.ChangeExtension(relativePath, null);
+    }
+
     public Sprite GetIcon()
     {
-        return Resources.Load<Sprite>(iconPath);  // Giả sử icon được lưu trong thư mục Resources
+        if (string.IsNullOrEmpty(spritePath)) return null;
+        return Resources.Load<Sprite>(spritePath);
     }
 
-    // Hàm để chuyển đổi lại từ prefab path
     public GameObject GetPrefab()
     {
-        return Resources.Load<GameObject>(prefabPath);  // Giả sử prefab được lưu trong thư mục Resources
+        if (string.IsNullOrEmpty(prefabPath)) return null;
+        return Resources.Load<GameObject>(prefabPath);
     }
 }

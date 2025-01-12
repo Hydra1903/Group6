@@ -11,6 +11,16 @@ public class UIManager : MonoBehaviour
     //InventoryManager
     public Text currencyText;      // Text để hiển thị số tiền trên UI
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     private void Awake()
     {
         // Kiểm tra xem instance đã tồn tại chưa
@@ -28,15 +38,7 @@ public class UIManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Tìm lại các phần tử UI sau khi Scene được tải
-        if (timeText == null)
-        {
-            timeText = GameObject.Find("TimeText")?.GetComponent<Text>();
-        } 
-        if (currencyText == null)
-        {
-            currencyText = GameObject.Find("CurrencyText")?.GetComponent<Text>();
-        }
+      
     }
 
     // Phương thức cập nhật thời gian hiển thị trên UI
