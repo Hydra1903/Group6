@@ -22,8 +22,18 @@ public class Slot : MonoBehaviour
     public void SetItem(Item newItem)
     {
         item = newItem;
+        if(item == newItem)
+        {
+           // SetText();
+        }    
+        
+    }
+    public void SetText(Text newText)
+    {
+        quantityText = newText;
         UpdateQuantityText();
     }
+
 
     public void OnClick()
     {
