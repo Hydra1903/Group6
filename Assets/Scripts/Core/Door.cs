@@ -21,7 +21,7 @@ public class Door : MonoBehaviour
         {
             isTransitioning = true;
             StartCoroutine(Transition(collision));
-           // StartCoroutine(Load(collision));
+            // StartCoroutine(Load(collision));
         }
     }
 
@@ -39,13 +39,8 @@ public class Door : MonoBehaviour
         // Chuyển scene
         SceneManager.LoadScene(toScene);
         // Đợi hiệu ứng hoàn thành
-   // Thời gian chờ theo độ dài hiệu ứng
-        
-    }
+        // Thời gian chờ theo độ dài hiệu ứng
 
-   // private IEnumerator  Load(Collider2D playerStat)
-   // {
-        // Đặt vị trí nhân vật
-        
-   // }
+    }
 }
+
