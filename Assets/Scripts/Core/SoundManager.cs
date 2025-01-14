@@ -1,0 +1,70 @@
+﻿using System;
+using UnityEngine;
+
+public class SoundManager : MonoBehaviour
+{
+    public static SoundManager instance { get; private set; }
+    private AudioSource soundSource;
+    private AudioSource musicSource;
+    private void Awake()
+    {
+        soundSource = GetComponent<AudioSource>();
+        musicSource = transform.GetChild(0).GetComponent<AudioSource>();
+
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != null && instance != this)
+            Destroy(gameObject);
+
+        ChangeSoundVolume(0);
+        ChangeMusicVolume(0);
+    }
+    public void PlaySound(AudioClip _sound)
+    {
+        soundSource.PlayOneShot(_sound);
+    }
+    public void ChangeSoundVolume(float _change)
+    {
+        ChangeSourceVolume(1, "soundVolume", _change, soundSource);
+    }
+    public void ChangeSourceVolume(float baseVolume, string volumeName, float change, AudioSource source)
+    {
+        float currentVolume = PlayerPrefs.GetFloat(volumeName, 1);
+        currentVolume += change;
+
+        if (currentVolume > 1)
+            currentVolume = 0;
+        else if (currentVolume < 0)
+            currentVolume = 1;
+
+        float finalVolume = currentVolume * baseVolume;
+        source.volume = finalVolume;
+        PlayerPrefs.SetFloat(volumeName, currentVolume);
+    }
+    public void ChangeMusicVolume(float _change)
+    {
+        ChangeSourceVolume(0.3f, "musicVolume", _change, musicSource);
+    }
+    public void PlayLoopingSound(AudioClip _sound)
+    {
+        if (soundSource.clip != _sound) // Chỉ phát nếu clip khác
+        {
+            soundSource.clip = _sound; // Gán clip mới
+            soundSource.loop = true;   // Bật chế độ lặp
+            soundSource.Play();        // Phát âm thanh
+        }
+    }
+    public void StopLoopingSound()
+    {
+        if (soundSource.isPlaying) // Kiểm tra xem âm thanh có đang phát không
+        {
+            soundSource.Stop();    // Dừng phát âm thanh
+            soundSource.clip = null; // Xóa clip để tránh phát lại ngoài ý muốn
+        }
+    }
+
+
+}
