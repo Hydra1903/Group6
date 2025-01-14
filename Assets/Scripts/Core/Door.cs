@@ -31,7 +31,6 @@ public class Door : MonoBehaviour
         if (anim != null)
         {
             panel.SetActive(true);
-            anim.SetTrigger("NextScene");
         }
         yield return new WaitForSeconds(2.2f);
         PlayerStat.Instance.transform.position = targetPosition;
