@@ -64,11 +64,13 @@ public class InventoryController : MonoBehaviour
                 itemCanvasGroup.interactable = true;
                 itemCanvasGroup.blocksRaycasts = true;
 
+                ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
                 // Gắn vật phẩm vào slot
                 slot.currentItem = itemObject;
-
+                slot.SetItem(item);
                 //gắn code kéo thả cho vật phẩm 
-                ItemDragHandler dragHandler = itemObject.AddComponent<ItemDragHandler>();
+
+
             }
         }
     }
@@ -121,7 +123,7 @@ public class InventoryController : MonoBehaviour
     }
 
     // Cập nhật lại UI inventory khi thêm/xóa vật phẩm
-    private void UpdateInventoryUI()
+    public void UpdateInventoryUI()
     {
         // Xóa các slot cũ
         foreach (Transform child in inventoryPanel.transform)

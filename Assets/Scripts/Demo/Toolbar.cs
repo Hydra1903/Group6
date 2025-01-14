@@ -8,7 +8,7 @@ public class Toolbar : MonoBehaviour
 {
     [SerializeField] private GameObject toolbarPanel; // Panel chứa các slot
     [SerializeField] private GameObject slotPrefab;  // Prefab của slot
-    [SerializeField] private int slotCount;          // Số lượng slot trong inventory
+    public int slotCount;          // Số lượng slot trong inventory
     public List<Item> toolbarItems = new List<Item>(); // Danh sách vật phẩm trong toolbar
 
     private InventoryController inventoryController;
@@ -21,6 +21,17 @@ public class Toolbar : MonoBehaviour
         PopulateToolbar();
     }
 
+    private void Update()
+    {
+        for (int i = 0; i < Mathf.Min(slotCount, 9); i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                SelectToolbarSlot(i);
+            }
+        }
+    }    
+    
     private void Awake()
     {
         if (instance == null)
@@ -144,7 +155,7 @@ public class Toolbar : MonoBehaviour
     }
 
     // Cập nhật lại UI khi thêm/xóa vật phẩm
-    private void UpdateToolbarUI()
+    public void UpdateToolbarUI()
     {
         foreach (Transform child in toolbarPanel.transform)
         {
@@ -157,5 +168,14 @@ public class Toolbar : MonoBehaviour
     public Item GetItemByName(string itemName) //tìm item từ inventory
     {
         return toolbarItems.Find(item => item.itemName == itemName);
+    }
+
+    private void SelectToolbarSlot(int index)
+    {
+        if (index < toolbarPanel.transform.childCount)
+        {
+            Slot slot = toolbarPanel.transform.GetChild(index).GetComponent<Slot>();
+            slot.OnClick();
+        }
     }
 }
