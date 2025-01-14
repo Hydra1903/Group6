@@ -1,47 +1,94 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class PlayerController : MonoBehaviour
 {
+    public Item currentTool;  // Công cụ hiện tại
+
     // Animation state constants
-    private const string PLAYER_IDLE = "idle";
+    public const string PLAYER_IDLE = "idle";
     private const string PLAYER_WALK = "walk";
     private const string PLAYER_MINING = "mining";
     private const string PLAYER_AXE = "axe";
+    private const string PLAYER_WATERING = "watering";
+    private const string PLAYER_DIG = "dig";
+    private const string PLAYER_DOING = "doing";
+
+    //Animation cho việc câu cá
+    public const string PLAYER_CASTING = "casting";
+    public const string PLAYER_CAUGHT = "caught";
+    public const string PLAYER_WAITING = "waiting";
+    public const string PLAYER_REELING = "reeling";
 
     private Animator animator;
     public float moveSpeed = 5f;
     private Rigidbody2D rb;
     private Vector2 moveDirection;
 
-    // Theo dõi current animation state
+    // Theo dõi trạng thái hành động
     private string currentAnimationState;
+    private bool isPerformingAction = false;
 
+    // theo dõi trạng thái của nhân vật khi câu cá
+    private bool canMove = true;
+
+    public void EnableMovement() => canMove = true;
+    public void DisableMovement() => canMove = false;
+    public bool CanMove() => canMove;
     void Start()
     {
+        // Lấy công cụ hiện tại từ Player.instance
+        currentTool = Player.instance.equippedTool;
+
         rb = GetComponent<Rigidbody2D>();
-        animator = rb.GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+
         // Đảm bảo bắt đầu từ trạng thái idle
         ChangeAnimationState(PLAYER_IDLE);
     }
 
     void Update()
     {
-        HandleInput();
-        SetAnimation();
+        // Cập nhật currentTool nếu công cụ thay đổi trong suốt quá trình
+        if (currentTool != Player.instance.equippedTool)
+        {
+            currentTool = Player.instance.equippedTool;
+        }
+
+        if (!isPerformingAction) // Chỉ xử lý di chuyển và input nếu không đang thực hiện hành động
+        {
+            HandleInput();
+
+            if (moveDirection.sqrMagnitude > 0.01f)
+            {
+                ChangeAnimationState(PLAYER_WALK);
+            }
+            else
+            {
+                ChangeAnimationState(PLAYER_IDLE);
+            }
+
+            // Nhấn F để thực hiện hành động tương ứng với công cụ hiện tại
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                PerformToolAction();
+            }
+        }
     }
 
     void FixedUpdate()
     {
-        MoveCharacter();
+        if (!isPerformingAction)
+        {
+            MoveCharacter();
+        }
     }
 
     void HandleInput()
     {
-        // Cho phép di chuyển 4 hướng
+        if (!canMove) return;
+        // Di chuyển 4 hướng
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
         moveDirection = new Vector2(moveX, moveY).normalized;
@@ -58,50 +105,65 @@ public class PlayerController : MonoBehaviour
         rb.velocity = moveDirection * moveSpeed;
     }
 
-    void SetAnimation()
+    void PerformToolAction()
     {
-        // Ưu tiên hành động đặc biệt
-        if (Input.GetKey(KeyCode.Z)) // Hành động Mining
+        if (currentTool == null)
         {
-            ChangeAnimationState(PLAYER_MINING);
+            Debug.LogWarning("Không có công cụ nào được trang bị.");
+            return;
         }
-        else if (Input.GetKey(KeyCode.X)) // Hành động dùng Axe
+
+        if (currentTool.itemType == ItemType.Tool)
         {
-            ChangeAnimationState(PLAYER_AXE);
+            switch (currentTool.toolType)
+            {
+                case ToolType.PickAxe:
+                    StartAction(PLAYER_MINING);
+                    break;
+
+                case ToolType.Shovel:
+                    StartAction(PLAYER_DIG);
+                    break;
+
+                case ToolType.WateringCan:
+                    StartAction(PLAYER_WATERING);
+                    break;
+                case ToolType.FishingRod:  
+                    StartAction(PLAYER_CASTING);
+                    break;
+                default:
+                    Debug.LogWarning("Công cụ không hợp lệ.");
+                    break;
+            }
         }
-        else if (moveDirection.sqrMagnitude > 0.01f) // Đang di chuyển
+        else if (currentTool.itemType == ItemType.Seed)
         {
-            ChangeAnimationState(PLAYER_WALK);
+            StartAction(PLAYER_DOING);
         }
-        else // Trạng thái mặc định
+        else
         {
-            ChangeAnimationState(PLAYER_IDLE);
+            Debug.LogWarning("Công cụ không hợp lệ hoặc chưa được trang bị.");
         }
     }
 
-    void ChangeAnimationState(string newState)
+    public void StartAction(string actionState)
     {
-        // Ngăn chặn animation interrupt chính nó
+        isPerformingAction = true;
+        ChangeAnimationState(actionState);
+    }
+
+    public void OnActionComplete()
+    {
+        // Hàm được gọi khi Animation Event kết thúc
+        isPerformingAction = false;
+        ChangeAnimationState(PLAYER_IDLE);
+    }
+
+    public void ChangeAnimationState(string newState)
+    {
         if (currentAnimationState == newState) return;
 
-        // Sử dụng CrossFade để chuyển animation mượt
         animator.CrossFade(newState, 0.1f);
-
-        // Cập nhật current state
         currentAnimationState = newState;
     }
-
-    // Phương thức hữu ích để force change state từ bên ngoài (nếu cần)
-    public void ForceChangeAnimationState(string forcedState)
-    {
-        ChangeAnimationState(forcedState);
-    }
-
-    // Getter cho current state nếu cần
-    public string GetCurrentAnimationState()
-    {
-        return currentAnimationState;
-    }
-
-   
 }

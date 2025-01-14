@@ -4,64 +4,84 @@ using UnityEngine;
 
 public class AnimalController : MonoBehaviour
 {
-   [SerializeField] public float speed = 2f;
-    private Rigidbody2D rb;
     private Animator anim;
 
-   [SerializeField] private float stateSwitchTime = 2f;  // Thời gian giữa các lần chuyển đổi trạng thái
-    private float timeSinceLastSwitch = 0f;  // Thời gian đã trôi qua kể từ lần chuyển đổi trước
-    private bool isWalking = true;  // Biến kiểm tra trạng thái hiện tại (Walk hoặc Idle)
+    public float moveSpeed = 2f;       // Tốc độ di chuyển
+    public Vector3 areaCenter = Vector3.zero; // Tâm khu vực di chuyển (tùy chỉnh trong Inspector)
+    public Vector3 areaSize = new Vector3(5f, 5f, 0f); // Kích thước khu vực di chuyển
+    public float waitTime = 2f;       // Thời gian chờ trước khi chọn điểm mới
+
+    private Vector3 targetPosition;   // Vị trí điểm đến tiếp theo
+    private float waitTimer;          // Bộ đếm thời gian chờ
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        SwitchState();  // Chọn trạng thái ban đầu (Walk hoặc Idle)
+        SetNewTargetPosition(); // Chọn điểm đầu tiên
     }
 
     void Update()
     {
-        // Di chuyển về phía trước nếu đang ở trạng thái Walk
-        if (isWalking)
+        MoveTowardsTarget();
+    }
+
+    void MoveTowardsTarget()
+    {
+        // Di chuyển về phía điểm đến
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+        // Lật nhân vật nếu cần
+        FlipCharacter();
+
+        // Kiểm tra nếu đã đến nơi
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
-            rb.velocity = transform.right * speed;
+            // Chờ trước khi chọn điểm mới
+            waitTimer += Time.deltaTime;
+            anim.SetBool("isIdle", true);
+            if (waitTimer >= waitTime)
+            {
+                SetNewTargetPosition();
+                waitTimer = 0f;
+            }
         }
         else
         {
-            rb.velocity = Vector2.zero;  // Dừng lại nếu ở trạng thái Idle
-        }
-
-        // Kiểm tra va chạm với hàng rào
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 1f, LayerMask.GetMask("Fence"));
-        if (hit.collider != null)
-        {
-            // Đảo ngược hướng di chuyển khi va chạm
-            transform.Rotate(0, 180, 0);
-        }
-
-        // Cập nhật thời gian và chuyển đổi trạng thái ngẫu nhiên
-        timeSinceLastSwitch += Time.deltaTime;
-        if (timeSinceLastSwitch >= stateSwitchTime)
-        {
-            SwitchState();  // Chuyển đổi trạng thái sau mỗi khoảng thời gian
-            timeSinceLastSwitch = 0f;  // Đặt lại thời gian
+            anim.SetBool("isIdle", false);
         }
     }
 
-    // Hàm chuyển đổi trạng thái giữa Walk và Idle
-    void SwitchState()
+    void SetNewTargetPosition()
     {
-        if (isWalking)
+        // Tạo vị trí ngẫu nhiên trong khu vực dựa trên tâm và kích thước
+        float randomX = Random.Range(areaCenter.x - areaSize.x / 2, areaCenter.x + areaSize.x / 2);
+        float randomY = Random.Range(areaCenter.y - areaSize.y / 2, areaCenter.y + areaSize.y / 2);
+        targetPosition = new Vector3(randomX, randomY, transform.position.z);
+    }
+
+    void FlipCharacter()
+    {
+        // Tính hướng di chuyển
+        Vector3 direction = targetPosition - transform.position;
+
+        // Lật nhân vật theo trục X
+        if (direction.x > 0) // Di chuyển sang phải
         {
-            anim.SetBool("isWalking", false);  // Chuyển sang trạng thái Idle
-            isWalking = false;
+            transform.localScale = new Vector2(1.2f, 1.2f);
         }
-        else
+        else if (direction.x < 0) // Di chuyển sang trái
         {
-            anim.SetBool("isWalking", true);   // Chuyển sang trạng thái Walk
-            isWalking = true;
+            transform.localScale = new Vector2(-1.2f, 1.2f);
         }
+    }
+
+    // Debug để hiển thị khu vực di chuyển trong Scene
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(areaCenter, areaSize); // Khu vực di chuyển theo tâm và kích thước
     }
 }
+
 
 

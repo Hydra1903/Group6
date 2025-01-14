@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStat : MonoBehaviour
 {
@@ -8,19 +9,26 @@ public class PlayerStat : MonoBehaviour
 
     [Header("Money")]
     public int coins = 0;
+    [SerializeField] private Text textcoin;
     [Header("Energy")]
     public int energy = 100;
     public int maxEnergy = 100;
 
-    private void Start()
+    private void Start() 
     {
-        DontDestroyOnLoad(gameObject);
+        
+    }
+
+    private void Update()
+    {
+        textcoin.text = $"{coins}";
     }
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -35,6 +43,7 @@ public class PlayerStat : MonoBehaviour
         if (energy > maxEnergy) energy = maxEnergy;
         Debug.Log("Energy: " + energy);
     }
+
     public void AddCoins(int amount)
     {
         coins += amount;
@@ -54,10 +63,5 @@ public class PlayerStat : MonoBehaviour
             Debug.Log("Not enough coins!");
             return false;
         }
-    }
-
-    public void AddExperience(int exp)
-    {
-
     }
 }

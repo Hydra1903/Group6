@@ -10,82 +10,73 @@ public class SoitileManager : MonoBehaviour
     //public TileBase dirtTile;       // Tile đất bình thường
     public TileBase[] dirtTile = new TileBase[5]; // Khởi tạo mảng với các phần tử cụ thể
 
-    public TileBase dugTile;        // Tile đất đã đào
-    public TileBase seededTile;     // Tile đất đã gieo hạt (để đánh dấu trên SoilLayer)
+    [SerializeField] private TileBase dugTile;        // Tile đất đã đào
+    [SerializeField] private TileBase seededTile;     // Tile đất đã gieo hạt (để đánh dấu trên SoilLayer)
     //public TileBase plantSeedTile;  // Tile hạt giống trên PlantLayer
-    public TileBase wateredSoilTile; // Tham chiếu đến Tile đậm hơn cho ô đất đã tưới
+    [SerializeField] private TileBase wateredSoilTile; // Tham chiếu đến Tile đậm hơn cho ô đất đã tưới
 
     [Header("TileMap")]
     private Tilemap soilTilemap;    // Tilemap cho đất (SoilLayer)
-    public Tilemap plantTilemap;   // Tilemap cho cây trồng (PlantLayer)
+    [SerializeField] private Tilemap plantTilemap;   // Tilemap cho cây trồng (PlantLayer)
 
     [Header("FruitDrop")]
     //public GameObject fruitPrefab; // Gán prefab của quả vào trong Inspector
     //public Transform fruitDropPosition;
 
     [Header("Fruit Prefabs")]
-    public GameObject tomatoFruitPrefab; // Prefab cho quả Tomato
-    public GameObject carrotFruitPrefab; // Prefab cho quả Carrot
-    public GameObject potatoFruitPrefab; // Prefab cho quả Potato
+    [SerializeField] private GameObject tomatoFruitPrefab; // Prefab cho quả Tomato
+    [SerializeField] private GameObject carrotFruitPrefab; // Prefab cho quả Carrot
+    [SerializeField] private GameObject potatoFruitPrefab; // Prefab cho quả Potato
 
     [Header("TileBase - Carrot")]
-    public TileBase carrotSeedTile;
-    public TileBase carrotSproutTile;
-    public TileBase carrotYoungPlantTile;
-    public TileBase carrotFlowerPlantTile;
-    public TileBase carrotFruitTile;
+    [SerializeField] private TileBase carrotSeedTile;
+    [SerializeField] private TileBase carrotSproutTile;
+    [SerializeField] private TileBase carrotYoungPlantTile;
+    [SerializeField] private TileBase carrotFlowerPlantTile;
+    [SerializeField] private TileBase carrotFruitTile;
 
     [Header("TileBase - Tomato")]
-    public TileBase tomatoSeedTile;
-    public TileBase tomatoSproutTile;
-    public TileBase tomatoYoungPlantTile;
-    public TileBase tomatoFlowerPlantTile;
-    public TileBase tomatoFruitTile;
+    [SerializeField] private TileBase tomatoSeedTile;
+    [SerializeField] private TileBase tomatoSproutTile;
+    [SerializeField] private TileBase tomatoYoungPlantTile;
+    [SerializeField] private TileBase tomatoFlowerPlantTile;
+    [SerializeField] private TileBase tomatoFruitTile;
 
     [Header("TileBase - Potato")]
-    public TileBase potatoSeedTile;
-    public TileBase potatoSproutTile;
-    public TileBase potatoYoungPlantTile;
-    public TileBase potatoFlowerPlantTile;
-    public TileBase potatoFruitTile;
+    [SerializeField] private TileBase potatoSeedTile;
+    [SerializeField] private TileBase potatoSproutTile;
+    [SerializeField] private TileBase potatoYoungPlantTile;
+    [SerializeField] private TileBase potatoFlowerPlantTile;
+    [SerializeField] private TileBase potatoFruitTile;
 
     [Header("FruitData")]
     //public TileBase sproutTile, youngPlantTile, fruitTile; // Các Tile cho từng giai đoạn
     private Dictionary<Vector3Int, CropTile> crops = new Dictionary<Vector3Int, CropTile>(); // Lưu trữ cây trồng trên Tilemap
 
     // Seed Selection Variables
-    private string selectedSeed = null; // Currently selected seed type
-    private Dictionary<string, SeedData> seedData; // Dictionary to store seed properties
+    private Dictionary<string, SeedData> seedData; // thuộc tính hạt giống
 
     //public InventoryManager playerInventory;
-    public GameObject highlightTile;
+    public HighlightController highlightController;
     public Transform player;            // Tham chiếu đối tượng Player
     public Player toolCheck;
     //public Animator anim;
 
     // Kích thước của một tile trong TileMap (giả sử kích thước tile là 1x1)
-    public float tileSize = 1f;
-    // Chỉnh sửa offset (có thể là 1 ô về một hướng nào đó)
-    // Cập nhật offset khi Player di chuyển
-    private Vector3Int offset = Vector3Int.zero;
+    [SerializeField] private float tileSize = 1f;
 
-    private Vector3 playerPosition = Vector3.zero;
 
     [Header("Weather/ WateredSoil")]
     public WeatherManager weatherManager;
     //private float timeSinceRainStopped;
     //private float dryOutTime = 30f; // Thời gian để đất khô (đơn vị: giây)
-    private TileBase[,] originalTileStates;
     // Biến thời gian để theo dõi thời gian sau khi mưa dừng
     private float timeSinceRainStopped = 0f;
     private bool isRaining = false;  // Theo dõi trạng thái mưa
     private float timeSinceWatered = 0f;
     private bool isWatered = false;
 
-    private Vector3Int currentGridPos;
-
-
-    public GameObject wateredIconPrefab; // Prefab của icon tưới nước
+    [SerializeField] private GameObject wateredIconPrefab; // Prefab của icon tưới nước
     private Dictionary<Vector3Int, GameObject> activeIcons = new Dictionary<Vector3Int, GameObject>(); // Lưu các icon đang hiển thị
 
     [SerializeField] private GameObject cropInfoPanel;
@@ -94,6 +85,17 @@ public class SoitileManager : MonoBehaviour
 
     [SerializeField] private GameObject bloomGrowthEffectPrefab; // Kéo thả Prefab hiệu ứng vào đây                                                             
     private Dictionary<Vector3Int, GameObject> cropEffects = new Dictionary<Vector3Int, GameObject>(); // Dictionary để lưu hiệu ứng hương thơm tương ứng với vị trí cây
+
+
+    [Header("UI")]
+    public Toolbar playerToolbar;
+
+    [Header("Sound")]
+    [SerializeField] private AudioClip hoeSound;
+    [SerializeField] private AudioClip wateringCanSound;
+
+
+
 
     void Start()
     {
@@ -122,77 +124,54 @@ public class SoitileManager : MonoBehaviour
 
         UpdateCrops(Time.deltaTime);
 
-        if (toolCheck.isUsingTool)
+        if (toolCheck.isToolActive)
         {
-            PlayerPosition();
-            ////Vector3 playerPosition = player.position;  // Lấy vị trí Player
-
-            Vector3 playerPoint = player.position + playerPosition;  // Lấy vị trí Player
-
-            // Tính toán vị trí ô TileMap gần nhất với vị trí Player
-
-            ////Vector3Int gridPos = soilTilemap.WorldToCell(playerPosition);
-            Vector3Int gridPos = soilTilemap.WorldToCell(playerPoint);
-
-            //// Xử lý input để thay đổi offset (di chuyển highlight theo các hướng)
-            //HandleInput();
-
-            //// Cộng thêm offset để highlight cách Player một ô
-            //gridPos += offset;
-
-            // Kiểm tra xem có cần cập nhật highlight hay không
-            if (gridPos != currentGridPos)
-            {
-                currentGridPos = gridPos;
-                HighlightTile(currentGridPos);
-            }
-            //// Gọi hàm highlight tile
-            //HighlightTile(gridPos);
+            // Sử dụng currentCell từ HighlightController
+            Vector3Int currentGridPos = highlightController.currentCell;
 
             if (Input.GetKeyDown(KeyCode.F) && Player.instance != null)
             {
                 // Kiểm tra xem người chơi có thể đào đất
                 if (Player.instance.CanDig())
                 {
-                    TileBase currentTile = soilTilemap.GetTile(gridPos);
-                    if (System.Array.Exists(dirtTile, tile => tile == currentTile))//currentTile == dirtTile)
+                    TileBase currentTile = soilTilemap.GetTile(currentGridPos);
+                    if (System.Array.Exists(dirtTile, tile => tile == currentTile))
                     {
-                        //PlayerController.instance.IsDigging();
-                        //QuestProgress.instance.UpdateProgress("DigSoil");
                         QuestManager.instance.UpdateQuestProgress(ActionType.DigSoil);
-                        Dig(gridPos);
+                        Dig(currentGridPos);
+                        SoundManager.instance.PlaySound(hoeSound);
                     }
                 }
 
                 // Kiểm tra xem người chơi có thể gieo hạt
                 else if (Player.instance.CanPlantSeeds())
                 {
-                    if (selectedSeed == null)
+                    if (Slot.selectedSlot != null && Slot.selectedSlot.item != null)
                     {
-                        Debug.Log("Please select a seed before planting.");
-                        return;
-                    }
+                        Item currentItem = Slot.selectedSlot.item;
+                        TileBase currentTile = soilTilemap.GetTile(currentGridPos);
 
-                    TileBase currentTile = soilTilemap.GetTile(gridPos);
-                    if (currentTile == dugTile)
-                    {
-                        PlantSeed(gridPos);
-                    }
-                    else
-                    {
-                        Debug.Log("Ô đất chưa được đào");
+                        if (currentItem.itemType == ItemType.Seed &&
+                            seedData.ContainsKey(currentItem.itemName) &&
+                            currentTile == dugTile)
+                        {
+                            PlantSeed(currentGridPos, currentItem);
+                        }
+                        else
+                        {
+                            Debug.Log("Không thể trồng hạt giống tại đây");
+                        }  
                     }
                 }
 
                 // Kiểm tra xem người chơi có thể tưới nước
                 else if (Player.instance.CanWatering())
                 {
-                    TileBase currentTile = soilTilemap.GetTile(gridPos);
+                    TileBase currentTile = soilTilemap.GetTile(currentGridPos);
                     if (currentTile == seededTile)
                     {
-                        //Player.instance.IsWatering();
-                        //PlayerController.instance.IsWatering();
-                        WaterCrop(gridPos);
+                        SoundManager.instance.PlaySound(wateringCanSound);
+                        WaterCrop(currentGridPos);
                     }
                     else
                     {
@@ -203,10 +182,10 @@ public class SoitileManager : MonoBehaviour
                 // Kiểm tra xem người chơi có thể thu hoạch
                 else if (Player.instance.CanHarvest())
                 {
-                    TileBase currentTile = plantTilemap.GetTile(gridPos);
-                    if (currentTile != null && crops.ContainsKey(gridPos) && crops[gridPos].isHarvestable)
+                    TileBase currentTile = plantTilemap.GetTile(currentGridPos);
+                    if (currentTile != null && crops.ContainsKey(currentGridPos) && crops[currentGridPos].isHarvestable)
                     {
-                        Harvest(gridPos);
+                        Harvest(currentGridPos);
                     }
                     else
                     {
@@ -214,11 +193,6 @@ public class SoitileManager : MonoBehaviour
                     }
                 }
             }
-        }
-        else
-        {
-            // Nếu không cầm công cụ, ẩn highlightTile
-            highlightTile.SetActive(false);
         }
 
         // Weather Effected
@@ -299,74 +273,6 @@ public class SoitileManager : MonoBehaviour
         }
     }
 
-    // Hàm xử lý input của người chơi để thay đổi hướng offset
-    private void HandleInput()
-    {
-        //// Dùng các phím mũi tên hoặc WASD để thay đổi offset
-        //if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        //{
-        //    offset = new Vector3Int(0, 1, 0);  // Di chuyển lên   
-        //}
-        //else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        //{
-        //    offset = new Vector3Int(0, -1, 0); // Di chuyển xuống
-        //}
-        //else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        //{
-        //    offset = new Vector3Int(-1, 0, 0); // Di chuyển sang trái
-        //}
-        //else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        //{
-        //    offset = new Vector3Int(1, 0, 0);  // Di chuyển sang phải
-        //}
-    }
-    private void PlayerPosition()
-    {
-        // Dùng các phím mũi tên hoặc WASD để thay đổi offset
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            playerPosition = new Vector3(0, -0.3f, 0); //+ player.position;  // Di chuyển lên   
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            playerPosition = new Vector3(0, -0.27f, 0); //+ player.position;  // Di chuyển xuống   
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-        {
-            playerPosition = new Vector3(-0.5f, -0.25f, 0); //+ player.position;  // Di chuyển phải  
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-        {
-            playerPosition = new Vector3(0.5f, -0.25f, 0);// + player.position;  // Di chuyển trái  
-        }
-    }
-
-    // Hàm highlight tile tại vị trí đã chọn
-    private void HighlightTile(Vector3Int gridPos)
-    {
-        if (highlightTile != null)
-        {
-            // Chuyển Grid Position sang World Position
-            Vector3 worldPos = soilTilemap.CellToWorld(gridPos);
-
-            // Điều chỉnh vị trí để highlightTile khớp với ô
-            worldPos.x += tileSize / 2;  // Điều chỉnh sao cho highlight khớp với tâm ô
-            worldPos.y += tileSize / 2;  // Điều chỉnh sao cho highlight khớp với tâm ô
-
-            // Đặt vị trí của highlightTile
-            highlightTile.transform.position = worldPos;
-
-            // Hiển thị highlightTile
-            highlightTile.SetActive(true);
-        }
-    }
-
-    private Vector3Int GetGridPosition()
-    {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPosition = soilTilemap.WorldToCell(mouseWorldPos);
-        return gridPosition;
-    }
 
     void Dig(Vector3Int gridPos)
     {
@@ -374,60 +280,43 @@ public class SoitileManager : MonoBehaviour
         Debug.Log("Đã đào đất tại: " + gridPos);
     }
 
-    public void SelectSeed(string seedName)
+    // Thêm cây vào Tilemap khi gieo hạt
+    public void PlantSeed(Vector3Int position, Item currentItem)
     {
-
-        if (seedData.ContainsKey(seedName))
-        {
-            selectedSeed = seedName;
-            Debug.Log("Đã chọn hạt giống: " + seedName);
-        }
-        else
+        if (currentItem == null || !seedData.ContainsKey(currentItem.itemName))
         {
             Debug.Log("Hạt giống không hợp lệ!");
-        }
-    }
-
-    // Thêm cây vào Tilemap khi gieo hạt
-    public void PlantSeed(Vector3Int position)
-    {
-        if (selectedSeed == null || !seedData.ContainsKey(selectedSeed)) return;
-
-        // Kiểm tra trong kho xem có đủ số lượng hạt giống không
-        if (!InventoryManager.instance.HasItem(selectedSeed))
-        {
-            Debug.Log("Không có đủ hạt giống trong kho để gieo!");
             return;
         }
+
         // Kiểm tra nếu vị trí đã có cây để không bị thay thế
         if (crops.ContainsKey(position))
         {
             Debug.Log("Đã có cây trồng ở vị trí này. Không thể gieo hạt mới.");
             return;
         }
-        SeedData seed = seedData[selectedSeed];
 
-        // Giảm số lượng hạt giống trong kho
-        InventoryManager.instance.RemoveItem(selectedSeed, 1);
+        SeedData seed = seedData[currentItem.itemName];
+
+        // Xóa hạt giống khỏi toolbar
+        playerToolbar.RemoveItemFromToolbar(currentItem, 1);
 
         CropTile newCrop = new CropTile()
         {
             growthStage = 0,
-            //hoursGrowth = 0f,
-
             isPlanted = true,
             isWatered = false,
             isHarvestable = false,
-            seedName = selectedSeed // Lưu tên hạt giống để sử dụng khi cập nhật
+            seedName = currentItem.itemName // Lưu tên hạt giống để sử dụng khi cập nhật
         };
+
         crops[position] = newCrop;
         plantTilemap.SetTile(position, seed.seedTile); // Bắt đầu với Tile hạt giống
-
+        soilTilemap.SetTile(position, seededTile); // Đánh dấu ô đất đã gieo hạt
 
         // Cập nhật tiến trình nhiệm vụ
-        QuestManager.instance.UpdateQuestProgress(ActionType.SowSeeds, selectedSeed);
+        QuestManager.instance.UpdateQuestProgress(ActionType.SowSeeds, currentItem.itemName);
     }
-
 
     // Phương thức tưới nước cho cây
     public void WaterCrop(Vector3Int position)
@@ -710,8 +599,6 @@ public class SoitileManager : MonoBehaviour
         // Xóa GameObject hiệu ứng sau khi hoàn thành
         Destroy(spriteRenderer.gameObject);
     }
-
-
 
     private void StartFadeEffect(Vector3Int position, TileBase tile)
     {

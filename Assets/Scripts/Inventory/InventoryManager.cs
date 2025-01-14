@@ -147,7 +147,7 @@ public class InventoryManager : MonoBehaviour
         playerCurrency += amount;
         UpdateCurrencyUI();
     }
-
+     
     // Các phương thức bổ sung để quản lý hạt giống
     public bool HasItem(string itemName)
     {

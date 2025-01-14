@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
 public enum ItemType
 {
+    None,
     Consumable, // Có thể dùng để hồi phục năng lượng, sức khỏe, v.v.
     Quest, // Chỉ dùng cho nhiệm vụ, không thể sử dụng
     Tool,
@@ -32,7 +34,6 @@ public class Item
     public int price; // Giá bán của Item
     public int energy; // Năng lượng phục hồi nếu là Consumable
     public string description; // Mô tả chi tiết Item
-
     public GameObject toolPrefab; // Prefab để hiển thị Tool
     public Item(string name, Sprite icon, int quantity, ItemType itemType,ToolType toolType ,int price, int energy, string description, GameObject prefab = null)
     {

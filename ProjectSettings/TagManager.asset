@@ -10,6 +10,7 @@ TagManager:
   - Rock
   - Tool
   - NPC
+  - Animal
   layers:
   - Default
   - TransparentFX
