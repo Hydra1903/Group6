@@ -17,8 +17,8 @@ MonoBehaviour:
   quantity: 1
   itemType: 5
   toolType: 0
-  price: 120
+  price: 6000
   energy: 0
   description: 'Cutie Creature '
-  catchChance: 5
+  catchChance: 15
   rarity: 2

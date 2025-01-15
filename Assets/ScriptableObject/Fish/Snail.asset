@@ -17,8 +17,8 @@ MonoBehaviour:
   quantity: 1
   itemType: 5
   toolType: 0
-  price: 50
+  price: 20
   energy: 0
   description: 
-  catchChance: 55
+  catchChance: 47
   rarity: 0

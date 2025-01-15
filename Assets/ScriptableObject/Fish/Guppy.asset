@@ -17,8 +17,8 @@ MonoBehaviour:
   quantity: 1
   itemType: 5
   toolType: 0
-  price: 15
+  price: 2000
   energy: 0
   description: 'Beautiful Fish '
-  catchChance: 21
+  catchChance: 25
   rarity: 1

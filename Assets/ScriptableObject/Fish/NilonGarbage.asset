@@ -17,7 +17,7 @@ MonoBehaviour:
   quantity: 1
   itemType: 5
   toolType: 0
-  price: 20
+  price: 50
   energy: 0
   description: 
   catchChance: 40

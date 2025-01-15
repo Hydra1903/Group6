@@ -17,8 +17,8 @@ MonoBehaviour:
   quantity: 1
   itemType: 5
   toolType: 0
-  price: 40
+  price: 3000
   energy: 0
   description: 'Carp turns into dragon '
-  catchChance: 25
+  catchChance: 20
   rarity: 1
