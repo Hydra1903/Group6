@@ -70,7 +70,7 @@ public class InventoryController : MonoBehaviour
                 slot.SetItem(item);
                 //gắn code kéo thả cho vật phẩm 
 
-
+                slot.UpdateQuantityText();
             }
         }
     }

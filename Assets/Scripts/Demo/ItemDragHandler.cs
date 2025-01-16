@@ -98,8 +98,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         // Cập nhật UI của cả hai slot
-        UpdateInventoryAfterSwap();
-    }
+        UpdateInventoryAfterSwap();    }
 
     private void ReturnToOriginalPosition()
     {

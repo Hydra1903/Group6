@@ -67,7 +67,7 @@ public class Slot : MonoBehaviour
             highlightImage.SetActive(false);
         }
     }
-    private void UpdateQuantityText()
+    public void UpdateQuantityText()
     {
         if (quantityText != null)
         {
@@ -81,6 +81,7 @@ public class Slot : MonoBehaviour
                 quantityText.gameObject.SetActive(false);
             }
         }
+        quantityText.transform.SetAsLastSibling();
     }
     public void ClearSlot()
     {

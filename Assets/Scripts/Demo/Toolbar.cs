@@ -81,7 +81,6 @@ public class Toolbar : MonoBehaviour
                 // Gắn vật phẩm vào slot
                 slot.SetItem(item);
                 slot.currentItem = itemObject;
-
             }
         }
     }

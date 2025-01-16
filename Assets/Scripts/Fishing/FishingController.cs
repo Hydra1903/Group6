@@ -69,7 +69,7 @@ public class FishingController : MonoBehaviour
     private bool CanStartFishing() =>
         IsNearWater() &&
         Player.instance.CanFishing() &&
-        Toolbar.instance.HasItem(BAIT_ITEM_NAME) || InventoryController.instance.HasItem(BAIT_ITEM_NAME);
+        Toolbar.instance.HasItem(BAIT_ITEM_NAME) || Player.instance.CanFishing() && InventoryController.instance.HasItem(BAIT_ITEM_NAME);
 
     private bool IsNearWater() =>
         Vector2.Distance(playerPosition.position, fishingSpot.position) < maxFishingDistance;
