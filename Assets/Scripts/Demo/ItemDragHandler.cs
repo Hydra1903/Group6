@@ -98,7 +98,8 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         // Cập nhật UI của cả hai slot
-        UpdateInventoryAfterSwap();    }
+        UpdateInventoryAfterSwap();
+    }
 
     private void ReturnToOriginalPosition()
     {
@@ -117,12 +118,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             // Chuyển từ inventory sang toolbar
             InventoryController.instance.RemoveItem(draggedItem, draggedItem.quantity);
             Toolbar.instance.AddItemToToolbar(draggedItem, draggedItem.quantity);
+            sourceSlot.UpdateQuantityText();
         }
         else if (originalParent.IsChildOf(toolbarPanel) && transform.parent.IsChildOf(inventoryPanel))
         {
             // Chuyển từ toolbar sang inventory
             Toolbar.instance.RemoveItemFromToolbar(draggedItem, draggedItem.quantity);
             InventoryController.instance.AddItemToInventory(draggedItem);
+            sourceSlot.UpdateQuantityText();
         }
     }
 }

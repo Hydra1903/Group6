@@ -10,11 +10,17 @@ public class Slot : MonoBehaviour
     private Player player;  // Tham chiếu đến Player
     [SerializeField] private GameObject highlightImage;  // Highlight hiển thị khi slot được chọn
     [SerializeField] private Text quantityText; // Text để hiển thị số lượng item
+
     private void Start()
     {
         highlightImage.SetActive(false); // Ẩn highlight mặc định
         player = Player.instance;  // Lấy instance của Player
         UpdateQuantityText(); // Cập nhật số lượng ban đầu
+    }
+
+    private void Update()
+    {
+        UpdateQuantityText();
     }
     public void SetItem(Item newItem)
     {
@@ -75,13 +81,14 @@ public class Slot : MonoBehaviour
             {
                 quantityText.text = item.quantity.ToString();
                 quantityText.gameObject.SetActive(true);
+                quantityText.transform.SetAsLastSibling();
             }
             else
             {
                 quantityText.gameObject.SetActive(false);
+                quantityText.transform.SetAsLastSibling();
             }
         }
-        quantityText.transform.SetAsLastSibling();
     }
     public void ClearSlot()
     {
