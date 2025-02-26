@@ -69,8 +69,6 @@ public class InventoryController : MonoBehaviour
                 slot.currentItem = itemObject;
                 slot.SetItem(item);
                 //gắn code kéo thả cho vật phẩm 
-
-                slot.UpdateQuantityText();
             }
         }
     }
